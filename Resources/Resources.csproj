@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Dialogs\Dialog.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dialogs\" />
+  </ItemGroup>
+
+</Project>

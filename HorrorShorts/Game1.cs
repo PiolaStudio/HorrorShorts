@@ -1,13 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HorrorShorts.Resources;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Resources.Sprites;
 
 namespace HorrorShorts
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private readonly GraphicsDeviceManager _graphics;
 
         public Game1()
         {
@@ -18,16 +19,14 @@ namespace HorrorShorts
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            Core.Init(this);
+            Textures.ReLoad(new string[1] { "Mario" });
+            SpriteSheets.ReLoad(new string[1] { "Mario" });
         }
 
         protected override void Update(GameTime gameTime)
@@ -35,16 +34,22 @@ namespace HorrorShorts
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
+        private void PreDraw(GameTime gameTime)
+        {
+
+        }
         protected override void Draw(GameTime gameTime)
         {
+            PreDraw(gameTime);
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            Core.SpriteBatch.Draw(Textures.Mario, new Rectangle(0, 0, 16 * 4, 16 * 4), SpriteSheets.Mario.Get("Death"), Color.White);
+            Core.SpriteBatch.End();
 
             base.Draw(gameTime);
         }

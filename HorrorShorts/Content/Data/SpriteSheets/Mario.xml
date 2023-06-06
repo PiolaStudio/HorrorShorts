@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Sprites="Resources.Sprites">
+	<Asset Type="Sprites:SpriteSheet_Serial">
+		<Texture>Mario</Texture>
+		<Sheets>
+			<Sheet>
+				<Name>Run</Name>
+				<Source>0 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Idle</Name>
+				<Source>16 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Death</Name>
+				<Source>32 0 16 16</Source>
+			</Sheet>
+		</Sheets>
+	</Asset>
+</XnaContent>
