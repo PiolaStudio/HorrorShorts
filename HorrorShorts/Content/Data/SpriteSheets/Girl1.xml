@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Sprites="Resources.Sprites">
+	<Asset Type="Sprites:SpriteSheet_Serial">
+		<Texture>Girl1</Texture>
+		<Sheets>
+			<Sheet>
+				<Name>Girl1_Angry</Name>
+				<Source>0 0 80 80</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Idle</Name>
+				<Source>80 0 80 80</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Death</Name>
+				<Source>160 0 80 80</Source>
+			</Sheet>
+		</Sheets>
+	</Asset>
+</XnaContent>
