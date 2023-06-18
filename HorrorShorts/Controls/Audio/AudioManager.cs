@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Data
+namespace HorrorShorts.Controls.Audio
 {
-    public enum Characters : short
+    public class AudioManager
     {
-        None = 0,
-        Girl1 = 1,
     }
 }

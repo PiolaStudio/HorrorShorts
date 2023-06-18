@@ -1,4 +1,5 @@
-﻿using HorrorShorts.Controls.UI;
+﻿using HorrorShorts.Controls.Audio;
+using HorrorShorts.Controls.UI.Dialogs;
 using HorrorShorts.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -20,8 +21,13 @@ namespace HorrorShorts
         public static SpriteBatch SpriteBatch;
         public static GraphicsDevice GraphicsDevice;
         public static ContentManager Content;
+        public static GameTime GameTime;
 
-        public static DialogManagement Dialog;
+        public static float DeltaTime; //todo
+        private static readonly TimeSpan _idealFrameRate = TimeSpan.FromMilliseconds(1000 / 60.0);
+
+        public static AudioManager AudioManager;
+        public static DialogManagement DialogManagement;
 
         public static KeyboardState KeyState;
         public static JoystickState JoystickState;
@@ -33,13 +39,31 @@ namespace HorrorShorts
             Content = game.Content;
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
+            AudioManager = new AudioManager();
+            DialogManagement = new DialogManagement();
+
             Textures.Init();
             SpriteSheets.Init();
+            Fonts.Init();
+            Sounds.Init();
         }
-        public static void Update()
+        public static void LoadContent()
         {
+            DialogManagement.LoadContent();
+        }
+        public static void Update(GameTime gameTime)
+        {
+            GameTime = gameTime;
+            DeltaTime = (float)(gameTime.ElapsedGameTime.TotalMilliseconds / _idealFrameRate.TotalMilliseconds);
+
             KeyState = Keyboard.GetState();
             JoystickState = Joystick.GetState(0);
+
+            DialogManagement.Update();
+        }
+        public static void Dispose()
+        {
+            DialogManagement.Dispose();
         }
     }
 }

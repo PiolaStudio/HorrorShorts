@@ -1,4 +1,4 @@
-﻿using HorrorShorts.Data;
+﻿using HorrorShorts.Controls.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,19 +15,29 @@ namespace HorrorShorts.Resources
     public static class Textures
     {
         public static Texture2D Pixel { get; private set; }
+
+        [Resource("Textures/UI/DialogMenu")]
+        public static Texture2D DialogMenu { get; private set; }
+
+
         [Resource("Textures/Characters/Mario")]
         public static Texture2D Mario { get; private set; }
+        [Resource("Textures/Characters/Girl1")]
+        public static Texture2D Girl1 { get; private set; }
 
 
         public static string[] AlwaysLoadedTextures = new string[]
         {
-            nameof(Pixel)
+            nameof(Pixel),
+            nameof(DialogMenu)
         };
 
         public static void Init()
         {
             Pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
             Pixel.SetData(new Color[1] { Color.White });
+
+            DialogMenu = Core.Content.Load<Texture2D>("Textures/UI/DialogMenu");
         }
         public static void ReLoad(string[] textures)
         {
@@ -82,6 +92,8 @@ namespace HorrorShorts.Resources
             //}
 
             //Load textures
+
+
             for (int i = 0; i < texturesToLoad.Count; i++)
             {
                 PropertyInfo propInfo = typeof(Textures).GetProperty(texturesToLoad[i]);
@@ -89,6 +101,8 @@ namespace HorrorShorts.Resources
                 Texture2D t = Core.Content.Load<Texture2D>(path);
                 propInfo.SetValue(null, t);
             }
+            //Task.Run(() => { });
+
             ////Load sheets
             //for (int i = 0; i < sheetsToLoad.Count; i++)
             //{
@@ -97,6 +111,15 @@ namespace HorrorShorts.Resources
             //    SpriteSheet s = SpriteSheetSerial.Load(path).ToSpriteSheet();
             //    fi.SetValue(null, s);
             //}
+        }
+
+        public static void GetTexture(string name, out Texture2D texture)
+        {
+            PropertyInfo tProp = typeof(Textures).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
+            if (tProp == null) throw new Exception("Can't Load Texture " + name);
+            if (tProp.PropertyType != typeof(Texture2D)) throw new Exception("Can't Load Sheet " + name);
+
+            texture = (Texture2D)tProp.GetValue(null);
         }
     }
 }

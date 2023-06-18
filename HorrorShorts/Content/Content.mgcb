@@ -14,10 +14,51 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Data/Localization/Test.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/Localization/Test.xml
+
+#begin Data/SpriteSheets/Girl1.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/SpriteSheets/Girl1.xml
+
 #begin Data/SpriteSheets/Mario.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:Data/SpriteSheets/Mario.xml
+
+#begin Fonts/PixelArial.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/PixelArial.spritefont
+
+#begin SoundEffects/Speak/Speak1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Speak/Speak1.wav
+
+#begin SoundEffects/Speak/Speak2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Speak/Speak2.wav
+
+#begin Textures/Characters/Girl1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Characters/Girl1.png
 
 #begin Textures/Characters/Mario.png
 /importer:TextureImporter
@@ -30,4 +71,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Characters/Mario.png
+
+#begin Textures/UI/DialogMenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/DialogMenu.png
 

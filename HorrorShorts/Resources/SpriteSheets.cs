@@ -1,4 +1,4 @@
-﻿using HorrorShorts.Data;
+﻿using HorrorShorts.Controls.Sprites;
 using Resources.Sprites;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,8 @@ namespace HorrorShorts.Resources
     {
         [ResourceAttribute("Data/SpriteSheets/Mario")]
         public static SpriteSheet Mario { get; private set; }
+        [ResourceAttribute("Data/SpriteSheets/Girl1")]
+        public static SpriteSheet Girl1 { get; private set; }
 
         public static void Init()
         {
@@ -61,6 +63,15 @@ namespace HorrorShorts.Resources
                 SpriteSheet s = new(ss);
                 propInfo.SetValue(null, s);
             }
+        }
+
+        public static void GetSheet(string name, out SpriteSheet sheet)
+        {
+            PropertyInfo tProp = typeof(SpriteSheets).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
+            if (tProp == null) throw new Exception("Can't Load Sheet " + name);
+            if (tProp.PropertyType != typeof(SpriteSheet)) throw new Exception("Can't Load Sheet " + name);
+
+            sheet = (SpriteSheet)tProp.GetValue(null);
         }
     }
 }

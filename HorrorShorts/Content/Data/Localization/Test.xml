@@ -1,0 +1,34 @@
+<XnaContent xmlns:Dialogs="Resources.Dialogs">
+  <Asset Type="Dialogs:Conversation_Serial">
+    <Conversation>
+      <ID>Conversación 1</ID>
+      <Dialogs>
+        <Dialog>
+          <Text>Hola, este es el primer dialogo de la conversación.</Text>
+		  <FontSize>1</FontSize>
+		  <Location>TopLeft</Location>
+        </Dialog>
+        <Dialog>
+          <Text>Y este es el segundo y está en rojo</Text>
+		  <FontColor>FF0000</FontColor>
+        </Dialog>
+        <Dialog>
+          <Text>Y yo soy una minita feliz jijiji</Text>
+		  <Character>Girl1</Character>
+          <Face>Happy</Face>
+        </Dialog>
+      </Dialogs>
+    </Conversation>
+    <Conversation>
+      <ID>Conversación 2</ID>
+      <Dialogs>
+        <Dialog>
+          <Text>Esta es otra conversación...</Text>
+        </Dialog>
+        <Dialog>
+          <Text>NO{dy:200}-TE{dy:200}-ME{dy:200}-TAS</Text>
+        </Dialog>
+      </Dialogs>
+    </Conversation>
+  </Asset>
+</XnaContent>

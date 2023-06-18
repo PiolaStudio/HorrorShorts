@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace HorrorShorts.Resources
 {
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class ResourceAttribute : Attribute
     {
         public string Path { get; private set; }

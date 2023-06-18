@@ -4,15 +4,15 @@
 		<Texture>Girl1</Texture>
 		<Sheets>
 			<Sheet>
-				<Name>Girl1_Angry</Name>
+				<Name>DialogFace_Angry</Name>
 				<Source>0 0 80 80</Source>
 			</Sheet>
 			<Sheet>
-				<Name>Idle</Name>
+				<Name>DialogFace_Sad</Name>
 				<Source>80 0 80 80</Source>
 			</Sheet>
 			<Sheet>
-				<Name>Death</Name>
+				<Name>DialogFace_Happy</Name>
 				<Source>160 0 80 80</Source>
 			</Sheet>
 		</Sheets>
