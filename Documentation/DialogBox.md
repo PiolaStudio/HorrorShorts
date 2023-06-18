@@ -336,5 +336,5 @@ DialogManagement requiere sus respectivos llamados a LoadContent, Update, PreDra
 
 Se encuentra un DialogManagement listo para su utilización en Core:  
 ```c#
-Core.DialogManagement.Start(...)
+Core.DialogManagement.Start(dialogs);
 ```

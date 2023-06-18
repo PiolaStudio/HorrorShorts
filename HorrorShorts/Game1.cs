@@ -19,7 +19,7 @@ namespace HorrorShorts
         protected override void Initialize()
         {
             _graphics.PreferredBackBufferWidth = 640;
-            _graphics.PreferredBackBufferHeight = 360;
+            _graphics.PreferredBackBufferHeight = 480;
             _graphics.ApplyChanges();
             this.IsFixedTimeStep = true;
             //this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);

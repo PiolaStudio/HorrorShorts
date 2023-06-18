@@ -5,7 +5,6 @@
       <Dialogs>
         <Dialog>
           <Text>Hola, este es el primer dialogo de la conversación.</Text>
-		  <FontSize>1</FontSize>
 		  <Location>TopLeft</Location>
         </Dialog>
         <Dialog>

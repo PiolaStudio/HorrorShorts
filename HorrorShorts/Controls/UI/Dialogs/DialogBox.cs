@@ -422,6 +422,65 @@ namespace HorrorShorts.Controls.UI.Dialogs
                 }
             }
         }
+        private void GetZone()
+        {
+            string charName = _characterName ?? string.Empty;
+            _zones = _location switch
+            {
+                TextBoxLocation.TopLeft => new Zones(
+                        new(0, 0, 640, 144),    //Zone
+                        new(0, 0, 640, 128),    //Background Zone 
+                        new(16, 16, 80, 80),    //Face Zone 
+                        new(0, 112, 208, 32),   //Name Zone
+                        new(10, 118),           //Name Pos
+                        _faceType != FaceType.None ? new(112, 20, 512, 80) : new(16, 20, 608, 80),   //Text Zone
+                        SpriteEffects.FlipVertically),
+                TextBoxLocation.TopRight => new Zones(
+                        new(0, 0, 640, 144),    //Zone
+                        new(0, 0, 640, 128),    //Background Zone 
+                        new(544, 16, 80, 80),   //Face Zone 
+                        new(432, 112, 208, 32), //Name Zone
+                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 118),   //Name Pos
+                        _faceType != FaceType.None ? new(16, 20, 512, 80) : new(16, 20, 608, 80),               //Text Zone
+                        SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally),
+                
+                TextBoxLocation.MiddleLeft => new Zones(
+                        new(0, 168, 640, 144),  //Zone   //todo: ajustar a la resolución
+                        new(0, 16, 640, 128),   //Background Zone 
+                        new(16, 48, 80, 80),    //Face Zone 
+                        new(0, 0, 208, 32),     //Name Zone
+                        new(10, 14),            //Name Pos
+                        _faceType != FaceType.None ? new(112, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
+                        SpriteEffects.None),
+                TextBoxLocation.MiddleRight => new Zones(
+                        new(0, 168, 640, 144),  //Zone   //todo: ajustar a la resolución
+                        new(0, 16, 640, 128),   //Background Zone 
+                        new(544, 48, 80, 80),   //Face Zone 
+                        new(432, 0, 208, 32),   //Name Zone
+                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 14),           //Name Pos
+                        _faceType != FaceType.None ? new(16, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
+                        SpriteEffects.FlipHorizontally),
+
+                TextBoxLocation.BottomLeft => new Zones(
+                        new(0, 336, 640, 144),  //Zone   //todo: ajustar a la resolución
+                        new(0, 16, 640, 128),   //Background Zone 
+                        new(16, 48, 80, 80),    //Face Zone 
+                        new(0, 0, 208, 32),     //Name Zone
+                        new(10, 14),            //Name Pos
+                        _faceType != FaceType.None ? new(112, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
+                        SpriteEffects.None),
+                TextBoxLocation.BottomRight => new Zones(
+                        new(0, 336, 640, 144),  //Zone   //todo: ajustar a la resolución
+                        new(0, 16, 640, 128),   //Background Zone 
+                        new(544, 48, 80, 80),   //Face Zone 
+                        new(432, 0, 208, 32),   //Name Zone
+                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 14),           //Name Pos
+                        _faceType != FaceType.None ? new(16, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
+                        SpriteEffects.FlipHorizontally),
+
+                _ => throw new NotImplementedException("Not implemented Dialog Location: " + _location)
+            };
+        }
 
         private void UpdateNextCharacters()
         {
@@ -540,65 +599,6 @@ namespace HorrorShorts.Controls.UI.Dialogs
                 _finished = true;
                 Finish?.Invoke(this, EventArgs.Empty);
             }
-        }
-        private void GetZone()
-        {
-            string charName = _characterName ?? string.Empty;
-            _zones = _location switch
-            {
-                TextBoxLocation.TopLeft => new Zones(
-                        new(0, 0, 640, 144),    //Zone
-                        new(0, 0, 640, 128),    //Background Zone 
-                        new(16, 16, 80, 80),    //Face Zone 
-                        new(0, 112, 208, 32),   //Name Zone
-                        new(10, 118),           //Name Pos
-                        _faceType != FaceType.None ? new(112, 20, 512, 80) : new(16, 20, 608, 80),   //Text Zone
-                        SpriteEffects.FlipVertically),
-                TextBoxLocation.TopRight => new Zones(
-                        new(0, 0, 640, 144),    //Zone
-                        new(0, 0, 640, 128),    //Background Zone 
-                        new(544, 16, 80, 80),   //Face Zone 
-                        new(432, 112, 208, 32), //Name Zone
-                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 118),   //Name Pos
-                        _faceType != FaceType.None ? new(16, 20, 512, 80) : new(16, 20, 608, 80),               //Text Zone
-                        SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally),
-                
-                TextBoxLocation.MiddleLeft => new Zones(
-                        new(0, 168, 640, 144),  //Zone   //todo: ajustar a la resolución
-                        new(0, 16, 640, 128),   //Background Zone 
-                        new(16, 48, 80, 80),    //Face Zone 
-                        new(0, 0, 208, 32),     //Name Zone
-                        new(10, 14),            //Name Pos
-                        _faceType != FaceType.None ? new(112, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
-                        SpriteEffects.None),
-                TextBoxLocation.MiddleRight => new Zones(
-                        new(0, 168, 640, 144),  //Zone   //todo: ajustar a la resolución
-                        new(0, 16, 640, 128),   //Background Zone 
-                        new(544, 48, 80, 80),   //Face Zone 
-                        new(432, 0, 208, 32),   //Name Zone
-                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 14),           //Name Pos
-                        _faceType != FaceType.None ? new(16, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
-                        SpriteEffects.FlipHorizontally),
-
-                TextBoxLocation.BottomLeft => new Zones(
-                        new(0, 336, 640, 144),  //Zone   //todo: ajustar a la resolución
-                        new(0, 16, 640, 128),   //Background Zone 
-                        new(16, 48, 80, 80),    //Face Zone 
-                        new(0, 0, 208, 32),     //Name Zone
-                        new(10, 14),            //Name Pos
-                        _faceType != FaceType.None ? new(112, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
-                        SpriteEffects.None),
-                TextBoxLocation.BottomRight => new Zones(
-                        new(0, 336, 640, 144),  //Zone   //todo: ajustar a la resolución
-                        new(0, 16, 640, 128),   //Background Zone 
-                        new(544, 48, 80, 80),   //Face Zone 
-                        new(432, 0, 208, 32),   //Name Zone
-                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 14),           //Name Pos
-                        _faceType != FaceType.None ? new(16, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
-                        SpriteEffects.FlipHorizontally),
-
-                _ => throw new NotImplementedException("Not implemented Dialog Location: " + _location)
-            };
         }
 
         private static SoundEffect GetSpeak(SpeakType speak)
