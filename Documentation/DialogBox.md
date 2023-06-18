@@ -10,7 +10,7 @@ Primero se divide en distintos **Conversation** encargados de almacenar la infor
 Cada conversation debe ser bautizada mediante el parámetro ID el cual no se puede repetir en el mismo archivo.
 Dentro de cada Conversation se almacenan cuantos **Dialog** se necesiten, encargados cada uno de contener toda la información de un solo dialogo.  
 
-```xml:
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <XnaContent xmlns:Dialogs="Resources.Dialogs">
   <Asset Type="Dialogs:Conversation_Serial">
@@ -54,13 +54,13 @@ El listado de parámetros iniciales es el siguiente:
 #### - Text
 El texto que se mostrará en el DialogBox.  
 
-```xml:
+```xml
 <Text>Hola Mundo</Text>
 ```  
 #### - Character
 Determina el personaje que va a decir el dialogo.  
 
-```xml:
+```xml
 <Character>Nombre_Del_Personaje</Character>
 ```  
 
@@ -69,7 +69,7 @@ En caso de no especificarlo se usa al narrador.
 #### - Face  
 Determina la expresión que el personaje va a utilizar.  
 
-```xml:
+```xml
 <Face>Normal</Face>
 ```  
 
@@ -79,7 +79,7 @@ En caso de usar **None** no se mostraría ninguna cara.
 #### - FontType
 Determina el tipo de fuente que se va a utilizar.
 
-```xml:
+```xml
 <FontType>Arial</FontType>
 ```  
 
@@ -88,7 +88,7 @@ Los tipos de fuentes disponibles se encuentran en la enumeración FaceType.
 #### - FontSize  
 Determina el tamaño de la fuente.   
 
-```xml:
+```xml
 <FontSize>2</FontSize>  
 ```
 
@@ -97,7 +97,7 @@ Se recomienda utilizar valores potencia de 2 *(1, 2, 4, 8, etc)*.
 #### - FontColor
 Determina el color del texto en hexadecimal.  
 
-```xml:
+```xml
 <FontColor>FFFFFF</FontColor>
 ```
 
@@ -106,7 +106,7 @@ Es un valor **hexadecimal** que representa el R, G y B con dos dígitos para cada
 #### - Speed
 Determina la velocidad en la que va a ir apareciendo el texto. Influye en otras cosas como la velocidad del sonido.
 
-```xml:
+```xml
 <Speed>10</Speed>
 ```
 
@@ -115,7 +115,7 @@ Es un valor entre **1** y **1000**.
 #### - SpeakType
 Determina el tipo de *"voz"* que el personaje proyectará al hablar. Es el sonido base que se reproducirá cada X caracteres.
 
-```xml:
+```xml
 <SpeakType>Speak1</SpeakType>
 ```
 
@@ -125,7 +125,7 @@ En caso de usar **None** no emitiría ningún sonido.
 #### - SpeakSpeed
 Determina cada cuantos caracteres ejecutará un nuevo sonido de Speak. Mientras mayor sea el número mas tiempo habrá entre sonido y sonido.  
 
-```xml:
+```xml
 <SpeakSpeed>3</SpeakSpeed>
 ```
 
@@ -134,7 +134,7 @@ Es un valor entre **1** y **100**
 #### - SpeakPitch
 Determina el pitch *(Altura)* base que se utilizará para ejecutar el sonido.  
 
-```xml:
+```xml
 <SpeakPitch>0</SpeakPitch>
 ```
 
@@ -143,7 +143,7 @@ En un valor entre **-100** y **100**, siendo **0** el sonido sin modificaciones.
 #### -SpeakPitchVariation  
 Determina cuanto va a variar el pitch a partir de su valor inicial **SpeakPitch**.  
 
-```xml:
+```xml
 <PitchVariation>0</PitchVariation>  
 ```
 
@@ -152,7 +152,7 @@ En un valor entre **-100** y **100**, siendo **0** sin variaciones.
 #### -Location  
 Determina donde va a estar ubicado el DialogBox en la pantalla.  
 
-```xml:
+```xml
 <Location>Bottom</Location>  
 ```
 
@@ -181,7 +181,7 @@ A continuación se detallan los distintos tipo de comandos inyectados disponibles
 #### -Delay (dy)
 Hace una pausa de X milisegundos en el lugar indicado.
 
-```xml:
+```xml
 <Text>Esto es un{dy:500} delay de 500ms</Text>
 ```
 
@@ -190,7 +190,7 @@ Debe ser un número mayor a **0**
 #### -Font Type (ft)
 Cambia el tipo de fuente a cualquiera de los validos
 
-```xml:
+```xml
 <Text>{ft:Arial}Esto está en Arial.{ft:ComicSans} Esto esta en ComicSans.</Text>
 ```
 
@@ -199,7 +199,7 @@ Los tipos de Fuentes validos son los de la enumeración **FontType**
 #### - Font Color (fc)
 Cambia el color del texto
 
-```xml:
+```xml
 <Text>{fc:#FFFFFF}Esto está en blanco.{fc:#FF0000} Esto esta en rojo.</Text>
 ```
 
@@ -208,7 +208,7 @@ Debe expresarse en hexadecimal, con valores de 255 (2 caracteres) para el RGB.
 #### - Face (fa)
 Cambia al cara que se está mostrando.
 
-```xml:
+```xml
 <Text>{fa:Happy}Estoy feliz{fa:Sad} y enojado.</Text>
 ```
 
@@ -218,7 +218,7 @@ Los tipos de caras disponibles son los de la enumeración **FaceType**
 #### - Break Line (bl)
 Realiza un salto de línea
 
-```xml:
+```xml
 <Text>Línea 1.{bl}Línea 2.</Text>
 ```
 
@@ -227,14 +227,14 @@ No requiere parámetros adicionales.
 #### - Escape Character (ec)
 Permite mostrar un caracter reservado.
 
-```xml:
+```xml
 <Text>{ec:{}Este texto está entre llaves{ec:}}</Text>
 ```
 
 #### - Speak Type (st)
 Permite cambiar el sonido que utiliza para "hablar"
 
-```xml:
+```xml
 <Text>{st:Voice1}Esta es mi primera voz{st:Voice2}} y esta mi segunda.</Text>
 ```
 
@@ -243,7 +243,7 @@ Los tipos de voces validos son los de la enumeración **SpeakTypes**
 #### - Speak Pitch (sp)
 Permite cambiar el pitch (altura) que utiliza para "hablar"
 
-```xml:
+```xml
 <Text>{sp:50}Ahora hablo más agudo{sp:-50} y ahora más grave.</Text>
 ```
 
@@ -253,7 +253,7 @@ Los valores permitidos son entre **-100** y **100**
 #### - Speak Pitch Variation (sv)
 Determina el rango de pitch en el que puede variar cada vez que se reproduzca un sonido al "hablar".  
 
-```xml:
+```xml
 <Text>{sv:0}No varia mi voz al hablar{sv:10} y ahora si.</Text>
 ```
 
@@ -263,7 +263,7 @@ Los valores permitidos son entre **0** y **100**.
 #### - SpeakSpeed (ss)
 Determina cada cuantos caractéres mostrados se ejecutará un sonido para "hablar". Mientras mayor sea el valor más lento hablara.
 
-```xml:
+```xml
 <Text>{ss:4}Velocidad 1{ss:1} Velicidad 2.</Text>
 ```
 
@@ -272,7 +272,7 @@ Los valores permitidos son entre **1** (para hablar sobre cada caractér) y **100
 #### - TextSpeed (ts)
 Determina la velocidad **general** con la que irá apareciendo el texto sobre el DialogBox.
 
-```xml:
+```xml
 <Text>{ts:6}Estoy hablando lento{ts:30}Y ahora rápido.</Text>
 ```
 
@@ -285,7 +285,7 @@ Ejecuta un evento dentro del código.
 #### - SoundEffect (se)  
 Reproduce un efecto de sonido.  
 
-```xml:
+```xml
 <Text>Va a sonar un sonido en 3, 2, 1, YA{se:Sound1}.</Text>
 ```
 
@@ -294,7 +294,7 @@ Es valido cualquier efecto de sonido de la clase **Sounds**.
 #### - VibrateBox (vb)
 Agita la caja de dialogos con la fuerza especificada.
 
-```xml:
+```xml
 <Text>¿Esto es un terremoto?{vb:1}.</Text>
 ```
 
@@ -312,7 +312,7 @@ A continuación se dará una explicación de los controles **DialogBox** y **Dialog
 Este control se puede utilizar para mostrar texto como si un personaje esté hablando.  
 Para usarlo simplemente se llama al método **Show** como en el siguiente ejemplo:
 
-```c#:
+```c#
 Dialog dialog = ...
 dialogBox.Show(dialog);
 ```
@@ -326,7 +326,7 @@ DialogManagement requiere sus respectivos llamados a LoadContent, Update, PreDra
 Este control se encarga de gestionar múltiples líneas de dialogo e ir administarndoselas a un DialogBox.  
 Para usarlo simplemente se llama al método **Start** como en el siguiente ejemplo:  
 
-```c#:
+```c#
 Dialog[] dialogs = ...
 dialogManagement.Start(dialogs);
 ```
@@ -335,6 +335,6 @@ Este código se encarga de ir mostrando todos los items del array dialogs en orde
 DialogManagement requiere sus respectivos llamados a LoadContent, Update, PreDraw, Draw y Dispose  
 
 Se encuentra un DialogManagement listo para su utilización en Core:  
-```c#:
+```c#
 Core.DialogManagement.Start(...)
 ```
