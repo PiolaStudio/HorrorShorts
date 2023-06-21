@@ -30,6 +30,19 @@ namespace Resources
         BottomLeft,
         BottomRight
     }
+    public enum TextAlignament : byte
+    {
+        TopLeft,
+        TopCenter,
+        TopRight,
+        MiddleLeft,
+        MiddleCenter,
+        MiddleRight,
+        BottomLeft,
+        BottomCenter,
+        BottomRight
+    }
+
     public enum SpeakType : byte
     {
         None = 0,

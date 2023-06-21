@@ -2,6 +2,7 @@
 using Resources;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace HorrorShorts.Controls.UI.Dialogs
 {
@@ -12,9 +13,9 @@ namespace HorrorShorts.Controls.UI.Dialogs
 
         public Characters Character;
         public FaceType Face;
-        //public FaceLocation FaceLocation;
 
         public TextBoxLocation Location;
+        public TextAlignament TextAlign;
         public float Speed;
 
         //Speak
@@ -40,6 +41,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
             Text = "Default Text";
             Character = Characters.Narrator;
             Face = FaceType.None;
+            TextAlign = TextAlignament.TopLeft;
             Location = TextBoxLocation.BottomLeft;
             Speak = SpeakType.None;
             Speed = 20;
@@ -62,6 +64,26 @@ namespace HorrorShorts.Controls.UI.Dialogs
             Character = serial.Character ?? Characters.Narrator; //todo: change to -1 (default)
             Face = serial.Face ?? FaceType.None; //todo: change to -1 (default)
             Location = serial.Location ?? TextBoxLocation.BottomLeft;
+            if (serial.TextAlign == null)
+            {
+                switch (Location)
+                {
+                    case TextBoxLocation.TopLeft:
+                    case TextBoxLocation.MiddleLeft:
+                    case TextBoxLocation.BottomLeft:
+                        TextAlign = TextAlignament.MiddleLeft;
+                        break;
+                    case TextBoxLocation.TopRight:
+                    case TextBoxLocation.MiddleRight:
+                    case TextBoxLocation.BottomRight:
+                        TextAlign = TextAlignament.MiddleRight;
+                        break;
+                    default:
+                        throw new NotImplementedException("Not implemented Text Align for Location: " + Location);
+                }
+            }
+            else TextAlign = serial.TextAlign.Value;
+
             Speed = serial.Speed ?? 20; //todo: change to -1 (default)
             Color = serial.FontColor != null ? new Color(serial.FontColor.Value, 1f) : Color.White;
             FontSize = serial.FontSize ?? 2; //todo: change to -1 (default)

@@ -85,13 +85,13 @@ namespace HorrorShorts.Tests
             //        }
             //    }
             //};
+            //conversation.Save("Test.xml");
 
             //db.LoadContent();
             //db.Show(new Dialog(conversation.Conversations[0].Dialogs[0]));
 
             //Dialog[] dialogs = (Dialog[])Array.ConvertAll(conversation.Conversations[0].Dialogs, x => new Dialog(x));
             Core.DialogManagement.Start(Dialogs.Test["Conversación 1"]);
-            //conversation.Save("Test.xml");
         }
         public static void Update()
         {

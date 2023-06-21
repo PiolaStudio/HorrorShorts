@@ -1,53 +1,25 @@
-﻿using HorrorShorts.Controls.Sprites;
+﻿using Assimp;
+using HorrorShorts.Controls.Sprites;
 using HorrorShorts.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
 using Resources;
 using Resources.Attributes;
-using Resources.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
 using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
 
 namespace HorrorShorts.Controls.UI.Dialogs
 {
     public class DialogBox
     {
         #region VARIABLES & PROPERTIES
-        public enum Commands : short
-        {
-            PlainText = 0,
-            Delay = 0x7964, //dy {dy:1000}
-            Font = 0x7466, //ft {ft:Arial}
-            Color = 0x6366, //co {co:FFFFFF}
-            FontSize = 0x7366, //fs {fs:2}
-            Face = 0x6166, //fa {fa:Happy1}
-            LineBreak = 0x6C62, //lb {lb}
-            EscapeChar = 0x6365, //ec {ec:}}
-            SpeakType = 0x7473, //st {st:Voice1}
-            SpeakPitch = 0x7073, //sp {sp:50}           //todo
-            SpeakPitchVariation = 0x7673, //sv {sv:50}  //todo
-            SpeakSpeed = 0x7373, //ss {ss:4}
-            TextSpeed = 0x7374, //ts {ts:10}
-            Event = 0x7665, //ev {ev:0}
-            SoundEffect = 0x6573, //se {se:Note}
-            VibrateBox = 0x6276, //vb {vb:1}
-        }
-
         //Textures
         private RenderTarget2D _baseTexture;
         private RenderTarget2D _textTexture;
@@ -65,8 +37,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
         private CharacterAttribute defaultsValues;
 
         private TextBoxLocation _location = TextBoxLocation.BottomLeft;
-
-
+        private TextAlignament _textAlign;
         //Flags
         [Flags()]
         private enum Dirtys : byte
@@ -112,13 +83,17 @@ namespace HorrorShorts.Controls.UI.Dialogs
 
         private string _characterName = null;
         private Vector2 _textPos;
+        private int _lineCount;
         private Color _textColor;
         private float _textScale;
         private float _baseTextScale;
         private readonly Vector2 _textOrigin = new(0, 3);
+        private readonly List<Vector2> _linesPosition = new List<Vector2>();
 
         private SoundEffect _speakSound = null;
         private int _speakSoundSpeed;
+        private int _speakPitchBase;
+        private int _speakPitchVariation;
         private int _speakPitchMin;
         private int _speakPitchMax;
 
@@ -130,28 +105,6 @@ namespace HorrorShorts.Controls.UI.Dialogs
         private static readonly Rectangle _baseBackgroundSource = new(0, 0, 640, 128);
         private static readonly Rectangle _baseCharacterNameBackgroundSource = new(640, 0, 208, 32);
         private static readonly Rectangle _baseCharacterFaceBackgroundSource = new(640, 32, 80, 80);
-
-        private struct Zones
-        {
-            public readonly Rectangle Zone;
-            public readonly Rectangle BackgroundZone;
-            public readonly Rectangle FaceZone;
-            public readonly Rectangle NameZone;
-            public readonly Vector2 NamePos;
-            public readonly Rectangle TextZone;
-            public readonly SpriteEffects Flip;
-
-            public Zones(Rectangle zone, Rectangle backgroundZone, Rectangle faceZone, Rectangle nameZone, Vector2 namePos, Rectangle textZone, SpriteEffects flip)
-            {
-                Zone = zone;
-                BackgroundZone = backgroundZone;
-                FaceZone = faceZone;
-                NameZone = nameZone;
-                NamePos = namePos;
-                TextZone = textZone;
-                Flip = flip;
-            }
-        }
 
         private const int COMMA_DELAY = 500;
         private const int POINT_DELAY = 2500;
@@ -301,19 +254,20 @@ namespace HorrorShorts.Controls.UI.Dialogs
                 Commands.LineBreak => new CommandData(Commands.LineBreak),
                 Commands.SoundEffect => new CommandData(Commands.SoundEffect, cmdDataTXT[0]),
                 Commands.SpeakType => new CommandData(Commands.SpeakType, Enum.Parse(typeof(SpeakType), cmdDataTXT[0])),
-                Commands.SpeakPitch => new CommandData(Commands.SpeakPitch, Convert.ToInt32(cmdDataTXT[0]) / 100f, Convert.ToInt32(cmdDataTXT[1]) / 100f),
+                Commands.SpeakPitch => new CommandData(Commands.SpeakPitch, Convert.ToInt32(cmdDataTXT[0])),
+                Commands.SpeakPitchVariation => new CommandData(Commands.SpeakPitchVariation, Convert.ToInt32(cmdDataTXT[0])),
                 Commands.TextSpeed => new CommandData(Commands.TextSpeed, Convert.ToByte(cmdDataTXT[0])),
                 Commands.EscapeChar => new CommandData(Commands.EscapeChar, cmdDataTXT[0]),
                 _ => throw new ArgumentException("Not valid Dialog Argument " + commandText)
-            }; ;
+            };
 
         }
         private void ComputeBreakLines(List<CommandData> commands)
         {
             float fontScale = _textScale;
+            SpriteFont font = _textFont;
             float x = 0;
             int maxX = _zones.TextZone.Width;
-            SpriteFont font = _textFont;
 
             for (int i = 0; i < commands.Count; i++)
             {
@@ -365,6 +319,94 @@ namespace HorrorShorts.Controls.UI.Dialogs
                 }
             }
         }
+        private void ComputeTextAlign(List<CommandData> commands)
+        {
+            _linesPosition.Clear();
+
+            float fontScale = _textScale;
+            SpriteFont font = _textFont;
+
+            List<float> xPos = new List<float>();
+
+            float lenght = 0;
+            int linesCount = 0;
+            for (int i = 0; i < commands.Count; i++)
+            {
+                switch (commands[i].Type)
+                {
+                    case Commands.PlainText:
+                        lenght += font.MeasureString(commands[i].GetData1<string>()).X * fontScale;
+                        break;
+                    case Commands.Font:
+                        font = Fonts.GetFont((FontType)commands[i].Data1);
+                        break;
+                    case Commands.FontSize:
+                        fontScale = commands[i].GetData1<int>();
+                        break;
+                    case Commands.LineBreak:
+                        xPos.Add(SetAlignX(lenght));
+
+                        lenght = 0;
+                        linesCount++;
+                        break;
+                }
+            }
+
+            if (lenght > 0)
+            {
+                xPos.Add(SetAlignX(lenght));
+                linesCount++;
+            }
+
+            float halfHeight = LINE_HEIGHT / 2;
+            float singleHeight = LINE_HEIGHT * _textScale;
+            float totalHeight = singleHeight * linesCount;
+
+            for (int i = 0; i < linesCount; i++)
+            {
+                switch (_textAlign)
+                {
+                    case TextAlignament.TopLeft:
+                    case TextAlignament.TopCenter:
+                    case TextAlignament.TopRight:
+                        _linesPosition.Add(new(xPos[i], _zones.TextZone.Y + singleHeight * i));
+                        break;
+                    case TextAlignament.MiddleLeft:
+                    case TextAlignament.MiddleCenter:
+                    case TextAlignament.MiddleRight:
+                        _linesPosition.Add(new(xPos[i], (_zones.TextZone.Center.Y - totalHeight / 2 + halfHeight) + singleHeight * i));
+                        break;
+                    case TextAlignament.BottomLeft:
+                    case TextAlignament.BottomCenter:
+                    case TextAlignament.BottomRight:
+                        _linesPosition.Add(new(xPos[i], (_zones.TextZone.Bottom - totalHeight) + singleHeight * i));
+                        break;
+                    default:
+                        throw new NotImplementedException("Not implemented Text Alignament: " + _textAlign);
+                }
+            }
+        }
+        private float SetAlignX(float lenght)
+        {
+            switch (_textAlign)
+            {
+                case TextAlignament.TopLeft:
+                case TextAlignament.MiddleLeft:
+                case TextAlignament.BottomLeft:
+                    return _zones.TextZone.X;
+                case TextAlignament.TopCenter:
+                case TextAlignament.MiddleCenter:
+                case TextAlignament.BottomCenter:
+                    return _zones.TextZone.Center.X - lenght / 2;
+                case TextAlignament.TopRight:
+                case TextAlignament.MiddleRight:
+                case TextAlignament.BottomRight:
+                    return _zones.TextZone.Right - lenght;
+                default:
+                    throw new NotImplementedException("Not implemented Text Alignament: " + _textAlign);
+            }
+        }
+
         private void ComputeTextPauses(List<CommandData> commands)
         {
             float speed = _speed;
@@ -506,11 +548,13 @@ namespace HorrorShorts.Controls.UI.Dialogs
             {
                 _isDirty |= Dirtys.NeedRenderText;
 
-                Commands commandType = _allCommands[_currentCommandIndex].Type;
+                CommandData command = _allCommands[_currentCommandIndex];
+                Commands commandType = command.Type;
+
                 switch (commandType)
                 {
                     case Commands.PlainText:
-                        string str = _allCommands[_currentCommandIndex].GetData1<string>();
+                        string str = command.GetData1<string>();
                         char currentChar = str[_currentCharIndex];
                         miniTextBuffer += currentChar;
                         charactersAddedFull++;
@@ -529,44 +573,52 @@ namespace HorrorShorts.Controls.UI.Dialogs
                         }
                         break;
                     case Commands.Delay:
-                        _delay += _allCommands[_currentCommandIndex].GetData1<int>();
+                        _delay += command.GetData1<int>();
                         _currentCommandIndex++;
                         break;
                     case Commands.Color:
                     case Commands.Font:
                     case Commands.FontSize:
                     case Commands.LineBreak:
-                        _currentCommands.Add(_allCommands[_currentCommandIndex]);
+                        _currentCommands.Add(command);
                         _currentCommandIndex++;
                         break;
                     case Commands.Face:
-                        _characterFaceSource = _characterSheet.Get($"DialogFace_{_allCommands[_currentCommandIndex].GetData1<FaceType>()}");
+                        _characterFaceSource = _characterSheet.Get($"DialogFace_{command.GetData1<FaceType>()}");
                         _isDirty |= Dirtys.NeedRenderBackground;
                         _currentCommandIndex++;
                         break;
                     case Commands.Event:
-                        DialogEvent?.Invoke(this, _allCommands[_currentCommandIndex].GetData1<int>());
+                        DialogEvent?.Invoke(this, command.GetData1<int>());
                         _currentCommandIndex++;
                         break;
                     case Commands.VibrateBox:
-                        _currentCommandIndex++;
+                        _currentCommandIndex++; //todo
                         break;
                     case Commands.SoundEffect:
                         _currentCommandIndex++;
                         //todo: play sound effect
                         break;
                     case Commands.SpeakType:
+                        _speakSound = GetSpeak(command.GetData1<SpeakType>());
                         _currentCommandIndex++;
                         break;
                     case Commands.SpeakPitch:
+                        _speakPitchBase = command.GetData1<int>();
+                        GetPitch(_speakPitchBase, _speakPitchVariation, out _speakPitchMin, out _speakPitchMax);
+                        _currentCommandIndex++;
+                        break;
+                    case Commands.SpeakPitchVariation:
+                        _speakPitchVariation = command.GetData1<int>();
+                        GetPitch(_speakPitchBase, _speakPitchVariation, out _speakPitchMin, out _speakPitchMax);
                         _currentCommandIndex++;
                         break;
                     case Commands.TextSpeed:
-                        _speed = _allCommands[_currentCommandIndex].GetData1<byte>();
+                        _speed = command.GetData1<byte>();
                         _currentCommandIndex++;
                         break;
                     default:
-                        throw new NotImplementedException("Not implemented Dialog Command: " + _allCommands[_currentCommandIndex].Type);
+                        throw new NotImplementedException("Not implemented Dialog Command: " + commandType);
                 }
 
                 if (commandType == Commands.Delay) break;
@@ -610,6 +662,11 @@ namespace HorrorShorts.Controls.UI.Dialogs
                 SpeakType.Speak2 => Sounds.Speak2,
                 _ => throw new NotImplementedException("No implemented Speak Sound" + speak)
             };
+        }
+        private static void GetPitch(int basePitch, int variation, out int speakPitchMin, out int speakPitchMax)
+        {
+            speakPitchMin = MathHelper.Clamp(basePitch - variation, -100, 100);
+            speakPitchMax = MathHelper.Clamp(basePitch + variation, -100, 100);
         }
         #endregion
 
@@ -673,8 +730,8 @@ namespace HorrorShorts.Controls.UI.Dialogs
                             _textPos.X += _textFont.MeasureString(text).X * _textScale;
                             break;
                         case Commands.LineBreak: //Do a break Line
-                            _textPos.X = _zones.TextZone.X;
-                            _textPos.Y += LINE_HEIGHT * _baseTextScale;
+                            _lineCount++;
+                            _textPos = _linesPosition[_lineCount];
                             break;
                         case Commands.Color: //Change the Text Color
                             _textColor = (Color)_currentCommands[i].Data1;
@@ -714,6 +771,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
             FontType font = dialog.Font;
             int soundSpeed = dialog.SpeakSpeed;
             SpeakType speak = dialog.Speak;
+            int pitchBase = dialog.SpeakPitch;
 
             var enumType = typeof(Characters);
             var memberInfos = enumType.GetMember(dialog.Character.ToString());
@@ -731,16 +789,12 @@ namespace HorrorShorts.Controls.UI.Dialogs
 
             int speakPitchMin;
             int speakPitchMax;
-            if (dialog.SpeakPitch == -1)
+            if (pitchBase == -1)
             {
                 speakPitchMin = defaultsValues.DefaultSpeakPitchMin;
                 speakPitchMax = defaultsValues.DefaultSpeakPitchMax;
             }
-            else
-            {
-                speakPitchMin = MathHelper.Clamp(dialog.SpeakPitch - dialog.SpeakPitchVariation, -100, 100);
-                speakPitchMax = MathHelper.Clamp(dialog.SpeakPitch + dialog.SpeakPitchVariation, -100, 100);
-            }
+            else GetPitch(pitchBase, dialog.SpeakPitchVariation, out speakPitchMin, out speakPitchMax);
 
             _characterType = character;
             _characterName = defaultsValues.DefaultName;
@@ -752,6 +806,8 @@ namespace HorrorShorts.Controls.UI.Dialogs
             _speed = dialog.Speed;
             _speakSound = GetSpeak(speak);
             _speakSoundSpeed = soundSpeed;
+            _speakPitchBase = pitchBase;
+            _speakPitchVariation = dialog.SpeakPitchVariation;
             _speakPitchMin = speakPitchMin;
             _speakPitchMax = speakPitchMax;
 
@@ -773,14 +829,14 @@ namespace HorrorShorts.Controls.UI.Dialogs
 
             //Zones
             _location = dialog.Location;
+            _textAlign = dialog.TextAlign;
             GetZone();
-            _textPos = _zones.TextZone.Location.ToVector2();
 
             //Process Text
             ComputeTextCommands(dialog.Text, out _allCommands);
             if (dialog.AjustEndLine) ComputeBreakLines(_allCommands);
+            ComputeTextAlign(_allCommands); //todo crear método
             if (dialog.DoPauses) ComputeTextPauses(_allCommands);
-            //if (dialog.Align) ComputeTextAlign(_allCommands); //todo crear método
 
             //Reset values
             _isDirty = Dirtys.NeedRenderBackground | Dirtys.NeedClearText | Dirtys.NeedClearText | Dirtys.NeedRenderText;
@@ -792,6 +848,8 @@ namespace HorrorShorts.Controls.UI.Dialogs
             _characterCount = 0;
             _prevAudioChar = 0;
             _delay = 0;
+            _textPos = _linesPosition.First();
+            _lineCount = 0;
             _currentCommands.Clear();
         }
         public void Show(string text)
@@ -806,6 +864,48 @@ namespace HorrorShorts.Controls.UI.Dialogs
         #endregion
 
         #region SUB-CLASSES
+        private struct Zones
+        {
+            public readonly Rectangle Zone;
+            public readonly Rectangle BackgroundZone;
+            public readonly Rectangle FaceZone;
+            public readonly Rectangle NameZone;
+            public readonly Vector2 NamePos;
+            public readonly Rectangle TextZone;
+            public readonly SpriteEffects Flip;
+
+            public Zones(Rectangle zone, Rectangle backgroundZone, Rectangle faceZone, Rectangle nameZone, Vector2 namePos, Rectangle textZone, SpriteEffects flip)
+            {
+                Zone = zone;
+                BackgroundZone = backgroundZone;
+                FaceZone = faceZone;
+                NameZone = nameZone;
+                NamePos = namePos;
+                TextZone = textZone;
+                Flip = flip;
+            }
+        }
+
+        public enum Commands : short
+        {
+            PlainText = 0,
+            Delay = 0x7964,         //dy {dy:1000}
+            Font = 0x7466,          //ft {ft:Arial}
+            Color = 0x6366,         //co {co:FFFFFF}
+            FontSize = 0x7366,      //fs {fs:2}
+            Face = 0x6166,          //fa {fa:Happy1}
+            LineBreak = 0x6C62,     //lb {lb}
+            EscapeChar = 0x6365,    //ec {ec:}}
+            SpeakType = 0x7473,     //st {st:Voice1}
+            SpeakPitch = 0x7073,    //sp {sp:50}
+            SpeakPitchVariation = 0x7673,//sv {sv:50}
+            SpeakSpeed = 0x7373,    //ss {ss:4}
+            TextSpeed = 0x7374,     //ts {ts:10}
+            Event = 0x7665,         //ev {ev:0}
+            SoundEffect = 0x6573,   //se {se:Note}
+            VibrateBox = 0x6276,    //vb {vb:1}
+        }
+
         [DebuggerDisplay("{DebugDisplay,nq}")]
         private readonly struct CommandData
         {

@@ -153,10 +153,19 @@ En un valor entre **-100** y **100**, siendo **0** sin variaciones.
 Determina donde va a estar ubicado el DialogBox en la pantalla.  
 
 ```xml
-<Location>Bottom</Location>  
+<Location>BottomLeft</Location>  
 ```
 
 Los tipos de posiciones disponibles se encuentran en la enumeración **TextBoxPosition**.  
+
+#### -TextAlign
+Determina la alineación del texto en el DialogBox.  
+
+```xml
+<TextAlign>TopLeft</TextAlign>  
+```
+
+Los tipos de alineamientos disponibles se encuentran en la enumeración **TextAlignament**.  
 
 ### Parametros Defaults  
 Algunos parámetros no son obligatorios. En caso de no utilizarlos el juego determina que se quiere utilizar la configuración predeterminada para ese mismo.  
@@ -167,7 +176,7 @@ La lista de parámetros no obligatorios permitidos son la siguiente:
 - FontType, FontSize, FontColor
 - Speed
 - SpeakSound, SpeakSpeed, SpeakPitch, SpeakPitchVariation
-- Location
+- Location, TextAlign
 
 Cabe destacar que cada personaje puede tener valores default distintos.  
 

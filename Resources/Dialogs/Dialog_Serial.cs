@@ -37,6 +37,8 @@ namespace Resources.Dialogs
 
         [ContentSerializer(AllowNull = true, Optional = true)]
         public TextBoxLocation? Location = null;
+        [ContentSerializer(AllowNull = true, Optional = true)]
+        public TextAlignament? TextAlign = null;
 
         //public bool WaitInputAtEnd;
         //public bool AjustEndLine;
