@@ -1,10 +1,10 @@
-﻿using Assimp;
-using HorrorShorts.Controls.Sprites;
+﻿using HorrorShorts.Controls.Sprites;
 using HorrorShorts.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using Resources;
 using Resources.Attributes;
 using System;
@@ -470,7 +470,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
             _zones = _location switch
             {
                 TextBoxLocation.TopLeft => new Zones(
-                        new(0, 0, 640, 144),    //Zone
+                        new(0, Core.ResolutionBounds.Top, 640, 144),    //Zone
                         new(0, 0, 640, 128),    //Background Zone 
                         new(16, 16, 80, 80),    //Face Zone 
                         new(0, 112, 208, 32),   //Name Zone
@@ -478,7 +478,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
                         _faceType != FaceType.None ? new(112, 20, 512, 80) : new(16, 20, 608, 80),   //Text Zone
                         SpriteEffects.FlipVertically),
                 TextBoxLocation.TopRight => new Zones(
-                        new(0, 0, 640, 144),    //Zone
+                        new(0, Core.ResolutionBounds.Top, 640, 144),    //Zone
                         new(0, 0, 640, 128),    //Background Zone 
                         new(544, 16, 80, 80),   //Face Zone 
                         new(432, 112, 208, 32), //Name Zone
@@ -487,7 +487,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
                         SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally),
                 
                 TextBoxLocation.MiddleLeft => new Zones(
-                        new(0, 168, 640, 144),  //Zone   //todo: ajustar a la resolución
+                        new(0, Core.ResolutionBounds.Center.Y - 72, 640, 144),  //Zone   //todo: ajustar a la resolución
                         new(0, 16, 640, 128),   //Background Zone 
                         new(16, 48, 80, 80),    //Face Zone 
                         new(0, 0, 208, 32),     //Name Zone
@@ -495,7 +495,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
                         _faceType != FaceType.None ? new(112, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
                         SpriteEffects.None),
                 TextBoxLocation.MiddleRight => new Zones(
-                        new(0, 168, 640, 144),  //Zone   //todo: ajustar a la resolución
+                        new(0, Core.ResolutionBounds.Center.Y - 72, 640, 144),  //Zone   //todo: ajustar a la resolución
                         new(0, 16, 640, 128),   //Background Zone 
                         new(544, 48, 80, 80),   //Face Zone 
                         new(432, 0, 208, 32),   //Name Zone
@@ -504,7 +504,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
                         SpriteEffects.FlipHorizontally),
 
                 TextBoxLocation.BottomLeft => new Zones(
-                        new(0, 336, 640, 144),  //Zone   //todo: ajustar a la resolución
+                        new(0, Core.ResolutionBounds.Bottom - 144, 640, 144),  //Zone   //todo: ajustar a la resolución
                         new(0, 16, 640, 128),   //Background Zone 
                         new(16, 48, 80, 80),    //Face Zone 
                         new(0, 0, 208, 32),     //Name Zone
@@ -512,7 +512,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
                         _faceType != FaceType.None ? new(112, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
                         SpriteEffects.None),
                 TextBoxLocation.BottomRight => new Zones(
-                        new(0, 336, 640, 144),  //Zone   //todo: ajustar a la resolución
+                        new(0, Core.ResolutionBounds.Bottom - 144, 640, 144),  //Zone   //todo: ajustar a la resolución
                         new(0, 16, 640, 128),   //Background Zone 
                         new(544, 48, 80, 80),   //Face Zone 
                         new(432, 0, 208, 32),   //Name Zone
@@ -754,7 +754,7 @@ namespace HorrorShorts.Controls.UI.Dialogs
             //Clone texture
             Core.GraphicsDevice.SetRenderTarget(_textTexture);
             Core.GraphicsDevice.Clear(Color.Transparent);
-            Core.SpriteBatch.Begin();
+            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
             Core.SpriteBatch.Draw(_textTextureTemp, Vector2.Zero, Color.White);
             Core.SpriteBatch.End();
             Core.GraphicsDevice.SetRenderTarget(null);
@@ -856,10 +856,9 @@ namespace HorrorShorts.Controls.UI.Dialogs
         {
             //todo
         }
-        internal void ResolutionChanged()
+        internal void ResetResolution()
         {
-            //todo
-            //Core.sett
+            GetZone();
         }
         #endregion
 

@@ -59,5 +59,9 @@ namespace HorrorShorts.Controls.UI.Dialogs
             //dialogBox.Close(); //todo
             _finished = false;
         }
+        public void ResetResolution()
+        {
+            _dialogBox.ResetResolution();
+        }
     }
 }
