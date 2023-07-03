@@ -4,9 +4,11 @@
 	"in-glyphs": [
 		"ABCDEFGHIJKLMNÑOPQRSTUVWXYZ",
 		"abcdefghijklmnñopqrstuvwxyz",
-		"0123456789",
-		"áéíóú",
-		" ¡!\"#$%&/\\()=.,:-+_{}<>"
+		"0123456789⁰¹²³¼½¾",
+		"àáâãäåæçèéêëìíîïðòóôõöøùúûüýÿþ",
+		" ¡!\"#$%&/\\()=.,:;-+_{}<>¿?×÷[]",
+		"ÁÀÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÒÓÔÕÖØÙÚÛÜÝßÞ",
+		"¢£¤¥¦|§¨©ª~`¯®^«»¬±µ¶@"
 	],
 	"glyph-color": "auto",
 	"in-kerning": [
@@ -28,7 +30,7 @@
 	"font-descend": -256,
 	"font-px-size": 128,
 	"font-name": "Pixel Arial",
-	"font-author": "Juan Puerto",
+	"font-author": "Juan Puerto & Axel Chungara",
 	"font-copy": "(c)Piola Studio",
 	"font-version": "Version 1.0",
 	"font-desc": "Pixel version of Arial Font",
