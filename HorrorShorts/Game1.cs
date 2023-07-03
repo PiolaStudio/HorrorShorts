@@ -2,44 +2,46 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace HorrorShorts
 {
     public class Game1 : Game
     {
         private readonly GraphicsDeviceManager _graphics;
+        Texture2D t; //todo: borrar
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            _graphics.PreferredBackBufferWidth = 640;
-            _graphics.PreferredBackBufferHeight = 480;
-            _graphics.ApplyChanges();
             this.IsFixedTimeStep = true;
-            //this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
+            this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
 
+            Core.Init(this, _graphics);
             base.Initialize();
+            _graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
         {
-            Core.Init(this);
             Core.LoadContent();
 
             Textures.ReLoad(new string[] { "Mario", nameof(Textures.Girl1) });
             SpriteSheets.ReLoad(new string[] { "Mario", nameof(SpriteSheets.Girl1) });
+#if DEBUG
             Dialogs.Load(new string[] { nameof(Dialogs.Test) });
+#endif
             Sounds.ReLoad(new string[] { "Speak1", "Speak2" });
 
 #if DEBUG
             Tests.Test.LoadContent();
 #endif
+            t = Content.Load<Texture2D>("Textures/Background1");
         }
 
         protected override void Update(GameTime gameTime)
@@ -54,7 +56,6 @@ namespace HorrorShorts
             Tests.Test.Update();
 #endif
 
-
             base.Update(gameTime);
         }
 
@@ -67,20 +68,38 @@ namespace HorrorShorts
         }
         protected override void Draw(GameTime gameTime)
         {
+            //Pre Draw
             PreDraw(gameTime);
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //Render Native
+            RenderNative();
 
+            //Render Final
+            RenderFinal();
+
+            base.Draw(gameTime);
+        }
+        private void RenderNative()
+        {
+            Core.GraphicsDevice.SetRenderTarget(Core.Render);
+
+            GraphicsDevice.Clear(Color.Black);
             Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 #if DEBUG
             Tests.Test.Draw();
 #endif
-
-            //Core.SpriteBatch.Draw(Textures.Mario, new Rectangle(0, 0, 16 * 4, 16 * 4), SpriteSheets.Mario.Get("Death"), Color.White);
+            Core.SpriteBatch.Draw(t, Vector2.Zero, Color.White);
             Core.DialogManagement.Draw();
-            Core.SpriteBatch.End();
 
-            base.Draw(gameTime);
+            Core.SpriteBatch.End();
+            Core.GraphicsDevice.SetRenderTarget(null);
+        }
+        private void RenderFinal()
+        {
+            GraphicsDevice.Clear(new(40, 40, 40));
+            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Core.ResolutionCamera);
+            Core.SpriteBatch.Draw(Core.Render, Vector2.Zero, Color.White);
+            Core.SpriteBatch.End();
         }
 
         protected override void Dispose(bool disposing)
