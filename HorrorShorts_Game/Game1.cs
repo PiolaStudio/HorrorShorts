@@ -1,15 +1,23 @@
-﻿using HorrorShorts.Resources;
+﻿using HorrorShorts.Controls.Sprites;
+using HorrorShorts.Resources;
+#if DEBUG
+using HorrorShorts.Tests;
+#endif
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Security.Principal;
 
 namespace HorrorShorts
 {
     public class Game1 : Game
     {
         private readonly GraphicsDeviceManager _graphics;
-        Texture2D t; //todo: borrar
+
+#if DEBUG
+        private Test3 test = new();
+#endif
 
         public Game1()
         {
@@ -19,7 +27,7 @@ namespace HorrorShorts
 
         protected override void Initialize()
         {
-            this.IsFixedTimeStep = true;
+            this.IsFixedTimeStep = false;
             this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
 
             Core.Init(this, _graphics);
@@ -31,29 +39,25 @@ namespace HorrorShorts
         {
             Core.LoadContent();
 
-            Textures.ReLoad(new string[] { "Mario", nameof(Textures.Girl1) });
-            SpriteSheets.ReLoad(new string[] { "Mario", nameof(SpriteSheets.Girl1) });
 #if DEBUG
-            Dialogs.Load(new string[] { nameof(Dialogs.Test) });
+            Dialogs.ReLoad(new string[] { nameof(Dialogs.Test) });
 #endif
             Sounds.ReLoad(new string[] { "Speak1", "Speak2" });
 
 #if DEBUG
-            Tests.Test.LoadContent();
+            test?.LoadContent1();
 #endif
-            t = Content.Load<Texture2D>("Textures/Background1");
         }
 
         protected override void Update(GameTime gameTime)
         {
             Core.Update(gameTime);
 
-            Window.Title = Core.DeltaTime.ToString();
 #if DEBUG
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Tests.Test.Update();
+            test?.Update1();
 #endif
 
             base.Update(gameTime);
@@ -63,7 +67,7 @@ namespace HorrorShorts
         {
             Core.DialogManagement.PreDraw();
 #if DEBUG
-            Tests.Test.PreDraw();
+            test?.PreDraw1();
 #endif
         }
         protected override void Draw(GameTime gameTime)
@@ -86,9 +90,8 @@ namespace HorrorShorts
             GraphicsDevice.Clear(Color.Black);
             Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 #if DEBUG
-            Tests.Test.Draw();
+            test?.Draw1();
 #endif
-            Core.SpriteBatch.Draw(t, Vector2.Zero, Color.White);
             Core.DialogManagement.Draw();
 
             Core.SpriteBatch.End();
@@ -96,7 +99,7 @@ namespace HorrorShorts
         }
         private void RenderFinal()
         {
-            GraphicsDevice.Clear(new(40, 40, 40));
+            GraphicsDevice.Clear(Core.BackColor);
             Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Core.ResolutionCamera);
             Core.SpriteBatch.Draw(Core.Render, Vector2.Zero, Color.White);
             Core.SpriteBatch.End();

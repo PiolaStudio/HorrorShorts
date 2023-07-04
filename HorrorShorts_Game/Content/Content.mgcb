@@ -10,9 +10,14 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\Resources\bin\Debug\net6.0\Resources.dll
+/reference:..\..\Resources\bin\Release\net6.0\Resources.dll
 
 #---------------------------------- Content ---------------------------------#
+
+#begin Data/Animations/Megaman.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/Animations/Megaman.xml
 
 #begin Data/Localization/Test.xml
 /importer:XmlImporter
@@ -28,6 +33,11 @@
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:Data/SpriteSheets/Mario.xml
+
+#begin Data/SpriteSheets/Megaman.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/SpriteSheets/Megaman.xml
 
 #begin Fonts/PixelArial.spritefont
 /importer:FontDescriptionImporter
@@ -83,6 +93,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Characters/Mario.png
+
+#begin Textures/Characters/Megaman.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Characters/Megaman.png
 
 #begin Textures/UI/DialogMenu.png
 /importer:TextureImporter

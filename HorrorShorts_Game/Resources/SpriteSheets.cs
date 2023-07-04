@@ -12,15 +12,19 @@ namespace HorrorShorts.Resources
 {
     public static class SpriteSheets
     {
+#if DEBUG
         [ResourceAttribute("Data/SpriteSheets/Mario")]
         public static SpriteSheet Mario { get; private set; }
+        [ResourceAttribute("Data/SpriteSheets/Megaman")]
+        public static SpriteSheet Megaman { get; private set; }
+#endif
         [ResourceAttribute("Data/SpriteSheets/Girl1")]
         public static SpriteSheet Girl1 { get; private set; }
 
         public static void Init()
         {
         }
-        public static void ReLoad(string[] sheets)
+        public static void ReLoad(params string[] sheets)
         {
             List<string> sheetsToLoad = new List<string>();
             List<string> sheetsToUnload = new List<string>();

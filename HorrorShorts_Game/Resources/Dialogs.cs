@@ -21,7 +21,7 @@ namespace HorrorShorts.Resources
         public static Dictionary<string, Dialog[]> Test { get; private set; }
 #endif
 
-        public static void Load(string[] dialogs)
+        public static void ReLoad(string[] dialogs)
         {
             List<string> dialogsToLoad = new();
             List<string> dialogsToUnload = new();

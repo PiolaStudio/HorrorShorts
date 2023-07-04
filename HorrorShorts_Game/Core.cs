@@ -33,6 +33,8 @@ namespace HorrorShorts
         public static AudioManager AudioManager;
         public static DialogManagement DialogManagement;
 
+        public static readonly Color BackColor = new(40, 40, 40);
+
 
         public static Matrix ResolutionCamera;
         public static Rectangle ResolutionBounds;

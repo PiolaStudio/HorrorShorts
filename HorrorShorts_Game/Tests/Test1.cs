@@ -17,10 +17,23 @@ using System.Xml;
 
 namespace HorrorShorts.Tests
 {
-    public static class Test
+    public class Test1 : TestBase
     {
-        public static void LoadContent()
+        public override void LoadContent1()
         {
+            Textures.ReLoad(
+                nameof(Textures.Mario),
+                nameof(Textures.Megaman),
+                nameof(Textures.Girl1));
+
+            SpriteSheets.ReLoad(
+                nameof(SpriteSheets.Mario),
+                nameof(SpriteSheets.Megaman),
+                nameof(SpriteSheets.Girl1));
+
+            Animations.ReLoad(
+                nameof(Animations.Megaman));
+
             //SpriteSheet_Serial ss = new SpriteSheet_Serial();
             //ss.Texture = "Mario";
             //ss.Sheets = new SingleSheet_Serial[2]
@@ -93,15 +106,15 @@ namespace HorrorShorts.Tests
             //Dialog[] dialogs = (Dialog[])Array.ConvertAll(conversation.Conversations[0].Dialogs, x => new Dialog(x));
             Core.DialogManagement.Start(Dialogs.Test["Conversación 1"]);
         }
-        public static void Update()
+        public override void Update1()
         {
             //db.Update();
         }
-        public static void PreDraw()
+        public override void PreDraw1()
         {
             //db.PreDraw();
         }
-        public static void Draw()
+        public override void Draw1()
         {
             //db.Draw();
         }

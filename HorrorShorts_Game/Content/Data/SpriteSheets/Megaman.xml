@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Sprites="Resources.Sprites">
+	<Asset Type="Sprites:SpriteSheet_Serial">
+		<Texture>Megaman</Texture>
+		<Sheets>
+			<!--IDLE-->
+			<Sheet>
+				<Name>Idle_1</Name>
+				<Source>0 0 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Idle_2</Name>
+				<Source>32 0 32 32</Source>
+			</Sheet>
+			<!--RUN-->
+			<Sheet>
+				<Name>Run_1</Name>
+				<Source>0 32 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Run_2</Name>
+				<Source>32 32 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Run_3</Name>
+				<Source>64 32 32 32</Source>
+			</Sheet>
+			<!--TORNADO-->
+			<Sheet>
+				<Name>Tornado_1</Name>
+				<Source>0 64 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Tornado_2</Name>
+				<Source>32 64 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Tornado_3</Name>
+				<Source>64 64 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Tornado_4</Name>
+				<Source>96 64 32 32</Source>
+			</Sheet>
+			<!--CLIMB-->
+			<Sheet>
+				<Name>Climb_1</Name>
+				<Source>0 96 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Climb_2</Name>
+				<Source>32 96 32 32</Source>
+			</Sheet>
+		</Sheets>
+	</Asset>
+</XnaContent>

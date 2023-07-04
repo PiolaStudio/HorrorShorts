@@ -7,8 +7,8 @@ namespace HorrorShorts.Controls.Animations
 {
     public struct AnimationFrame
     {
-        public Rectangle Source;
-        public float Duration;
+        public readonly Rectangle Source;
+        public readonly float Duration;
 
         public AnimationFrame()
         {

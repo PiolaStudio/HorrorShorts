@@ -312,7 +312,8 @@ Los valores validos van entre **1** y **10**.
 ---
 
 ## Código  
-Todos los dialogos se guardan en la carpeta *Content\Data\Localization* y son cargados de forma dinámica en la clase Dialogs mediante el método **Reload()**  
+Todos los dialogos se guardan en la carpeta *Content\Data\Localization* y son cargados de forma dinámica en la clase Dialogs (*HorrorShorts.Resources.Dialogs*) mediante el método **Reload()**  
+
 A continuación se dará una explicación de los controles **DialogBox** y **DialogManagement** encargados de gestionar los diálogos cargados desde los archivos XML o creados en tiempo de ejecución.  
 
 ---

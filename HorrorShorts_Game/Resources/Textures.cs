@@ -1,4 +1,4 @@
-﻿using HorrorShorts.Controls.Sprites;
+﻿    using HorrorShorts.Controls.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,12 +16,17 @@ namespace HorrorShorts.Resources
     {
         public static Texture2D Pixel { get; private set; }
 
+        //INTERFAZ
         [Resource("Textures/UI/DialogMenu")]
         public static Texture2D DialogMenu { get; private set; }
 
-
+        //CHARACTERS
+#if DEBUG
         [Resource("Textures/Characters/Mario")]
         public static Texture2D Mario { get; private set; }
+        [Resource("Textures/Characters/Megaman")]
+        public static Texture2D Megaman { get; private set; }
+#endif
         [Resource("Textures/Characters/Girl1")]
         public static Texture2D Girl1 { get; private set; }
 
@@ -39,7 +44,7 @@ namespace HorrorShorts.Resources
 
             DialogMenu = Core.Content.Load<Texture2D>("Textures/UI/DialogMenu");
         }
-        public static void ReLoad(string[] textures)
+        public static void ReLoad(params string[] textures)
         {
             List<string> texturesToLoad = new List<string>();
             List<string> texturesToUnload = new List<string>();
