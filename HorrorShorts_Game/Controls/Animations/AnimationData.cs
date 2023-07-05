@@ -1,9 +1,9 @@
-﻿using HorrorShorts.Controls.Sprites;
-using HorrorShorts.Resources;
+﻿using HorrorShorts_Game.Controls.Sprites;
+using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Resources.Sprites;
 
-namespace HorrorShorts.Controls.Animations
+namespace HorrorShorts_Game.Controls.Animations
 {
     public struct AnimationFrame
     {

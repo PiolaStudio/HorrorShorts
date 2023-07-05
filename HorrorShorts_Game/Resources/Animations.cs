@@ -1,11 +1,11 @@
-﻿using HorrorShorts.Controls.Animations;
+﻿using HorrorShorts_Game.Controls.Animations;
 using Resources.Sprites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace HorrorShorts.Resources
+namespace HorrorShorts_Game.Resources
 {
     public static class Animations
     {

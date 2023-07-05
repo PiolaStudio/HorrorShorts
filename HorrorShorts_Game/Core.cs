@@ -1,6 +1,6 @@
-﻿using HorrorShorts.Controls.Audio;
-using HorrorShorts.Controls.UI.Dialogs;
-using HorrorShorts.Resources;
+﻿using HorrorShorts_Game.Controls.Audio;
+using HorrorShorts_Game.Controls.UI.Dialogs;
+using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts
+namespace HorrorShorts_Game
 {
     public static class Core
     {

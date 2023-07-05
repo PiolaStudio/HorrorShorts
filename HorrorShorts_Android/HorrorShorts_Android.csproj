@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MonoGameContentReference Include="..\HorrorShorts\Content\Content.mgcb">
+		<MonoGameContentReference Include="..\HorrorShorts_Game\Content\Content.mgcb">
 			<Link>Content\GameContent.mgcb</Link>
 		</MonoGameContentReference>
 	</ItemGroup>

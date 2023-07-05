@@ -1,10 +1,10 @@
-﻿using HorrorShorts.Resources;
+﻿using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
 
-namespace HorrorShorts.Controls.Sprites
+namespace HorrorShorts_Game.Controls.Sprites
 {
     [DebuggerDisplay("{Name}")]
     public class Sprite : ISprite

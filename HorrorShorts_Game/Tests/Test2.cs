@@ -1,7 +1,7 @@
 ﻿#if DEBUG
-using HorrorShorts.Controls.Animations;
-using HorrorShorts.Controls.Sprites;
-using HorrorShorts.Resources;
+using HorrorShorts_Game.Controls.Animations;
+using HorrorShorts_Game.Controls.Sprites;
+using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework.Input;
 using Resources.Sprites;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Tests
+namespace HorrorShorts_Game.Tests
 {
     public class Test2 : TestBase
     {

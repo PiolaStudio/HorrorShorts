@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts
+namespace HorrorShorts_Game
 {
     public static class Extensions
     {

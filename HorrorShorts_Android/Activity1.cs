@@ -2,7 +2,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
-using HorrorShorts;
+using HorrorShorts_Game;
 using Microsoft.Xna.Framework;
 
 //Cross Plataform Info: https://lajbert.github.io/blog/cross_platform_project/#/

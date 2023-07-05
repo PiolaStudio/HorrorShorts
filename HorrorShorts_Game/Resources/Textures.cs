@@ -1,4 +1,4 @@
-﻿    using HorrorShorts.Controls.Sprites;
+﻿    using HorrorShorts_Game.Controls.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Resources
+namespace HorrorShorts_Game.Resources
 {
     public static class Textures
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Controls.Audio
+namespace HorrorShorts_Game.Controls.Audio
 {
     public class AudioManager
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HorrorShorts.Controls.UI.Dialogs
+namespace HorrorShorts_Game.Controls.UI.Dialogs
 {
     public class DialogManagement
     {

@@ -1,5 +1,5 @@
-﻿using HorrorShorts.Controls.Sprites;
-using HorrorShorts.Resources;
+﻿using HorrorShorts_Game.Controls.Sprites;
+using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace HorrorShorts.Controls.UI.Dialogs
+namespace HorrorShorts_Game.Controls.UI.Dialogs
 {
     public class DialogBox
     {

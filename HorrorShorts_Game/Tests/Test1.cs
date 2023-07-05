@@ -1,6 +1,6 @@
 ﻿#if DEBUG
-using HorrorShorts.Controls.UI.Dialogs;
-using HorrorShorts.Resources;
+using HorrorShorts_Game.Controls.UI.Dialogs;
+using HorrorShorts_Game.Resources;
 using Resources;
 using Resources.Dialogs;
 using Resources.Sprites;
@@ -15,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace HorrorShorts.Tests
+namespace HorrorShorts_Game.Tests
 {
     public class Test1 : TestBase
     {

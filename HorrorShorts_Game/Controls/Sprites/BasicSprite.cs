@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Controls.Sprites
+namespace HorrorShorts_Game.Controls.Sprites
 {
     public class BasicSprite : ISprite
     {

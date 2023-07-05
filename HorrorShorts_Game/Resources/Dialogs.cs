@@ -1,5 +1,5 @@
-﻿using HorrorShorts.Controls.Sprites;
-using HorrorShorts.Controls.UI.Dialogs;
+﻿using HorrorShorts_Game.Controls.Sprites;
+using HorrorShorts_Game.Controls.UI.Dialogs;
 using Resources.Dialogs;
 using Resources.Sprites;
 using System;
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Resources
+namespace HorrorShorts_Game.Resources
 {
     public static class Dialogs
     {

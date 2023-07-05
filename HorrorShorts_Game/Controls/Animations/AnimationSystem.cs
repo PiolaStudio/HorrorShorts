@@ -1,5 +1,5 @@
-﻿using HorrorShorts.Controls.Sprites;
-using HorrorShorts.Resources;
+﻿using HorrorShorts_Game.Controls.Sprites;
+using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Resources.Sprites;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Controls.Animations
+namespace HorrorShorts_Game.Controls.Animations
 {
     public enum AnimationState : byte
     {

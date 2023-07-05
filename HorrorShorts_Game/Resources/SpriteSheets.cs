@@ -1,4 +1,4 @@
-﻿using HorrorShorts.Controls.Sprites;
+﻿using HorrorShorts_Game.Controls.Sprites;
 using Resources.Sprites;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Resources
+namespace HorrorShorts_Game.Resources
 {
     public static class SpriteSheets
     {

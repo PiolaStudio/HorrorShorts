@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace HorrorShorts.Controls.UI.Dialogs
+namespace HorrorShorts_Game.Controls.UI.Dialogs
 {
     [DebuggerDisplay("{Text}")]
     public struct Dialog

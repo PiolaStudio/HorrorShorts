@@ -1,7 +1,7 @@
-﻿using HorrorShorts.Controls.Sprites;
-using HorrorShorts.Resources;
+﻿using HorrorShorts_Game.Controls.Sprites;
+using HorrorShorts_Game.Resources;
 #if DEBUG
-using HorrorShorts.Tests;
+using HorrorShorts_Game.Tests;
 #endif
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Security.Principal;
 
-namespace HorrorShorts
+namespace HorrorShorts_Game
 {
     public class Game1 : Game
     {

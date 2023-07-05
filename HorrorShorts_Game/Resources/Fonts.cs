@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorrorShorts.Resources
+namespace HorrorShorts_Game.Resources
 {
     public static class Fonts
     {
