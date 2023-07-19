@@ -46,6 +46,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/PixelArial.spritefont
 
+#begin Music/Test1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Test1.wav
+
+#begin Music/Test2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/Test2.wav
+
 #begin SoundEffects/Speak/Speak1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -55,8 +67,14 @@
 #begin SoundEffects/Speak/Speak2.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
-/processorParam:Quality=Best
+/processorParam:Quality=Low
 /build:SoundEffects/Speak/Speak2.wav
+
+#begin SoundEffects/Test1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Test1.wav
 
 #begin Textures/Background1.png
 /importer:TextureImporter

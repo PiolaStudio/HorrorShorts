@@ -17,5 +17,13 @@ namespace HorrorShorts_Game
         public int ResolutionWidth;
         public int ResolutionHeight;
         public bool FullScreen;
+
+        //Audio
+        public float GeneralVolume = 1f;
+        public float MusicVolume = 1f;
+        public float EffectsVolume = 1f;
+
+        public float MusicRealVolume = 1f;
+        public float EffectsRealVolume = 1f;
     }
 }

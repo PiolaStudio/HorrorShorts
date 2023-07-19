@@ -24,7 +24,6 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         public int SpeakPitch;
         public int SpeakPitchVariation;
 
-
         public Color Color; //256 256 256
         public int FontSize;
         public FontType Font;

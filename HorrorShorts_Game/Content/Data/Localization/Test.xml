@@ -4,7 +4,7 @@
       <ID>Conversación 1</ID>
       <Dialogs>
         <Dialog>
-          <Text>Hola, este es el primer dialogo de la conversación.</Text>
+          <Text>Hola, este es el primer dialogo de la conversación.{se:Test1}</Text>
 		  <Location>TopLeft</Location>
         </Dialog>
         <Dialog>

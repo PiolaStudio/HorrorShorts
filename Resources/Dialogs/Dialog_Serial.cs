@@ -43,7 +43,7 @@ namespace Resources.Dialogs
         //public bool WaitInputAtEnd;
         //public bool AjustEndLine;
         //public bool CanAccelerate;
-        //public bool StopActions;
+        //public bool StopActions;      //<---  ahora solo Dios sabe que hace esto
         //public bool DoPauses;
     }
 }

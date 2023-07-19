@@ -1,4 +1,5 @@
-﻿using HorrorShorts_Game.Controls.Sprites;
+﻿using HorrorShorts_Game.Controls.Audio;
+using HorrorShorts_Game.Controls.Sprites;
 using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -38,6 +39,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
 
         private TextBoxLocation _location = TextBoxLocation.BottomLeft;
         private TextAlignament _textAlign;
+
         //Flags
         [Flags()]
         private enum Dirtys : byte
@@ -90,7 +92,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         private readonly Vector2 _textOrigin = new(0, 3);
         private readonly List<Vector2> _linesPosition = new List<Vector2>();
 
-        private SoundEffect _speakSound = null;
+        private SoundType? _speakSoundType = null;
         private int _speakSoundSpeed;
         private int _speakPitchBase;
         private int _speakPitchVariation;
@@ -252,7 +254,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                 Commands.VibrateBox => new CommandData(Commands.VibrateBox, Convert.ToInt32(cmdDataTXT[0]), Convert.ToInt32(cmdDataTXT[1])),
                 Commands.Face => new CommandData(Commands.Face, Enum.Parse(typeof(FaceType), cmdDataTXT[0])),
                 Commands.LineBreak => new CommandData(Commands.LineBreak),
-                Commands.SoundEffect => new CommandData(Commands.SoundEffect, cmdDataTXT[0]),
+                Commands.SoundEffect => new CommandData(Commands.SoundEffect, Enum.Parse<SoundType>(cmdDataTXT[0])),
                 Commands.SpeakType => new CommandData(Commands.SpeakType, Enum.Parse(typeof(SpeakType), cmdDataTXT[0])),
                 Commands.SpeakPitch => new CommandData(Commands.SpeakPitch, Convert.ToInt32(cmdDataTXT[0])),
                 Commands.SpeakPitchVariation => new CommandData(Commands.SpeakPitchVariation, Convert.ToInt32(cmdDataTXT[0])),
@@ -597,10 +599,10 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         break;
                     case Commands.SoundEffect:
                         _currentCommandIndex++;
-                        //todo: play sound effect
+                        Core.SoundManager.Play(command.GetData1<SoundType>());
                         break;
                     case Commands.SpeakType:
-                        _speakSound = GetSpeak(command.GetData1<SpeakType>());
+                        _speakSoundType = GetSpeak(command.GetData1<SpeakType>());
                         _currentCommandIndex++;
                         break;
                     case Commands.SpeakPitch:
@@ -635,14 +637,14 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             if (_characterCount - _prevAudioChar >= _speakSoundSpeed)
             {
                 _prevAudioChar += _speakSoundSpeed;
-                if (_speakSound != null)
+                if (_speakSoundType.HasValue)
                 {
                     float pitch;
                     if (_speakPitchMin == _speakPitchMax)
                         pitch = _speakPitchMin / 100f;
                     else pitch = Random.Shared.Next(_speakPitchMin, _speakPitchMax) / 100f;
 
-                    _speakSound?.Play(0.5f, pitch, 0f); //todo: usar el AudioManager
+                    Core.SoundManager.Play(_speakSoundType.Value, 0.25f, pitch, 0f);
                 }
             }
 
@@ -653,13 +655,13 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             }
         }
 
-        private static SoundEffect GetSpeak(SpeakType speak)
+        private static SoundType? GetSpeak(SpeakType speak)
         {
             return speak switch
             {
                 SpeakType.None => null,
-                SpeakType.Speak1 => Sounds.Speak1,
-                SpeakType.Speak2 => Sounds.Speak2,
+                SpeakType.Speak1 => SoundType.Speak1,
+                SpeakType.Speak2 => SoundType.Speak2,
                 _ => throw new NotImplementedException("No implemented Speak Sound" + speak)
             };
         }
@@ -804,7 +806,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             _baseTextScale = dialog.FontSize;
             _textColor = dialog.Color;
             _speed = dialog.Speed;
-            _speakSound = GetSpeak(speak);
+            _speakSoundType = GetSpeak(speak);
             _speakSoundSpeed = soundSpeed;
             _speakPitchBase = pitchBase;
             _speakPitchVariation = dialog.SpeakPitchVariation;
@@ -835,7 +837,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             //Process Text
             ComputeTextCommands(dialog.Text, out _allCommands);
             if (dialog.AjustEndLine) ComputeBreakLines(_allCommands);
-            ComputeTextAlign(_allCommands); //todo crear método
+            ComputeTextAlign(_allCommands);
             if (dialog.DoPauses) ComputeTextPauses(_allCommands);
 
             //Reset values

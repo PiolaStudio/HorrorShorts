@@ -6,6 +6,7 @@ using HorrorShorts_Game.Tests;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Resources;
 using System;
 using System.Security.Principal;
 
@@ -16,7 +17,7 @@ namespace HorrorShorts_Game
         private readonly GraphicsDeviceManager _graphics;
 
 #if DEBUG
-        private Test3 test = new();
+        private readonly Test1 test = new();
 #endif
 
         public Game1()
@@ -42,7 +43,7 @@ namespace HorrorShorts_Game
 #if DEBUG
             Dialogs.ReLoad(new string[] { nameof(Dialogs.Test) });
 #endif
-            Sounds.ReLoad(new string[] { "Speak1", "Speak2" });
+            Sounds.ReLoad(new SoundType[] { SoundType.Speak1, SoundType.Speak2, SoundType.Test1 });
 
 #if DEBUG
             test?.LoadContent1();

@@ -30,7 +30,10 @@ namespace HorrorShorts_Game
         public static float DeltaTime; //todo
         private static readonly TimeSpan _idealFrameRate = TimeSpan.FromMilliseconds(1000 / 60.0);
 
-        public static AudioManager AudioManager;
+        //Audio
+        public static SongManager SongManager;
+        public static SoundManager SoundManager;
+
         public static DialogManagement DialogManagement;
 
         public static readonly Color BackColor = new(40, 40, 40);
@@ -52,8 +55,9 @@ namespace HorrorShorts_Game
             Content = game.Content;
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            AudioManager = new AudioManager();
-            DialogManagement = new DialogManagement();
+            SoundManager = new();
+            SongManager = new();
+            DialogManagement = new();
 
             Render = new(GraphicsDevice, Settings.NativeResolution.Width, Settings.NativeResolution.Height);
 
@@ -61,6 +65,7 @@ namespace HorrorShorts_Game
             SpriteSheets.Init();
             Fonts.Init();
             Sounds.Init();
+            Songs.Init();
 
 
             //Try Load Settings
@@ -107,6 +112,7 @@ namespace HorrorShorts_Game
             JoystickState = Joystick.GetState(0);
 
             DialogManagement.Update();
+            SongManager.Update();
         }
         public static void Dispose()
         {
@@ -134,7 +140,11 @@ namespace HorrorShorts_Game
             float scale = width / (float)nativeResolution.Width;
 
             float posY;
-            ResolutionBounds = new(0, Math.Max(nativeResolution.Height - baseHeight, 0), nativeResolution.Width, baseHeight);
+            ResolutionBounds = new(0,
+                                   Math.Max(nativeResolution.Height - baseHeight, 0),
+                                   nativeResolution.Width,
+                                   Math.Min(640, baseHeight));
+
             posY = -(nativeResolution.Height - baseHeight) * scale;
 
             if (ratioAspect < nativeRatioAspect)

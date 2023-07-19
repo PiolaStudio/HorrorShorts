@@ -56,4 +56,25 @@ namespace Resources
         Arial = 0,
         Default = 255
     }
+
+    public enum SongType : short
+    {
+#if DEBUG
+        [SongAttribute("Test1")]
+        Test1,
+        [SongAttribute("Test2")]
+        Test2
+#endif
+    }
+    public enum SoundType : int
+    {
+        [SoundAttribute("Speak/Speak1")]
+        Speak1,
+        [SoundAttribute("Speak/Speak2")]
+        Speak2,
+#if DEBUG
+        [SoundAttribute("Test1")]
+        Test1
+#endif
+    }
 }
