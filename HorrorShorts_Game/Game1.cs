@@ -17,7 +17,7 @@ namespace HorrorShorts_Game
         private readonly GraphicsDeviceManager _graphics;
 
 #if DEBUG
-        private readonly Test1 test = new();
+        private readonly Test7 test = new();
 #endif
 
         public Game1()
@@ -89,7 +89,7 @@ namespace HorrorShorts_Game
             Core.GraphicsDevice.SetRenderTarget(Core.Render);
 
             GraphicsDevice.Clear(Color.Black);
-            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.NonPremultiplied);
 #if DEBUG
             test?.Draw1();
 #endif

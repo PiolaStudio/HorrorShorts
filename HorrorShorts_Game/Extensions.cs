@@ -19,6 +19,12 @@ namespace HorrorShorts_Game
         //    return (T)(object) ((int)(object)value & ~(int)(object)flag);
         //}
 
+        public static bool NextBool(this Random random)
+        {
+            return random.Next(2) == 0;
+        }
+
+
         public static Color HexToColor(this string hex)
         {
             byte R = Convert.ToByte(hex.Substring(0, 2), 16);

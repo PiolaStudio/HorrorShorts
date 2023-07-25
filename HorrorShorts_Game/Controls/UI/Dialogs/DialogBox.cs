@@ -104,9 +104,9 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         private Zones _zones;
 
         //Constants
-        private static readonly Rectangle _baseBackgroundSource = new(0, 0, 640, 128);
-        private static readonly Rectangle _baseCharacterNameBackgroundSource = new(640, 0, 208, 32);
-        private static readonly Rectangle _baseCharacterFaceBackgroundSource = new(640, 32, 80, 80);
+        private static readonly Rectangle _baseBackgroundSource = new(0, 0, 320, 64);
+        private static readonly Rectangle _baseCharacterNameBackgroundSource = new(320, 0, 104, 16);
+        private static readonly Rectangle _baseCharacterFaceBackgroundSource = new(320, 16, 40, 40);
 
         private const int COMMA_DELAY = 500;
         private const int POINT_DELAY = 2500;
@@ -118,9 +118,9 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         #region XNA
         public void LoadContent()
         {
-            _baseTexture = new RenderTarget2D(Core.GraphicsDevice, 640, 144);
-            _textTexture = new RenderTarget2D(Core.GraphicsDevice, 640, 144);
-            _textTextureTemp = new RenderTarget2D(Core.GraphicsDevice, 640, 144);
+            _baseTexture = new RenderTarget2D(Core.GraphicsDevice, 320, 72);
+            _textTexture = new RenderTarget2D(Core.GraphicsDevice, 320, 72);
+            _textTextureTemp = new RenderTarget2D(Core.GraphicsDevice, 320, 72);
             //_zone = new Rectangle(0, 0, 640, 144);
             _backgroundsTextures = Textures.DialogMenu;
             _characterNameFont = Fonts.Arial;
@@ -472,54 +472,54 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             _zones = _location switch
             {
                 TextBoxLocation.TopLeft => new Zones(
-                        new(0, Core.ResolutionBounds.Top, 640, 144),    //Zone
-                        new(0, 0, 640, 128),    //Background Zone 
-                        new(16, 16, 80, 80),    //Face Zone 
-                        new(0, 112, 208, 32),   //Name Zone
-                        new(10, 118),           //Name Pos
-                        _faceType != FaceType.None ? new(112, 20, 512, 80) : new(16, 20, 608, 80),   //Text Zone
+                        new(0, Core.ResolutionBounds.Top, 320, 72),    //Zone
+                        new(0, 0, 320, 64),     //Background Zone 
+                        new(8, 8, 40, 40),      //Face Zone 
+                        new(0, 56, 104, 16),    //Name Zone
+                        new(5, 60),             //Name Pos
+                        _faceType != FaceType.None ? new(56, 10, 256, 40) : new(8, 10, 304, 40),   //Text Zone
                         SpriteEffects.FlipVertically),
                 TextBoxLocation.TopRight => new Zones(
-                        new(0, Core.ResolutionBounds.Top, 640, 144),    //Zone
-                        new(0, 0, 640, 128),    //Background Zone 
-                        new(544, 16, 80, 80),   //Face Zone 
-                        new(432, 112, 208, 32), //Name Zone
-                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 118),   //Name Pos
-                        _faceType != FaceType.None ? new(16, 20, 512, 80) : new(16, 20, 608, 80),               //Text Zone
+                        new(0, Core.ResolutionBounds.Top, 320, 72),    //Zone
+                        new(0, 0, 320, 64),    //Background Zone 
+                        new(272, 8, 40, 40),   //Face Zone 
+                        new(216, 56, 104, 16), //Name Zone
+                        new(315 - _characterNameFont.MeasureString(charName).X, 60),   //Name Pos
+                        _faceType != FaceType.None ? new(8, 10, 256, 40) : new(8, 10, 304, 40),               //Text Zone
                         SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally),
                 
                 TextBoxLocation.MiddleLeft => new Zones(
-                        new(0, Core.ResolutionBounds.Center.Y - 72, 640, 144),  //Zone   //todo: ajustar a la resolución
-                        new(0, 16, 640, 128),   //Background Zone 
-                        new(16, 48, 80, 80),    //Face Zone 
-                        new(0, 0, 208, 32),     //Name Zone
-                        new(10, 14),            //Name Pos
-                        _faceType != FaceType.None ? new(112, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
+                        new(0, Core.ResolutionBounds.Center.Y - 36, 320, 72),  //Zone   //todo: ajustar a la resolución
+                        new(0, 8, 320, 64),   //Background Zone 
+                        new(8, 24, 40, 40),    //Face Zone 
+                        new(0, 0, 104, 16),     //Name Zone
+                        new(5, 7),            //Name Pos
+                        _faceType != FaceType.None ? new(56, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.None),
                 TextBoxLocation.MiddleRight => new Zones(
-                        new(0, Core.ResolutionBounds.Center.Y - 72, 640, 144),  //Zone   //todo: ajustar a la resolución
-                        new(0, 16, 640, 128),   //Background Zone 
-                        new(544, 48, 80, 80),   //Face Zone 
-                        new(432, 0, 208, 32),   //Name Zone
-                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 14),           //Name Pos
-                        _faceType != FaceType.None ? new(16, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
+                        new(0, Core.ResolutionBounds.Center.Y - 36, 320, 72),  //Zone   //todo: ajustar a la resolución
+                        new(0, 8, 320, 64),   //Background Zone 
+                        new(272, 24, 40, 40),   //Face Zone 
+                        new(216, 0, 104, 16),   //Name Zone
+                        new(315 - _characterNameFont.MeasureString(charName).X, 7),           //Name Pos
+                        _faceType != FaceType.None ? new(8, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.FlipHorizontally),
 
                 TextBoxLocation.BottomLeft => new Zones(
-                        new(0, Core.ResolutionBounds.Bottom - 144, 640, 144),  //Zone   //todo: ajustar a la resolución
-                        new(0, 16, 640, 128),   //Background Zone 
-                        new(16, 48, 80, 80),    //Face Zone 
-                        new(0, 0, 208, 32),     //Name Zone
-                        new(10, 14),            //Name Pos
-                        _faceType != FaceType.None ? new(112, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
+                        new(0, Core.ResolutionBounds.Bottom - 72, 320, 72),  //Zone   //todo: ajustar a la resolución
+                        new(0, 8, 320, 64),   //Background Zone 
+                        new(8, 24, 40, 40),    //Face Zone 
+                        new(0, 0, 104, 16),     //Name Zone
+                        new(5, 7),            //Name Pos
+                        _faceType != FaceType.None ? new(72, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.None),
                 TextBoxLocation.BottomRight => new Zones(
-                        new(0, Core.ResolutionBounds.Bottom - 144, 640, 144),  //Zone   //todo: ajustar a la resolución
-                        new(0, 16, 640, 128),   //Background Zone 
-                        new(544, 48, 80, 80),   //Face Zone 
-                        new(432, 0, 208, 32),   //Name Zone
-                        new(630 - _characterNameFont.MeasureString(charName).X * 2, 14),           //Name Pos
-                        _faceType != FaceType.None ? new(16, 48, 512, 80) : new(16, 48, 608, 80),               //Text Zone
+                        new(0, Core.ResolutionBounds.Bottom - 72, 320, 72),  //Zone   //todo: ajustar a la resolución
+                        new(0, 8, 320, 64),   //Background Zone 
+                        new(272, 24, 40, 40),   //Face Zone 
+                        new(216, 0, 104, 16),   //Name Zone
+                        new(315 - _characterNameFont.MeasureString(charName).X, 7),           //Name Pos
+                        _faceType != FaceType.None ? new(8, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.FlipHorizontally),
 
                 _ => throw new NotImplementedException("Not implemented Dialog Location: " + _location)
@@ -694,7 +694,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             if (showCharacterName)
             {
                 Core.SpriteBatch.Draw(_backgroundsTextures, _zones.NameZone, _baseCharacterNameBackgroundSource, Color.White, 0f, Vector2.Zero, _zones.Flip, 1f);
-                Core.SpriteBatch.DrawString(_characterNameFont, _characterName, _zones.NamePos, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 1f);
+                Core.SpriteBatch.DrawString(_characterNameFont, _characterName, _zones.NamePos, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
             }
 
             Core.SpriteBatch.End();

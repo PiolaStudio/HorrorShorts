@@ -9,7 +9,7 @@ namespace HorrorShorts_Game
 {
     public class Settings
     {
-        public static readonly Rectangle NativeResolution = new(0, 0, 640, 640);
+        public static readonly Rectangle NativeResolution = new(0, 0, 320, 320);
 #if DESKTOP
         public int WindowX;
         public int WindowY;

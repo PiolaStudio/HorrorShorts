@@ -45,7 +45,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             Speak = SpeakType.None;
             Speed = 20;
             Font = FontType.Default;
-            FontSize = 2;
+            FontSize = 1;
             Color = Color.White;
             SpeakSpeed = 3;
             SpeakPitch = 0;
@@ -85,7 +85,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
 
             Speed = serial.Speed ?? 20; //todo: change to -1 (default)
             Color = serial.FontColor != null ? new Color(serial.FontColor.Value, 1f) : Color.White;
-            FontSize = serial.FontSize ?? 2; //todo: change to -1 (default)
+            FontSize = serial.FontSize ?? 1; //todo: change to -1 (default)
             Font = serial.FontType ?? FontType.Default;
 
             Speak = serial.SpeakType ?? SpeakType.Default;

@@ -143,7 +143,7 @@ namespace HorrorShorts_Game
             ResolutionBounds = new(0,
                                    Math.Max(nativeResolution.Height - baseHeight, 0),
                                    nativeResolution.Width,
-                                   Math.Min(640, baseHeight));
+                                   Math.Min(nativeResolution.Height, baseHeight));
 
             posY = -(nativeResolution.Height - baseHeight) * scale;
 
