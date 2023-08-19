@@ -26,7 +26,7 @@ namespace Resources.Sprites
         public string Name;
 
         [ContentSerializer(AllowNull = false, Optional = false)]
-        public string SpriteSheet;
+        public SpriteSheetType SpriteSheet;
 
         [ContentSerializer(AllowNull = false, Optional = false, CollectionItemName = "Frame")]
         public AnimationFrame_Serial[] Frames;

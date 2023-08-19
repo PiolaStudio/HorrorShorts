@@ -1,10 +1,13 @@
 ﻿using HorrorShorts_Game.Controls.Audio;
 using HorrorShorts_Game.Controls.UI.Dialogs;
+using HorrorShorts_Game.Controls.UI.Questions;
+using HorrorShorts_Game.Inputs;
 using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpFont;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,12 +38,16 @@ namespace HorrorShorts_Game
         public static SoundManager SoundManager;
 
         public static DialogManagement DialogManagement;
+        public static QuestionBox QuestionBox;
 
         public static readonly Color BackColor = new(40, 40, 40);
 
 
         public static Matrix ResolutionCamera;
         public static Rectangle ResolutionBounds;
+        public static Rectangle ClickZone;
+
+        public static InputControl Controls;
 
         public static KeyboardState KeyState;
         public static JoystickState JoystickState;
@@ -57,7 +64,9 @@ namespace HorrorShorts_Game
 
             SoundManager = new();
             SongManager = new();
+            Controls = new();
             DialogManagement = new();
+            QuestionBox = new();
 
             Render = new(GraphicsDevice, Settings.NativeResolution.Width, Settings.NativeResolution.Height);
 
@@ -73,7 +82,7 @@ namespace HorrorShorts_Game
 #if DEBUG
             Settings = new Settings(); //todo: borrar
             Settings.ResolutionWidth = 640;//todo: borrar
-            Settings.ResolutionHeight = 360;//todo: borrar
+            Settings.ResolutionHeight = 640;//todo: borrar
             Settings.FullScreen = false;//todo: borrar
 #endif
 
@@ -102,6 +111,7 @@ namespace HorrorShorts_Game
         public static void LoadContent()
         {
             DialogManagement.LoadContent();
+            QuestionBox.LoadContent();
         }
         public static void Update(GameTime gameTime)
         {
@@ -111,12 +121,15 @@ namespace HorrorShorts_Game
             KeyState = Keyboard.GetState();
             JoystickState = Joystick.GetState(0);
 
+            Controls.Update();
             DialogManagement.Update();
+            QuestionBox.Update();
             SongManager.Update();
         }
         public static void Dispose()
         {
             DialogManagement.Dispose();
+            QuestionBox.Dispose();
         }
 
         public static void SetResolution(int width, int height, bool fullScreen)
@@ -140,20 +153,26 @@ namespace HorrorShorts_Game
             float scale = width / (float)nativeResolution.Width;
 
             float posY;
+
+            posY = -(nativeResolution.Height - baseHeight) * scale;
+            if (ratioAspect < nativeRatioAspect)
+            {
+                posY /= 2;
+                ClickZone = new(0, (int)posY, width, Convert.ToInt32(height - posY * 2));
+            }
+            else ClickZone = new(0, 0, width, height);
+
             ResolutionBounds = new(0,
                                    Math.Max(nativeResolution.Height - baseHeight, 0),
                                    nativeResolution.Width,
                                    Math.Min(nativeResolution.Height, baseHeight));
 
-            posY = -(nativeResolution.Height - baseHeight) * scale;
-
-            if (ratioAspect < nativeRatioAspect)
-                posY /= 2;
 
             ResolutionCamera = Matrix.CreateScale(scale) * Matrix.CreateTranslation(0, posY, 0);
 
             //Reset UI Resolution
             DialogManagement?.ResetResolution();
+            QuestionBox?.ResetResolution();
         }
     }
 }

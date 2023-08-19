@@ -6,9 +6,9 @@ namespace Resources
 {
     public enum Characters : short
     {
-        [Character(null, FaceType.None, SpeakType.Speak1, 3, -10, 10, FontType.Arial, null, null)]
+        [Character(null, FaceType.None, SpeakType.Speak1, 3, -10, 10, FontType.Arial, null)]
         Narrator,
-        [Character("Girl 1", FaceType.Happy, SpeakType.Speak1, 3, -10, 10, FontType.Arial, "Girl1", "Girl1")]
+        [Character("Girl 1", FaceType.Happy, SpeakType.Speak1, 3, -10, 10, FontType.Arial, TextureType.Girl1)]
         Girl1
     }
     public enum FaceType : byte
@@ -21,7 +21,7 @@ namespace Resources
         Default = 255,
     }
 
-    public enum TextBoxLocation : byte
+    public enum DialogBoxLocation : byte
     {
         TopLeft,
         TopRight,
@@ -30,6 +30,33 @@ namespace Resources
         BottomLeft,
         BottomRight
     }
+    public enum QuestionBoxLocation : byte
+    {
+        TopLeft,
+        TopCenter,
+        TopRight,
+        MiddleLeft,
+        MiddleCenter,
+        MiddleRight,
+        BottomLeft,
+        BottomCenter,
+        BottomRight,
+
+        DialogTopLeft,
+        DialogTopRight,
+        DialogMiddleLeft,
+        DialogMiddleRight,
+        DialogBottomLeft,
+        DialogBottomRight
+    }
+
+    public enum HorizontalAlignament : byte
+    {
+        Left,
+        Center,
+        Right
+    }
+
     public enum TextAlignament : byte
     {
         TopLeft,
@@ -57,6 +84,42 @@ namespace Resources
         Default = 255
     }
 
+
+    //RESOURCES
+    public enum TextureType : uint
+    {
+        [TextureAttribute(null)]
+        Pixel,
+        [TextureAttribute("UI/DialogMenu")]
+        DialogMenu,
+        [TextureAttribute("Characters/Girl1", SpriteSheetType.Girl1)]
+        Girl1,
+#if DEBUG
+        [TextureAttribute("Characters/Mario", SpriteSheetType.Mario)]
+        Mario,
+        [TextureAttribute("Characters/Megaman", SpriteSheetType.Megaman)]
+        Megaman,
+#endif
+    }
+    public enum SpriteSheetType : uint
+    {
+        [SpriteSheetAttribute("Characters/Girl1")]
+        Girl1,
+#if DEBUG
+        [SpriteSheetAttribute("Characters/Mario")]
+        Mario,
+        [SpriteSheetAttribute("Characters/Megaman")]
+        Megaman
+#endif
+    }
+    public enum AnimationType : uint
+    {
+#if DEBUG
+        [AnimationAttribute("Characters/Megaman")]
+        Megaman
+#endif
+    }
+
     public enum SongType : short
     {
 #if DEBUG
@@ -68,6 +131,10 @@ namespace Resources
     }
     public enum SoundType : int
     {
+        [SoundAttribute("UI/OptionChange")]
+        OptionChange,
+        [SoundAttribute("UI/OptionSelect")]
+        OptionSelect,
         [SoundAttribute("Speak/Speak1")]
         Speak1,
         [SoundAttribute("Speak/Speak2")]

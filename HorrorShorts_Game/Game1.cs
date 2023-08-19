@@ -8,7 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Resources;
 using System;
+using System.Collections;
 using System.Security.Principal;
+using System.Text;
 
 namespace HorrorShorts_Game
 {
@@ -17,7 +19,22 @@ namespace HorrorShorts_Game
         private readonly GraphicsDeviceManager _graphics;
 
 #if DEBUG
-        private readonly Test7 test = new();
+        private readonly TestBase test = new Test8();
+#endif
+
+#if DEBUG
+        public Game1(string testID) : this()
+        {
+            if (string.IsNullOrEmpty(testID))
+                test = null;
+            else if (testID != "default")
+            {
+                //test = Type.GetType("Test8");
+                Type testType = Type.GetType("HorrorShorts_Game.Tests.Test" + testID);
+                if (testType != null)
+                    test = (TestBase)Activator.CreateInstance(testType);
+            }
+        }
 #endif
 
         public Game1()
@@ -41,7 +58,7 @@ namespace HorrorShorts_Game
             Core.LoadContent();
 
 #if DEBUG
-            Dialogs.ReLoad(new string[] { nameof(Dialogs.Test) });
+            Localizations.ReLoad(new string[] { nameof(Localizations.Test) });
 #endif
             Sounds.ReLoad(new SoundType[] { SoundType.Speak1, SoundType.Speak2, SoundType.Test1 });
 
@@ -67,6 +84,7 @@ namespace HorrorShorts_Game
         private void PreDraw(GameTime gameTime)
         {
             Core.DialogManagement.PreDraw();
+            Core.QuestionBox.PreDraw();
 #if DEBUG
             test?.PreDraw1();
 #endif
@@ -88,12 +106,18 @@ namespace HorrorShorts_Game
         {
             Core.GraphicsDevice.SetRenderTarget(Core.Render);
 
+#if DEBUG
+            GraphicsDevice.Clear(new Color(84, 50, 98));
+#else
             GraphicsDevice.Clear(Color.Black);
-            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.NonPremultiplied);
+#endif
+
+            Core.SpriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, samplerState: SamplerState.PointClamp, blendState: BlendState.NonPremultiplied);
 #if DEBUG
             test?.Draw1();
 #endif
             Core.DialogManagement.Draw();
+            Core.QuestionBox.Draw();
 
             Core.SpriteBatch.End();
             Core.GraphicsDevice.SetRenderTarget(null);

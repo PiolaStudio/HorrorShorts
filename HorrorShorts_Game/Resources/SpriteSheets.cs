@@ -1,8 +1,14 @@
 ﻿using HorrorShorts_Game.Controls.Sprites;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Resources;
+using Resources.Attributes;
 using Resources.Sprites;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -12,70 +18,126 @@ namespace HorrorShorts_Game.Resources
 {
     public static class SpriteSheets
     {
-#if DEBUG
-        [ResourceAttribute("Data/SpriteSheets/Mario")]
-        public static SpriteSheet Mario { get; private set; }
-        [ResourceAttribute("Data/SpriteSheets/Megaman")]
-        public static SpriteSheet Megaman { get; private set; }
-#endif
-        [ResourceAttribute("Data/SpriteSheets/Girl1")]
-        public static SpriteSheet Girl1 { get; private set; }
+        private static readonly Dictionary<SpriteSheetType, SpriteSheet> _loaded = new();
+        public static SpriteSheet Get(SpriteSheetType sheet)
+        {
+            if (!_loaded.TryGetValue(sheet, out SpriteSheet toReturn))
+            {
+                //todo: log advice
+                bool loaded = Load(sheet);
+                if (!loaded) throw new ContentLoadException($"Error loading resource at runtime: {sheet}");
+                toReturn = _loaded[sheet];
+            }
+            return toReturn;
+        }
+        public static SpriteSheet Get(TextureType texture)
+        {
+            //todo: log advice
+            TextureAttribute valueAttributes = Textures.GetTextureAttribute(texture);
+            if (valueAttributes.Sheet == null) return null;
+            SpriteSheetType sheet = valueAttributes.Sheet.Value;
+            return Get(sheet);
+        }
+
+        private static readonly SpriteSheetType[] AlwaysLoaded = new SpriteSheetType[] { };
+
+        private static readonly Type _enumType = typeof(SpriteSheetType);
 
         public static void Init()
         {
+            for (int i = 0; i < AlwaysLoaded.Length; i++)
+                if (!Load(AlwaysLoaded[i]))
+                    throw new ContentLoadException($"Error loading a Init resource: {AlwaysLoaded[i]}");
         }
-        public static void ReLoad(params string[] sheets)
+        public static void ReLoad(SpriteSheetType[] sheets)
         {
-            List<string> sheetsToLoad = new List<string>();
-            List<string> sheetsToUnload = new List<string>();
+            List<SpriteSheetType> sheetsToLoad = new();
+            List<SpriteSheetType> sheetsToUnload = new();
+
+            SpriteSheetType[] allSheets = (SpriteSheetType[])Enum.GetValues(typeof(SpriteSheetType));
 
             //Check sheets
-            PropertyInfo[] props = typeof(SpriteSheets).GetProperties(BindingFlags.Public | BindingFlags.Static);
-            for (int i = 0; i < props.Length; i++)
+            for (int i = 0; i < allSheets.Length; i++)
             {
-                if (props[i].PropertyType != typeof(SpriteSheet)) continue;
+                if (Array.FindIndex(AlwaysLoaded, x => x == allSheets[i]) != -1) continue;
 
-                SpriteSheet s = (SpriteSheet)props[i].GetValue(null);
-
-                if (sheets.Contains(props[i].Name))
+                if (sheets.Contains(allSheets[i]))
                 {
-                    if (s == null)
-                        sheetsToLoad.Add(props[i].Name);
+                    if (sheetsToLoad.Contains(allSheets[i])) continue;
+                    if (!_loaded.ContainsKey(allSheets[i]))
+                        sheetsToLoad.Add(allSheets[i]);
                 }
                 else
                 {
-                    if (s != null)
-                        sheetsToUnload.Add(props[i].Name);
+                    if (sheetsToUnload.Contains(allSheets[i])) continue;
+                    if (_loaded.ContainsKey(allSheets[i]))
+                        sheetsToUnload.Add(allSheets[i]);
                 }
             }
 
             //todo: add in parallel task
             //Unload sheets
             for (int i = 0; i < sheetsToUnload.Count; i++)
-            {
-                PropertyInfo propInfo = typeof(SpriteSheets).GetProperty(sheetsToUnload[i]);
-                propInfo.SetValue(null, null);
-            }
+                if (!UnLoad(sheetsToLoad[i]))
+                { /*todo: log advice or throw exception*/}
+
 
             //Load sheets
             for (int i = 0; i < sheetsToLoad.Count; i++)
-            {
-                PropertyInfo propInfo = typeof(SpriteSheets).GetProperty(sheetsToLoad[i]);
-                string path = ((ResourceAttribute)propInfo.GetCustomAttribute(typeof(ResourceAttribute), true)).Path;
-
-                SpriteSheet_Serial ss = Core.Content.Load<SpriteSheet_Serial>(path);
-                SpriteSheet s = new(ss);
-                propInfo.SetValue(null, s);
-            }
+                if (!Load(sheetsToLoad[i]))
+                { /*todo: log advice or throw exception*/}
         }
 
-        public static void GetSheet(string name, out SpriteSheet sheet)
+        private static bool Load(SpriteSheetType sheetType)
         {
-            PropertyInfo tProp = typeof(SpriteSheets).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
-            if (tProp == null) throw new Exception("Can't Load Sheet " + name);
-            if (tProp.PropertyType != typeof(SpriteSheet)) throw new Exception("Can't Load Sheet " + name);
+            try
+            {
+                if (_loaded.ContainsKey(sheetType)) return false;  //todo: log advice
 
-            sheet = (SpriteSheet)tProp.GetValue(null);
+                string path = GetSheetPath(sheetType);
+                if (path == null) return false;  //todo: log advice
+
+                SpriteSheet_Serial ss_serial = Core.Content.Load<SpriteSheet_Serial>(path);
+                SpriteSheet ss = new(ss_serial);
+                _loaded.Add(sheetType, ss);
+                return true;
+            }
+            catch (Exception ex) 
+            { 
+                //todo: log ex
+                return false; 
+            }
+        }
+        private static bool UnLoad(SpriteSheetType sheetType)
+        {
+            try
+            {
+                if (!_loaded.ContainsKey(sheetType)) return false; //todo: log advice
+
+                string path = GetSheetPath(sheetType);
+                Core.Content.UnloadAsset(path); //todo: check
+                _loaded.Remove(sheetType);
+                return true;
+            }
+            catch (Exception)
+            {
+                //todo: log ex
+                return false; 
+            }
+        }
+        private static string GetSheetPath(SpriteSheetType sheetType)
+        {
+            SpriteSheetAttribute valueAttributes = GetSheetAttribute(sheetType);
+            if (valueAttributes.ResourcePath == null) return null;
+            string path = Path.Combine("Data/SpriteSheets", valueAttributes.ResourcePath);
+            return path;
+        }
+        private static SpriteSheetAttribute GetSheetAttribute(SpriteSheetType sheetType)
+        {
+            MemberInfo[] memberInfos = _enumType.GetMember(sheetType.ToString());
+            var enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == _enumType);
+            SpriteSheetAttribute valueAttributes = (SpriteSheetAttribute)enumValueMemberInfo.GetCustomAttributes(typeof(SpriteSheetAttribute), false)[0];
+            return valueAttributes; 
         }
     }
 }

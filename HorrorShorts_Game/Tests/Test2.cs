@@ -3,6 +3,7 @@ using HorrorShorts_Game.Controls.Animations;
 using HorrorShorts_Game.Controls.Sprites;
 using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework.Input;
+using Resources;
 using Resources.Sprites;
 using System;
 using System.Collections.Generic;
@@ -14,25 +15,20 @@ namespace HorrorShorts_Game.Tests
 {
     public class Test2 : TestBase
     {
-        private Dictionary<string, AnimationData> Anims { get => Animations.Megaman; }
+        private Dictionary<string, AnimationData> Anims;
         private Sprite _sprite;
         private Keys _prevKey = Keys.F1;
         private AnimationSystem animationSystem;
 
         public override void LoadContent1()
         {
-            Textures.ReLoad(
-                nameof(Textures.Mario),
-                nameof(Textures.Megaman),
-                nameof(Textures.Girl1));
+            Textures.ReLoad(new TextureType[] {
+                TextureType.Mario, TextureType.Megaman, TextureType.Girl1 },
+                out List<SpriteSheetType> sheetsFromTextures);
 
-            SpriteSheets.ReLoad(
-                nameof(SpriteSheets.Mario),
-                nameof(SpriteSheets.Megaman),
-                nameof(SpriteSheets.Girl1));
+            SpriteSheets.ReLoad(new SpriteSheetType[] { }.Concat(sheetsFromTextures).ToArray());
 
-            Animations.ReLoad(
-                nameof(Animations.Megaman));
+            Animations.ReLoad(new AnimationType[] { AnimationType.Megaman });
 
             //Animation_Serial anim = new();
             //anim.Animations = new SingleAnimation_Serial[2];
@@ -61,12 +57,14 @@ namespace HorrorShorts_Game.Tests
 
             //anim.Save("Anim.xml");
 
+            Anims = Animations.Get(AnimationType.Megaman);
+
             animationSystem = new();
             animationSystem.SetAnimation(Anims["Idle"]);
             animationSystem.BucleType = BucleType.Forward;
             animationSystem.Play();
 
-            _sprite = new Sprite(Textures.Megaman, y: Core.ResolutionBounds.Bottom - 32, source: animationSystem.Source);
+            _sprite = new Sprite(Textures.Get(TextureType.Megaman), y: Core.ResolutionBounds.Bottom - 32, source: animationSystem.Source);
         }
         public override void Update1()
         {

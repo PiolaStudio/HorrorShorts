@@ -13,18 +13,16 @@ namespace Resources.Attributes
 
         public readonly int DefaultSpeakSpeed;
         public readonly FontType DefaultFont;
-        public readonly string TextureName;
-        public readonly string SheetName;
+        public readonly TextureType? TextureType;
 
-        public CharacterAttribute(string defaultName, FaceType defaultFace, SpeakType defaultSpeak, int defaultSpeakSpeed, int defaultSpeakPitchMin, int defaultSpeakPitchMax, FontType defaultFont, string textureName, string textureSheet)
+        public CharacterAttribute(string defaultName, FaceType defaultFace, SpeakType defaultSpeak, int defaultSpeakSpeed, int defaultSpeakPitchMin, int defaultSpeakPitchMax, FontType defaultFont, object textureType)
         {
             DefaultName = defaultName;
             DefaultFace = defaultFace;
             DefaultSpeak = defaultSpeak;
             DefaultSpeakSpeed = defaultSpeakSpeed;
             DefaultFont = defaultFont;
-            TextureName = textureName;
-            SheetName = textureSheet;
+            TextureType = (TextureType?)textureType;
             DefaultSpeakPitchMin = defaultSpeakPitchMin;
             DefaultSpeakPitchMax = defaultSpeakPitchMax;
         }

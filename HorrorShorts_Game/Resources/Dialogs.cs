@@ -60,7 +60,7 @@ namespace HorrorShorts_Game.Resources
                 PropertyInfo propInfo = typeof(Dialogs).GetProperty(dialogsToLoad[i]);
                 string path = ((ResourceAttribute)propInfo.GetCustomAttribute(typeof(ResourceAttribute), true)).Path;
 
-                Conversation_Serial ds = Core.Content.Load<Conversation_Serial>(path);
+                Localization_Serial ds = Core.Content.Load<Localization_Serial>(path);
                 Dictionary<string, Dialog[]> s = new();
 
                 foreach (ConversationItem_Serial cis in ds.Conversations)

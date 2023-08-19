@@ -10,34 +10,34 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\Resources\bin\Release\net6.0\Resources.dll
+/reference:..\..\Resources\bin\Debug\net6.0\Resources.dll
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Data/Animations/Megaman.xml
+#begin Data/Animations/Characters/Megaman.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
-/build:Data/Animations/Megaman.xml
+/build:Data/Animations/Characters/Megaman.xml
 
-#begin Data/Localization/Test.xml
+#begin Data/Localizations/Test.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
-/build:Data/Localization/Test.xml
+/build:Data/Localizations/Test.xml
 
-#begin Data/SpriteSheets/Girl1.xml
+#begin Data/SpriteSheets/Characters/Girl1.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
-/build:Data/SpriteSheets/Girl1.xml
+/build:Data/SpriteSheets/Characters/Girl1.xml
 
-#begin Data/SpriteSheets/Mario.xml
+#begin Data/SpriteSheets/Characters/Mario.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
-/build:Data/SpriteSheets/Mario.xml
+/build:Data/SpriteSheets/Characters/Mario.xml
 
-#begin Data/SpriteSheets/Megaman.xml
+#begin Data/SpriteSheets/Characters/Megaman.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
-/build:Data/SpriteSheets/Megaman.xml
+/build:Data/SpriteSheets/Characters/Megaman.xml
 
 #begin Fonts/PixelArial.spritefont
 /importer:FontDescriptionImporter
@@ -75,6 +75,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:SoundEffects/Test1.wav
+
+#begin SoundEffects/UI/OptionChange.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/OptionChange.wav
+
+#begin SoundEffects/UI/OptionSelect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/UI/OptionSelect.wav
 
 #begin Textures/Background1.png
 /importer:TextureImporter
@@ -147,6 +159,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Characters/Megaman.png
+
+#begin Textures/Characters/Mummy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Characters/Mummy.png
 
 #begin Textures/UI/DialogMenu.png
 /importer:TextureImporter

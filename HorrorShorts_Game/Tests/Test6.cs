@@ -2,6 +2,7 @@
 using HorrorShorts_Game.Algorithms.AStar;
 using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Resources;
 using SharpFont;
@@ -24,7 +25,7 @@ namespace HorrorShorts_Game.Tests
         Task<List<Node>> task;
         Stopwatch sw;
 
-        int nodeSize = 6;
+        int nodeSize = 3;
         int padding = 10;
         bool space = false;
         bool R = false;
@@ -35,7 +36,7 @@ namespace HorrorShorts_Game.Tests
         public override void LoadContent1()
         {
             aStar = new();
-            map = new Node[100, 50];
+            map = new Node[40, 40];
             Regenerate();
         }
         public override void Update1()
@@ -92,7 +93,9 @@ namespace HorrorShorts_Game.Tests
                             Core.ResolutionBounds.Y + j * nodeSize + padding, 
                             nodeSize, 
                             nodeSize), 
-                        map[i,j].Cost == Node.IMPASSABLE_COST ? Color.Blue : Color.White);
+                        null,
+                        map[i,j].Cost == Node.IMPASSABLE_COST ? Color.Blue : Color.White,
+                        0f, Vector2.Zero, SpriteEffects.None, 0.1f);
                 }
             }
 
@@ -104,11 +107,13 @@ namespace HorrorShorts_Game.Tests
                         Core.SpriteBatch.Draw(
                             Textures.Pixel,
                             new Rectangle(
-                                path[i].X * nodeSize + padding, 
-                                Core.ResolutionBounds.Y + path[i].Y * nodeSize + padding, 
+                                Core.ResolutionBounds.X + padding + path[i].X * nodeSize, 
+                                Core.ResolutionBounds.Y + padding + path[i].Y * nodeSize, 
                                 nodeSize, 
                                 nodeSize),
-                            Color.Red);
+                            null,
+                            Color.Red,
+                            0f, Vector2.Zero, SpriteEffects.None, 1f);
                     }
 
                 Core.SpriteBatch.Draw(
@@ -118,7 +123,10 @@ namespace HorrorShorts_Game.Tests
                                 Core.ResolutionBounds.Y + startPos.Y * nodeSize + padding,
                                 nodeSize,
                                 nodeSize),
-                            Color.Green);
+                            null,
+                            Color.Green,
+                            0f, Vector2.Zero, SpriteEffects.None, 1f);
+
 
                 Core.SpriteBatch.Draw(
                             Textures.Pixel,
@@ -127,7 +135,9 @@ namespace HorrorShorts_Game.Tests
                                 Core.ResolutionBounds.Y + endPos.Y * nodeSize + padding,
                                 nodeSize,
                                 nodeSize),
-                            Color.DarkGreen);
+                            null,
+                            Color.DarkGreen,
+                            0f, Vector2.Zero, SpriteEffects.None, 1f);
             }
         }
 

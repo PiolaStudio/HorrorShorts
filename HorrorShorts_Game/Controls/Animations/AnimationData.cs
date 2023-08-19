@@ -54,7 +54,7 @@ namespace HorrorShorts_Game.Controls.Animations
             Name = anim.Name;
 
             Frames = new AnimationFrame[anim.Frames.Length];
-            SpriteSheets.GetSheet(anim.SpriteSheet, out SpriteSheet ss);
+            SpriteSheet ss = SpriteSheets.Get(anim.SpriteSheet);
             for (int i = 0; i < Frames.Length; i++)
                 Frames[i] = new AnimationFrame(ss.Get(anim.Frames[i].Sheet), anim.Frames[i].Duration);
         }

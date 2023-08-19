@@ -1,5 +1,7 @@
 ﻿using HorrorShorts_Game.Controls.Audio;
 using HorrorShorts_Game.Controls.Sprites;
+using HorrorShorts_Game.Controls.UI.Questions;
+using HorrorShorts_Game.Inputs;
 using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -37,7 +39,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
 
         private CharacterAttribute defaultsValues;
 
-        private TextBoxLocation _location = TextBoxLocation.BottomLeft;
+        private DialogBoxLocation _location = DialogBoxLocation.BottomLeft;
         private TextAlignament _textAlign;
 
         //Flags
@@ -103,6 +105,13 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
 
         private Zones _zones;
 
+        //Question
+        private Question? _questionData = null;
+        private QuestionBox _questionBox = new();
+
+        public sbyte QuestionResponseIndex { get => _questionBox.SelectedOptionIndex; }
+        public string QuestionResponseValue { get => _questionBox.SelectedOptionValue; }
+
         //Constants
         private static readonly Rectangle _baseBackgroundSource = new(0, 0, 320, 64);
         private static readonly Rectangle _baseCharacterNameBackgroundSource = new(320, 0, 104, 16);
@@ -122,8 +131,10 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             _textTexture = new RenderTarget2D(Core.GraphicsDevice, 320, 72);
             _textTextureTemp = new RenderTarget2D(Core.GraphicsDevice, 320, 72);
             //_zone = new Rectangle(0, 0, 640, 144);
-            _backgroundsTextures = Textures.DialogMenu;
+            _backgroundsTextures = Textures.Get(TextureType.DialogMenu);
             _characterNameFont = Fonts.Arial;
+
+            _questionBox.LoadContent();
         }
         public void Update()
         {
@@ -131,19 +142,21 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             if (_closed) return;
 
 #if DESKTOP
-            if (Core.KeyState.IsKeyDown(Keys.Space)) //todo: cambiar por los controles usados
-            {
+            if (Core.Controls.Keyboard.ActionTrigger || Core.Controls.Mouse.Click)
                 if (_finished) _closed = true;
-            }
-#elif PHONE
+#endif
+#if DESKTOP || CONSOLE
+            if (Core.Controls.GamePad.ActionTrigger)
+                if (_finished) _closed = true;
+#endif
+#if PHONE
             //todo
             if (TouchPanel.GetState().Count > 0)
-            {
                 if (_finished) _closed = true;
-            }   
 #endif
 
             UpdateNextCharacters();
+            UpdateQuestionBox();
         }
         public void PreDraw()
         {
@@ -163,6 +176,9 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                 RenderText();
                 _isDirty = Dirtys.None;
             }
+
+            //Render Question Box
+            _questionBox.PreDraw();
         }
         public void Draw()
         {
@@ -170,8 +186,11 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             if (_closed) return;
 
             //Render Full
-            Core.SpriteBatch.Draw(_baseTexture, _zones.Zone, Color.White);
-            Core.SpriteBatch.Draw(_textTexture, _zones.Zone, Color.White);
+            Core.SpriteBatch.Draw(_baseTexture, _zones.GlobalZone, Color.White);
+            Core.SpriteBatch.Draw(_textTexture, _zones.GlobalZone, Color.White);
+
+            //Question Box
+            _questionBox.Draw();
         }
         public void Dispose()
         {
@@ -471,7 +490,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             string charName = _characterName ?? string.Empty;
             _zones = _location switch
             {
-                TextBoxLocation.TopLeft => new Zones(
+                DialogBoxLocation.TopLeft => new Zones(
                         new(0, Core.ResolutionBounds.Top, 320, 72),    //Zone
                         new(0, 0, 320, 64),     //Background Zone 
                         new(8, 8, 40, 40),      //Face Zone 
@@ -479,7 +498,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         new(5, 60),             //Name Pos
                         _faceType != FaceType.None ? new(56, 10, 256, 40) : new(8, 10, 304, 40),   //Text Zone
                         SpriteEffects.FlipVertically),
-                TextBoxLocation.TopRight => new Zones(
+                DialogBoxLocation.TopRight => new Zones(
                         new(0, Core.ResolutionBounds.Top, 320, 72),    //Zone
                         new(0, 0, 320, 64),    //Background Zone 
                         new(272, 8, 40, 40),   //Face Zone 
@@ -488,7 +507,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         _faceType != FaceType.None ? new(8, 10, 256, 40) : new(8, 10, 304, 40),               //Text Zone
                         SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally),
                 
-                TextBoxLocation.MiddleLeft => new Zones(
+                DialogBoxLocation.MiddleLeft => new Zones(
                         new(0, Core.ResolutionBounds.Center.Y - 36, 320, 72),  //Zone   //todo: ajustar a la resolución
                         new(0, 8, 320, 64),   //Background Zone 
                         new(8, 24, 40, 40),    //Face Zone 
@@ -496,7 +515,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         new(5, 7),            //Name Pos
                         _faceType != FaceType.None ? new(56, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.None),
-                TextBoxLocation.MiddleRight => new Zones(
+                DialogBoxLocation.MiddleRight => new Zones(
                         new(0, Core.ResolutionBounds.Center.Y - 36, 320, 72),  //Zone   //todo: ajustar a la resolución
                         new(0, 8, 320, 64),   //Background Zone 
                         new(272, 24, 40, 40),   //Face Zone 
@@ -505,7 +524,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         _faceType != FaceType.None ? new(8, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.FlipHorizontally),
 
-                TextBoxLocation.BottomLeft => new Zones(
+                DialogBoxLocation.BottomLeft => new Zones(
                         new(0, Core.ResolutionBounds.Bottom - 72, 320, 72),  //Zone   //todo: ajustar a la resolución
                         new(0, 8, 320, 64),   //Background Zone 
                         new(8, 24, 40, 40),    //Face Zone 
@@ -513,7 +532,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         new(5, 7),            //Name Pos
                         _faceType != FaceType.None ? new(72, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.None),
-                TextBoxLocation.BottomRight => new Zones(
+                DialogBoxLocation.BottomRight => new Zones(
                         new(0, Core.ResolutionBounds.Bottom - 72, 320, 72),  //Zone   //todo: ajustar a la resolución
                         new(0, 8, 320, 64),   //Background Zone 
                         new(272, 24, 40, 40),   //Face Zone 
@@ -529,6 +548,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         private void UpdateNextCharacters()
         {
             if (_finished) return;
+            if (!_questionBox.Closed) return;
 
             //Delay
             //todo: creo que se puede mejorar el como se gestiona el delay...
@@ -650,8 +670,13 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
 
             if (_currentCommandIndex >= _allCommands.Count)
             {
-                _finished = true;
-                Finish?.Invoke(this, EventArgs.Empty);
+                if (_questionData.HasValue)
+                    _questionBox.Show(_questionData.Value);
+                else
+                {
+                    _finished = true;
+                    Finish?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
 
@@ -669,6 +694,20 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         {
             speakPitchMin = MathHelper.Clamp(basePitch - variation, -100, 100);
             speakPitchMax = MathHelper.Clamp(basePitch + variation, -100, 100);
+        }
+
+
+        private void UpdateQuestionBox()
+        {
+            if (_questionBox.Closed) return;
+            _questionBox.Update();
+
+            if (_questionBox.OptionSelectedTrigger)
+            {
+                _finished = true;
+                Finish?.Invoke(this, EventArgs.Empty);
+                _closed = true;
+            }
         }
         #endregion
 
@@ -781,7 +820,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             var valueAttributes = enumValueMemberInfo.GetCustomAttributes(typeof(CharacterAttribute), false);
             defaultsValues = (CharacterAttribute)valueAttributes[0];
 
-            if (defaultsValues.TextureName == null || defaultsValues.SheetName == null)
+            if (defaultsValues.TextureType == null)
                 face = FaceType.None;
             if (face == FaceType.Default) face = defaultsValues.DefaultFace;
 
@@ -813,10 +852,11 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             _speakPitchMin = speakPitchMin;
             _speakPitchMax = speakPitchMax;
 
-            if (defaultsValues.TextureName != null)
-                Textures.GetTexture(defaultsValues.TextureName, out _characterTexture);
-            if (defaultsValues.SheetName != null)
-                SpriteSheets.GetSheet(defaultsValues.SheetName, out _characterSheet);
+            if (defaultsValues.TextureType.HasValue)
+                _characterTexture = Textures.Get(defaultsValues.TextureType.Value);
+
+            if (defaultsValues.TextureType != null)
+                _characterSheet = SpriteSheets.Get(defaultsValues.TextureType.Value);
 
             if (string.IsNullOrEmpty(_characterName))
                 showCharacterName = false;
@@ -840,6 +880,9 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             ComputeTextAlign(_allCommands);
             if (dialog.DoPauses) ComputeTextPauses(_allCommands);
 
+            //Question
+            _questionData = dialog.Question;
+
             //Reset values
             _isDirty = Dirtys.NeedRenderBackground | Dirtys.NeedClearText | Dirtys.NeedClearText | Dirtys.NeedRenderText;
             _finished = false;
@@ -861,13 +904,14 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         internal void ResetResolution()
         {
             GetZone();
+            _questionBox.ResetResolution();
         }
         #endregion
 
         #region SUB-CLASSES
         private struct Zones
         {
-            public readonly Rectangle Zone;
+            public readonly Rectangle GlobalZone;
             public readonly Rectangle BackgroundZone;
             public readonly Rectangle FaceZone;
             public readonly Rectangle NameZone;
@@ -877,7 +921,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
 
             public Zones(Rectangle zone, Rectangle backgroundZone, Rectangle faceZone, Rectangle nameZone, Vector2 namePos, Rectangle textZone, SpriteEffects flip)
             {
-                Zone = zone;
+                GlobalZone = zone;
                 BackgroundZone = backgroundZone;
                 FaceZone = faceZone;
                 NameZone = nameZone;

@@ -1,81 +1,84 @@
-﻿    using HorrorShorts_Game.Controls.Sprites;
+﻿using HorrorShorts_Game.Controls.Sprites;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Resources;
+using Resources.Attributes;
+using SharpFont.PostScript;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HorrorShorts_Game.Resources
 {
     public static class Textures
     {
+        private static readonly Dictionary<TextureType, Texture2D> _loaded = new();
+        private static readonly TextureType[] AlwaysLoaded = new TextureType[]
+        {
+            TextureType.Pixel,
+            TextureType.DialogMenu
+        };
+        public static Texture2D Get(TextureType texture)
+        {
+            if (!_loaded.TryGetValue(texture, out Texture2D toReturn))
+            {
+                //todo: log advice
+                bool loaded = Load(texture);
+                if (!loaded) throw new Microsoft.Xna.Framework.Content.ContentLoadException($"Error loading resource at runtime: {texture}");
+                toReturn = _loaded[texture];
+            }
+
+            return toReturn;
+        }
+
         public static Texture2D Pixel { get; private set; }
 
-        //INTERFAZ
-        [Resource("Textures/UI/DialogMenu")]
-        public static Texture2D DialogMenu { get; private set; }
+        private static readonly Type _enumType = typeof(TextureType);
 
-        //CHARACTERS
-#if DEBUG
-        [Resource("Textures/Characters/Mario")]
-        public static Texture2D Mario { get; private set; }
-        [Resource("Textures/Characters/Megaman")]
-        public static Texture2D Megaman { get; private set; }
-#endif
-        [Resource("Textures/Characters/Girl1")]
-        public static Texture2D Girl1 { get; private set; }
-
-
-        public static string[] AlwaysLoadedTextures = new string[]
-        {
-            nameof(Pixel),
-            nameof(DialogMenu)
-        };
 
         public static void Init()
         {
             Pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
             Pixel.SetData(new Color[1] { Color.White });
+            _loaded.Add(TextureType.Pixel, Pixel);
 
-            DialogMenu = Core.Content.Load<Texture2D>("Textures/UI/DialogMenu");
+            for (int i = 1; i < AlwaysLoaded.Length; i++)
+                if (!Load(AlwaysLoaded[i]))
+                    throw new ContentLoadException($"Error loading a Init resource: {AlwaysLoaded[i]}");
         }
-        public static void ReLoad(params string[] textures)
+        public static void ReLoad(TextureType[] textures, out List<SpriteSheetType> sheetsToLoad)
         {
-            List<string> texturesToLoad = new List<string>();
-            List<string> texturesToUnload = new List<string>();
-            List<string> sheetsToLoad = new List<string>();
-            List<string> sheetsToUnload = new List<string>();
+            List<TextureType> texturesToLoad = new();
+            List<TextureType> texturesToUnload = new();
+            sheetsToLoad = new();
+
+            TextureType[] allTextures = (TextureType[])Enum.GetValues(typeof(TextureType));
 
             //Check textures
-            PropertyInfo[] props = typeof(Textures).GetProperties(BindingFlags.Public | BindingFlags.Static);
-            for (int i = 0; i < props.Length; i++)
+            for (int i = 0; i < allTextures.Length; i++)
             {
-                if (props[i].PropertyType != typeof(Texture2D)) continue;
-                if (Array.FindIndex(AlwaysLoadedTextures, x => x == props[i].Name) != -1) continue;
+                if (Array.FindIndex(AlwaysLoaded, x => x == allTextures[i]) != -1) continue;
+                TextureAttribute attribute = GetTextureAttribute(allTextures[i]);
+                bool isSheet = attribute.Sheet.HasValue;
 
-                //int tIndex = textures.FindIndex(x => x == fields[i].Name);
-                Texture2D t = (Texture2D)props[i].GetValue(null);
-
-                PropertyInfo sheetPropInfo = typeof(Textures).GetProperty(props[i].Name + "_Sheet");
-                if (textures.Contains(props[i].Name))
+                if (textures.Contains(allTextures[i]))
                 {
-                    if (t == null || t.IsDisposed)
+                    if (!_loaded.ContainsKey(allTextures[i]))
                     {
-                        texturesToLoad.Add(props[i].Name);
-                        if (sheetPropInfo != null) sheetsToLoad.Add(sheetPropInfo.Name);
+                        texturesToLoad.Add(allTextures[i]);
+                        if (isSheet) sheetsToLoad.Add(attribute.Sheet.Value);
                     }
                 }
                 else
                 {
-                    if (t != null && !t.IsDisposed)
+                    if (_loaded.ContainsKey(allTextures[i]))
                     {
-                        texturesToUnload.Add(props[i].Name);
-                        if (sheetPropInfo != null) sheetsToUnload.Add(sheetPropInfo.Name);
+                        texturesToUnload.Add(allTextures[i]);
+                        //if (isSheet) sheetsToUnload.Add(attribute.Sheet.Value);
                     }
                 }
             }
@@ -84,47 +87,73 @@ namespace HorrorShorts_Game.Resources
             //Unload textures
             for (int i = 0; i < texturesToUnload.Count; i++)
             {
-                PropertyInfo propInfo = typeof(Textures).GetProperty(texturesToUnload[i]);
-                Texture2D t = (Texture2D)propInfo.GetValue(null);
-                if (!t.IsDisposed) t.Dispose();
-                propInfo.SetValue(null, null);
+                if (!UnLoad(texturesToUnload[i]))
+                { 
+                    /*todo: log advice or throw exception*/
+                        throw new ContentLoadException($"Error loading resource at loading time: {texturesToUnload[i]}");
+                }
             }
-            ////Unload sheets
-            //for (int i = 0; i < sheetsToUnload.Count; i++)
-            //{
-            //    PropertyInfo fi = typeof(Textures).GetProperty(sheetsToUnload[i]);
-            //    fi.SetValue(null, null);
-            //}
 
             //Load textures
-
-
             for (int i = 0; i < texturesToLoad.Count; i++)
-            {
-                PropertyInfo propInfo = typeof(Textures).GetProperty(texturesToLoad[i]);
-                string path = ((ResourceAttribute)propInfo.GetCustomAttribute(typeof(ResourceAttribute), true)).Path;
-                Texture2D t = Core.Content.Load<Texture2D>(path);
-                propInfo.SetValue(null, t);
-            }
-            //Task.Run(() => { });
+                if (!Load(texturesToLoad[i]))
+                {
+                    /*todo: log advice or throw exception*/
+                    throw new ContentLoadException($"Error loading resource at loading time: {texturesToLoad[i]}");
+                }
 
-            ////Load sheets
-            //for (int i = 0; i < sheetsToLoad.Count; i++)
-            //{
-            //    FieldInfo fi = typeof(Textures).GetField(sheetsToLoad[i]);
-            //    string path = ((DescriptionAttribute)fi.GetCustomAttribute(typeof(DescriptionAttribute), true)).Description;
-            //    SpriteSheet s = SpriteSheetSerial.Load(path).ToSpriteSheet();
-            //    fi.SetValue(null, s);
-            //}
         }
 
-        public static void GetTexture(string name, out Texture2D texture)
+        private static bool Load(TextureType textureType)
         {
-            PropertyInfo tProp = typeof(Textures).GetProperty(name, BindingFlags.Public | BindingFlags.Static);
-            if (tProp == null) throw new Exception("Can't Load Texture " + name);
-            if (tProp.PropertyType != typeof(Texture2D)) throw new Exception("Can't Load Sheet " + name);
+            try
+            {
+                if (_loaded.ContainsKey(textureType)) return false;  //todo: log advice
 
-            texture = (Texture2D)tProp.GetValue(null);
+                string path = GetTexturePath(textureType);
+                if (path == null) return false;  //todo: log advice
+
+                Texture2D t = Core.Content.Load<Texture2D>(path);
+                _loaded.Add(textureType, t);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //todo: log ex
+                return false;
+            }
+        }
+        private static bool UnLoad(TextureType textureType)
+        {
+            try
+            {
+                if (!_loaded.ContainsKey(textureType)) return false; //todo: log advice
+
+                if (!_loaded[textureType].IsDisposed)
+                    _loaded[textureType].Dispose();
+                _loaded.Remove(textureType);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //todo: log ex
+                return false;
+            }
+        }
+        public static string GetTexturePath(TextureType textureType)
+        {
+            TextureAttribute valueAttributes = GetTextureAttribute(textureType);
+            if (valueAttributes.ResourcePath == null) return null;
+            string path = Path.Combine("Textures", valueAttributes.ResourcePath);
+            return path;
+        }
+        public static TextureAttribute GetTextureAttribute(TextureType textureType)
+        {
+            MemberInfo[] memberInfos = _enumType.GetMember(textureType.ToString());
+            var enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == _enumType);
+            TextureAttribute valueAttributes = (TextureAttribute)enumValueMemberInfo.GetCustomAttributes(typeof(TextureAttribute), false)[0];
+            return valueAttributes;
         }
     }
 }

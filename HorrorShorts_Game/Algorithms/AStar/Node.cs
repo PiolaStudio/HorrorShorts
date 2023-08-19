@@ -16,13 +16,6 @@ namespace HorrorShorts_Game.Algorithms.AStar
         public int Cost = 10;
         public int X = 0;
         public int Y = 0;
-        private string DebuggerDisplay
-        {
-            get
-            {
-                return $"{X} {Y} Cost: ";
-            }
-        }
 
         public Node()
         {

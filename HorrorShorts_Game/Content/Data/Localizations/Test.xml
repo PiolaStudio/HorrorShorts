@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Localizations="Resources.Localizations">
+  <Asset Type="Localizations:Localization_Serial">
+    <Conversations>
+      <Conversation>
+		  <ID>Conversación 1</ID> 
+		  <Dialogs>
+			<Dialog>
+			  <Text>Hola, este es el primer dialogo de la conversación.{se:Test1}</Text>
+			  <Location>TopLeft</Location>
+			</Dialog>
+			<Dialog>
+			  <Text>Y este es el segundo y está en rojo</Text>
+			  <FontColor>FF0000</FontColor>
+			</Dialog>
+			<Dialog>
+			  <Text>Y yo soy una minita feliz jijiji</Text>
+			  <Character>Girl1</Character>
+			  <Face>Happy</Face>
+			</Dialog>
+			<Dialog>
+				<Text>Pregunta...</Text>
+				<Location>BottomRight</Location>
+				<Question>
+					<Options>
+						<Option>Respuesta 1</Option>
+						<Option>Respuesta 2</Option>
+						<Option>Respuesta 3</Option>
+					</Options>
+				</Question>
+			</Dialog>
+		  </Dialogs>
+		</Conversation>
+      <Conversation>
+		  <ID>Conversación 2</ID>
+		  <Dialogs>
+			<Dialog>
+			  <Text>Esta es otra conversación...</Text>
+			</Dialog>
+			<Dialog>
+			  <Text>NO{dy:200}-TE{dy:200}-ME{dy:200}-TAS</Text>
+			</Dialog>
+		  </Dialogs>
+		</Conversation>
+    </Conversations>
+    <Questions>
+		<Question>
+			<ID>Pregunta 1</ID>
+			<Options>
+				<Option>Respuesta 1</Option>
+				<Option>Respuesta 2</Option>
+				<Option>Respuesta 3</Option>
+				<Option>Ola k ase</Option>
+			</Options>
+			<Location>TopLeft</Location>
+		</Question>
+	</Questions>
+  </Asset>
+</XnaContent>

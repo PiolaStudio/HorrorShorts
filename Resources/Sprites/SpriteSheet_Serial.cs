@@ -12,7 +12,7 @@ namespace Resources.Sprites
     public class SpriteSheet_Serial
     {
         [ContentSerializer(AllowNull = false, Optional = false)]
-        public string Texture;
+        public TextureType Texture;
 
         [ContentSerializer(AllowNull = false, Optional = false, CollectionItemName = "Sheet")]
         public SingleSheet_Serial[] Sheets;

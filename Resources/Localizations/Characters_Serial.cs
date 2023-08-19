@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Resources.Dialogs
+namespace Resources.Localizations
 {
     //todo: armar esta clase
     public class Characters_Serial

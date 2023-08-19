@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "HorrorShorts_DeskTop": {
+      "commandName": "Project"
+    },
+    "HorrorShorts_DeskTop_Tests": {
+      "commandName": "Project",
+      "commandLineArgs": "default"
+    }
+  }
+}

@@ -2,7 +2,7 @@
 using HorrorShorts_Game.Controls.UI.Dialogs;
 using HorrorShorts_Game.Resources;
 using Resources;
-using Resources.Dialogs;
+using Resources.Localizations;
 using Resources.Sprites;
 using System;
 using System.Collections.Generic;
@@ -21,18 +21,13 @@ namespace HorrorShorts_Game.Tests
     {
         public override void LoadContent1()
         {
-            Textures.ReLoad(
-                nameof(Textures.Mario),
-                nameof(Textures.Megaman),
-                nameof(Textures.Girl1));
+            Textures.ReLoad(new TextureType[] {
+                TextureType.Mario, TextureType.Megaman, TextureType.Girl1, },
+                out List<SpriteSheetType> sheetsFromTextures);
 
-            SpriteSheets.ReLoad(
-                nameof(SpriteSheets.Mario),
-                nameof(SpriteSheets.Megaman),
-                nameof(SpriteSheets.Girl1));
+            SpriteSheets.ReLoad((new SpriteSheetType[] { }).Concat(sheetsFromTextures).ToArray());
 
-            Animations.ReLoad(
-                nameof(Animations.Megaman));
+            Animations.ReLoad(new AnimationType[] { AnimationType.Megaman });
 
             //SpriteSheet_Serial ss = new SpriteSheet_Serial();
             //ss.Texture = "Mario";
@@ -44,9 +39,8 @@ namespace HorrorShorts_Game.Tests
             ////ss.Save("Test.xml");
 
 
-            //Conversation_Serial conversation = new();
-            //conversation.Conversations = new ConversationItem_Serial[2];
-            //conversation.Conversations[0] = new ConversationItem_Serial()
+            //Conversation_Serial[] Conversations = new Conversation_Serial[2];
+            //Conversations[0] = new Conversation_Serial()
             //{
             //    ID = "Conversación 1",
             //    Dialogs = new Dialog_Serial[3]
@@ -55,7 +49,7 @@ namespace HorrorShorts_Game.Tests
             //        {
             //            Character = Characters.Girl1,
             //            Face = FaceType.Angry,
-            //            Location = Locations.Bottom,
+            //            Location = TextBoxLocation.BottomLeft,
             //            //Speak = SpeakType.Speak2,
             //            //SpeakSpeed = 4,
             //            //Text = "Thanks, that works. Im converting an old xna game to monogame. For some reason my game runs faster in xna then monogame. Is this normal. That is why Im trying to lock to 30 fps."
@@ -76,7 +70,7 @@ namespace HorrorShorts_Game.Tests
             //        }
             //    }
             //};
-            //conversation.Conversations[1] = new ConversationItem_Serial()
+            //Conversations[1] = new Conversation_Serial()
             //{
             //    ID = "Conversación 2",
             //    Dialogs = new Dialog_Serial[3]
@@ -98,13 +92,18 @@ namespace HorrorShorts_Game.Tests
             //        }
             //    }
             //};
-            //conversation.Save("Test.xml");
+
+            //Localization_Serial localization = new();
+            //localization.Conversations = Conversations;
+            //localization.Questions = new QuestionGroup_Serial[0];
+
+            //localization.Save("Test.xml");
 
             //db.LoadContent();
             //db.Show(new Dialog(conversation.Conversations[0].Dialogs[0]));
 
             //Dialog[] dialogs = (Dialog[])Array.ConvertAll(conversation.Conversations[0].Dialogs, x => new Dialog(x));
-            Core.DialogManagement.Start(Dialogs.Test["Conversación 1"]);
+            Core.DialogManagement.Start(Localizations.Test.Dialogs["Conversación 1"]);
         }
         public override void Update1()
         {

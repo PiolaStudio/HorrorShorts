@@ -9,6 +9,12 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DefineConstants>$(DefineConstants)TRACE;DESKTOP</DefineConstants>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Controls\ILoadeable.cs" />
+	  <Compile Remove="Controls\IMonogameFullMethods.cs" />
+	  <Compile Remove="Controls\IMonogameSimpleMethods.cs" />
+	  <Compile Remove="Resources\Dialogs.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303">

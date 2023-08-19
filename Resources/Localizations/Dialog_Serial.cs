@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
-namespace Resources.Dialogs
+namespace Resources.Localizations
 {
     public class Dialog_Serial
     {
@@ -36,14 +36,24 @@ namespace Resources.Dialogs
         public int? SpeakPitchVariation = null;
 
         [ContentSerializer(AllowNull = true, Optional = true)]
-        public TextBoxLocation? Location = null;
+        public DialogBoxLocation? Location = null;
         [ContentSerializer(AllowNull = true, Optional = true)]
         public TextAlignament? TextAlign = null;
 
+        [ContentSerializer(AllowNull = true, Optional = true)]
+        public Question_Serial? Question = null;
         //public bool WaitInputAtEnd;
         //public bool AjustEndLine;
         //public bool CanAccelerate;
         //public bool StopActions;      //<---  ahora solo Dios sabe que hace esto
         //public bool DoPauses;
+    }
+    public class Conversation_Serial
+    {
+        [ContentSerializer(AllowNull = false, Optional = false)]
+        public string ID;
+
+        [ContentSerializer(AllowNull = false, Optional = false, CollectionItemName = "Dialog")]
+        public Dialog_Serial[] Dialogs;
     }
 }

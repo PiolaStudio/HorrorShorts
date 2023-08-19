@@ -1,8 +1,9 @@
-﻿using Resources.Dialogs;
+﻿using Resources.Localizations;
 using Resources;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using System;
+using HorrorShorts_Game.Controls.UI.Questions;
 
 namespace HorrorShorts_Game.Controls.UI.Dialogs
 {
@@ -14,7 +15,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         public Characters Character;
         public FaceType Face;
 
-        public TextBoxLocation Location;
+        public DialogBoxLocation Location;
         public TextAlignament TextAlign;
         public float Speed;
 
@@ -35,13 +36,15 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         public bool StopActions; //todo
         public bool DoPauses; //todo
 
+        public Question? Question;
+
         public Dialog()
         {
             Text = "Default Text";
             Character = Characters.Narrator;
             Face = FaceType.None;
             TextAlign = TextAlignament.TopLeft;
-            Location = TextBoxLocation.BottomLeft;
+            Location = DialogBoxLocation.BottomLeft;
             Speak = SpeakType.None;
             Speed = 20;
             Font = FontType.Default;
@@ -56,25 +59,27 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             CanAccelerate = true;
             StopActions = true;
             DoPauses = true;
+
+            Question = null;
         }
         public Dialog(Dialog_Serial serial)
         {
             Text = serial.Text;
             Character = serial.Character ?? Characters.Narrator; //todo: change to -1 (default)
             Face = serial.Face ?? FaceType.None; //todo: change to -1 (default)
-            Location = serial.Location ?? TextBoxLocation.BottomLeft;
+            Location = serial.Location ?? DialogBoxLocation.BottomLeft;
             if (serial.TextAlign == null)
             {
                 switch (Location)
                 {
-                    case TextBoxLocation.TopLeft:
-                    case TextBoxLocation.MiddleLeft:
-                    case TextBoxLocation.BottomLeft:
+                    case DialogBoxLocation.TopLeft:
+                    case DialogBoxLocation.MiddleLeft:
+                    case DialogBoxLocation.BottomLeft:
                         TextAlign = TextAlignament.MiddleLeft;
                         break;
-                    case TextBoxLocation.TopRight:
-                    case TextBoxLocation.MiddleRight:
-                    case TextBoxLocation.BottomRight:
+                    case DialogBoxLocation.TopRight:
+                    case DialogBoxLocation.MiddleRight:
+                    case DialogBoxLocation.BottomRight:
                         TextAlign = TextAlignament.MiddleRight;
                         break;
                     default:
@@ -99,6 +104,10 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             CanAccelerate = true;
             StopActions = true;
             DoPauses = true;
+
+            if (serial.Question != null)
+                Question = new(serial.Question, Location);
+            else Question = null;
         }
     }
 }
