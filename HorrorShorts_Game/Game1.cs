@@ -19,7 +19,7 @@ namespace HorrorShorts_Game
         private readonly GraphicsDeviceManager _graphics;
 
 #if DEBUG
-        private readonly TestBase test = new Test8();
+        private readonly TestBase test = new Test1();
 #endif
 
 #if DEBUG
@@ -29,10 +29,12 @@ namespace HorrorShorts_Game
                 test = null;
             else if (testID != "default")
             {
-                //test = Type.GetType("Test8");
                 Type testType = Type.GetType("HorrorShorts_Game.Tests.Test" + testID);
                 if (testType != null)
+                {
+                    Logger.Advice($"Loading Test '{testID}'");
                     test = (TestBase)Activator.CreateInstance(testType);
+                }
             }
         }
 #endif
@@ -45,12 +47,14 @@ namespace HorrorShorts_Game
 
         protected override void Initialize()
         {
+            Logger.Advice("Game Initialize start...");
             this.IsFixedTimeStep = false;
             this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
 
             Core.Init(this, _graphics);
             base.Initialize();
             _graphics.ApplyChanges();
+            Logger.Advice("Game Initialize finish!");
         }
 
         protected override void LoadContent()

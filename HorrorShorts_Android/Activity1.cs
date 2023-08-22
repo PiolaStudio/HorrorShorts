@@ -26,11 +26,25 @@ namespace HorrorShorts_Android
         {
             base.OnCreate(bundle);
 
-            _game = new Game1();
-            _view = _game.Services.GetService(typeof(View)) as View;
+            Logger.InternException += (s, e) => Core.Game?.Exit();
+            Logger.Start();
 
-            SetContentView(_view);
-            _game.Run();
+            try
+            {
+                _game = new Game1();
+                _view = _game.Services.GetService(typeof(View)) as View;
+
+                SetContentView(_view);
+                _game.Run();
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Fatal(ex);
+                Logger.Finish();
+                throw;
+            }
+
+            Logger.Finish();
         }
     }
 }

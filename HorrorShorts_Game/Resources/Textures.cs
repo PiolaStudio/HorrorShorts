@@ -26,9 +26,9 @@ namespace HorrorShorts_Game.Resources
         {
             if (!_loaded.TryGetValue(texture, out Texture2D toReturn))
             {
-                //todo: log advice
+                Logger.Warning($"Texture '{texture}' is not loaded in 'RELOAD' time. Loading in game time...");
                 bool loaded = Load(texture);
-                if (!loaded) throw new Microsoft.Xna.Framework.Content.ContentLoadException($"Error loading resource at runtime: {texture}");
+                if (!loaded) throw new ContentLoadException($"Error loading texture at game time: {texture}");
                 toReturn = _loaded[texture];
             }
 
@@ -42,16 +42,19 @@ namespace HorrorShorts_Game.Resources
 
         public static void Init()
         {
+            Logger.Advice("Initing textures...");
             Pixel = new Texture2D(Core.GraphicsDevice, 1, 1);
             Pixel.SetData(new Color[1] { Color.White });
             _loaded.Add(TextureType.Pixel, Pixel);
 
             for (int i = 1; i < AlwaysLoaded.Length; i++)
                 if (!Load(AlwaysLoaded[i]))
-                    throw new ContentLoadException($"Error loading a Init resource: {AlwaysLoaded[i]}");
+                    throw new ContentLoadException($"Error loading a Init texture: {AlwaysLoaded[i]}");
+            Logger.Advice("Init textures loaded!");
         }
         public static void ReLoad(TextureType[] textures, out List<SpriteSheetType> sheetsToLoad)
         {
+            Logger.Advice("Textures reloading...");
             List<TextureType> texturesToLoad = new();
             List<TextureType> texturesToUnload = new();
             sheetsToLoad = new();
@@ -86,32 +89,33 @@ namespace HorrorShorts_Game.Resources
             //todo: add in parallel task
             //Unload textures
             for (int i = 0; i < texturesToUnload.Count; i++)
-            {
                 if (!UnLoad(texturesToUnload[i]))
-                { 
-                    /*todo: log advice or throw exception*/
-                        throw new ContentLoadException($"Error loading resource at loading time: {texturesToUnload[i]}");
-                }
-            }
+                    throw new ContentLoadException($"Error unloading texture at loading time: {texturesToUnload[i]}");
 
             //Load textures
             for (int i = 0; i < texturesToLoad.Count; i++)
                 if (!Load(texturesToLoad[i]))
-                {
-                    /*todo: log advice or throw exception*/
-                    throw new ContentLoadException($"Error loading resource at loading time: {texturesToLoad[i]}");
-                }
+                    throw new ContentLoadException($"Error loading texture at loading time: {texturesToLoad[i]}");
 
+            Logger.Advice("Textures reloaded!");
         }
 
         private static bool Load(TextureType textureType)
         {
             try
             {
-                if (_loaded.ContainsKey(textureType)) return false;  //todo: log advice
+                if (_loaded.ContainsKey(textureType))
+                {
+                    Logger.Warning($"Texture '{textureType}' not need load because it is already loaded.");
+                    return false;
+                }
 
                 string path = GetTexturePath(textureType);
-                if (path == null) return false;  //todo: log advice
+                if (path == null)
+                {
+                    Logger.Warning($"Texture '{textureType}' hasn't a loadeable path.");
+                    return false;
+                }
 
                 Texture2D t = Core.Content.Load<Texture2D>(path);
                 _loaded.Add(textureType, t);
@@ -119,7 +123,7 @@ namespace HorrorShorts_Game.Resources
             }
             catch (Exception ex)
             {
-                //todo: log ex
+                Logger.Error(ex);
                 return false;
             }
         }
@@ -127,7 +131,11 @@ namespace HorrorShorts_Game.Resources
         {
             try
             {
-                if (!_loaded.ContainsKey(textureType)) return false; //todo: log advice
+                if (!_loaded.ContainsKey(textureType))
+                {
+                    Logger.Warning($"Texture '{textureType}' not need unload because it is already unloaded.");
+                    return false; 
+                }
 
                 if (!_loaded[textureType].IsDisposed)
                     _loaded[textureType].Dispose();
@@ -137,7 +145,7 @@ namespace HorrorShorts_Game.Resources
             }
             catch (Exception ex)
             {
-                //todo: log ex
+                Logger.Warning(ex);
                 return false;
             }
         }

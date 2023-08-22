@@ -16,14 +16,15 @@ namespace HorrorShorts_Game.Resources
     public static class Animations
     {
         private static readonly Dictionary<AnimationType, Dictionary<string, AnimationData>> _loaded = new();
-        public static Dictionary<string, AnimationData> Get(AnimationType sheet)
+        public static Dictionary<string, AnimationData> Get(AnimationType anim)
         {
-            if (!_loaded.TryGetValue(sheet, out Dictionary<string, AnimationData> toReturn))
+            if (!_loaded.TryGetValue(anim, out Dictionary<string, AnimationData> toReturn))
             {
                 //todo: log advice
-                bool loaded = Load(sheet);
-                if (!loaded) throw new ContentLoadException($"Error loading resource at runtime: {sheet}");
-                toReturn = _loaded[sheet];
+                Logger.Warning($"Animation '{anim}' is not loaded in 'RELOAD' time. Loading in game time...");
+                bool loaded = Load(anim);
+                if (!loaded) throw new ContentLoadException($"Error loading animation at runtime: {anim}");
+                toReturn = _loaded[anim];
             }
             return toReturn;
         }
@@ -34,14 +35,17 @@ namespace HorrorShorts_Game.Resources
 
         public static void Init()
         {
+            Logger.Advice("Initing animations...");
             for (int i = 0; i < AlwaysLoaded.Length; i++)
                 if (!Load(AlwaysLoaded[i]))
-                    throw new ContentLoadException($"Error loading a Init resource: {AlwaysLoaded[i]}");
+                    throw new ContentLoadException($"Error loading a Init animation: {AlwaysLoaded[i]}");
+            Logger.Advice("Init animations loaded!");
         }
 
         //public static
         public static void ReLoad(AnimationType[] animations)
         {
+            Logger.Advice("Animations reloading...");
             List<AnimationType> animsToLoad = new();
             List<AnimationType> animsToUnload = new();
 
@@ -69,33 +73,33 @@ namespace HorrorShorts_Game.Resources
             //todo: add in parallel task
             //Unload anims
             for (int i = 0; i < animsToUnload.Count; i++)
-            {
                 if (!UnLoad(animsToUnload[i]))
-                {
-                    /*todo: log advice or throw exception*/
-                    throw new ContentLoadException($"Error loading resource at loading time: {animsToUnload[i]}");
-                }
-            }
+                    throw new ContentLoadException($"Error unloading animations at loading time: {animsToUnload[i]}");
 
             //Load anims
             for (int i = 0; i < animsToLoad.Count; i++)
-            {
                 if (!Load(animsToLoad[i]))
-                { 
-                    /*todo: log advice or throw exception*/
-                    throw new ContentLoadException($"Error loading resource at loading time: {animsToLoad[i]}");
-                }
-            }
+                    throw new ContentLoadException($"Error loading animations at loading time: {animsToLoad[i]}");
+
+            Logger.Advice("Animations reloaded!");
         }
 
         private static bool Load(AnimationType animType)
         {
             try
             {
-                if (_loaded.ContainsKey(animType)) return false; //todo: log advice
+                if (_loaded.ContainsKey(animType))
+                {
+                    Logger.Warning($"Animation '{animType}' not need load because it is already loaded.");
+                    return false;
+                }
 
                 string path = GetAnimationPath(animType);
-                if (path == null) return false;  //todo: log advice
+                if (path == null)
+                {
+                    Logger.Warning($"Animation '{animType}' hasn't a loadeable path.");
+                    return false; 
+                }
 
                 Animation_Serial ass = Core.Content.Load<Animation_Serial>(path);
                 Dictionary<string, AnimationData> a = new();
@@ -108,7 +112,7 @@ namespace HorrorShorts_Game.Resources
             }
             catch (Exception ex)
             {
-                //todo: log ex
+                Logger.Error(ex);
                 return false;
             }
         }
@@ -116,7 +120,11 @@ namespace HorrorShorts_Game.Resources
         {
             try
             {
-                if (!_loaded.ContainsKey(animType)) return false; //todo: log advice
+                if (!_loaded.ContainsKey(animType))
+                {
+                    Logger.Warning($"Animation '{animType}' not need unload because it is already unloaded.");
+                    return false;
+                }
 
                 string path = GetAnimationPath(animType);
                 Core.Content.UnloadAsset(path); //todo: check
@@ -125,7 +133,7 @@ namespace HorrorShorts_Game.Resources
             }
             catch (Exception ex)
             {
-                //todo: log ex
+                Logger.Error(ex);
                 return false;
             }
         }
@@ -133,7 +141,7 @@ namespace HorrorShorts_Game.Resources
         {
             AnimationAttribute valueAttributes = GetAnimationAttribute(animType);
             if (valueAttributes.ResourcePath == null) return null;
-            string path = Path.Combine("Data/Animations", valueAttributes.ResourcePath);
+            string path = Path.Combine("Data", "Animations", valueAttributes.ResourcePath);
             return path;
         }
         private static AnimationAttribute GetAnimationAttribute(AnimationType animType)

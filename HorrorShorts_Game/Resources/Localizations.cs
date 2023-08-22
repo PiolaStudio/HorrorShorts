@@ -11,10 +11,10 @@ namespace HorrorShorts_Game.Resources
 {
     public class Localizations
     {
-        [ResourceAttribute("Data/Localizations/Story1")]
+        [ResourceAttribute("Data\\Localizations\\Story1")]
         public static LocalizationGroup Story1 { get; private set; }
 #if DEBUG
-        [ResourceAttribute("Data/Localizations/Test")]
+        [ResourceAttribute("Data\\Localizations\\Test")]
         public static LocalizationGroup Test { get; private set; }
 #endif
 

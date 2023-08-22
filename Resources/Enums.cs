@@ -90,32 +90,32 @@ namespace Resources
     {
         [TextureAttribute(null)]
         Pixel,
-        [TextureAttribute("UI/DialogMenu")]
+        [TextureAttribute("UI\\DialogMenu")]
         DialogMenu,
-        [TextureAttribute("Characters/Girl1", SpriteSheetType.Girl1)]
+        [TextureAttribute("Characters\\Girl1", SpriteSheetType.Girl1)]
         Girl1,
 #if DEBUG
-        [TextureAttribute("Characters/Mario", SpriteSheetType.Mario)]
+        [TextureAttribute("Characters\\Mario", SpriteSheetType.Mario)]
         Mario,
-        [TextureAttribute("Characters/Megaman", SpriteSheetType.Megaman)]
+        [TextureAttribute("Characters\\Megaman", SpriteSheetType.Megaman)]
         Megaman,
 #endif
     }
     public enum SpriteSheetType : uint
     {
-        [SpriteSheetAttribute("Characters/Girl1")]
+        [SpriteSheetAttribute("Characters\\Girl1")]
         Girl1,
 #if DEBUG
-        [SpriteSheetAttribute("Characters/Mario")]
+        [SpriteSheetAttribute("Characters\\Mario")]
         Mario,
-        [SpriteSheetAttribute("Characters/Megaman")]
+        [SpriteSheetAttribute("Characters\\Megaman")]
         Megaman
 #endif
     }
     public enum AnimationType : uint
     {
 #if DEBUG
-        [AnimationAttribute("Characters/Megaman")]
+        [AnimationAttribute("Characters\\Megaman")]
         Megaman
 #endif
     }
@@ -131,13 +131,13 @@ namespace Resources
     }
     public enum SoundType : int
     {
-        [SoundAttribute("UI/OptionChange")]
+        [SoundAttribute("UI\\OptionChange")]
         OptionChange,
-        [SoundAttribute("UI/OptionSelect")]
+        [SoundAttribute("UI\\OptionSelect")]
         OptionSelect,
-        [SoundAttribute("Speak/Speak1")]
+        [SoundAttribute("Speak\\Speak1")]
         Speak1,
-        [SoundAttribute("Speak/Speak2")]
+        [SoundAttribute("Speak\\Speak2")]
         Speak2,
 #if DEBUG
         [SoundAttribute("Test1")]

@@ -54,6 +54,7 @@ namespace HorrorShorts_Game
 
         public static void Init(Game1 game, GraphicsDeviceManager deviceManager)
         {
+            Logger.Advice("Initing Core...");
             Game = game;
             GraphicsDeviceManager = deviceManager;
             GraphicsDevice = game.GraphicsDevice;
@@ -107,11 +108,14 @@ namespace HorrorShorts_Game
 #endif
 
             Render = new RenderTarget2D(GraphicsDevice, Settings.NativeResolution.Width, Settings.NativeResolution.Height);
+            Logger.Advice("Core initialized!");
         }
         public static void LoadContent()
         {
+            Logger.Advice("Loading Core!");
             DialogManagement.LoadContent();
             QuestionBox.LoadContent();
+            Logger.Advice("Loaded Core!");
         }
         public static void Update(GameTime gameTime)
         {
@@ -134,6 +138,7 @@ namespace HorrorShorts_Game
 
         public static void SetResolution(int width, int height, bool fullScreen)
         {
+            Logger.Advice($"Setting resolution. {width} x {height} (FullScreen: {fullScreen})");
             Settings.ResolutionWidth = width;
             Settings.ResolutionHeight = height;
             Settings.FullScreen = fullScreen;
@@ -173,6 +178,7 @@ namespace HorrorShorts_Game
             //Reset UI Resolution
             DialogManagement?.ResetResolution();
             QuestionBox?.ResetResolution();
+            Logger.Advice($"Resolution Setted!");
         }
     }
 }

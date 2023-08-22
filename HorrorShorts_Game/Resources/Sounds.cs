@@ -27,9 +27,9 @@ namespace HorrorShorts_Game.Resources
         {
             if (!_loaded.TryGetValue(sound, out SoundEffect toReturn))
             {
-                //todo: log advice
+                Logger.Warning($"Sound '{sound}' is not loaded in 'RELOAD' time. Loading in game time...");
                 bool loaded = Load(sound);
-                if (!loaded) throw new ContentLoadException($"Error loading resource at runtime: {sound}");
+                if (!loaded) throw new ContentLoadException($"Error loading sound at runtime: {sound}");
                 toReturn = _loaded[sound];
             }
             return toReturn;
@@ -40,12 +40,15 @@ namespace HorrorShorts_Game.Resources
 
         public static void Init()
         {
+            Logger.Advice("Initing sounds...");
             for (int i = 0; i < AlwaysLoaded.Length; i++)
                 if (!Load(AlwaysLoaded[i]))
-                    throw new ContentLoadException($"Error loading a Init resource: {AlwaysLoaded[i]}");
+                    throw new ContentLoadException($"Error loading a Init sound: {AlwaysLoaded[i]}");
+            Logger.Advice("Init sounds loaded!");
         }
         public static void ReLoad(SoundType[] sounds)
         {
+            Logger.Advice("Sounds reloading...");
             List<SoundType> soundsToLoad = new();
             List<SoundType> soundsToUnload = new();
             SoundType[] allSounds = (SoundType[])Enum.GetValues(typeof(SoundType));
@@ -71,36 +74,40 @@ namespace HorrorShorts_Game.Resources
             //Unload Sounds
             for (int i = 0; i < soundsToUnload.Count; i++)
                 if (!UnLoad(soundsToUnload[i]))
-                {
-                    /*todo: log advice or throw exception*/
-                    throw new ContentLoadException($"Error loading resource at loading time: {soundsToUnload[i]}");
-                }
+                    throw new ContentLoadException($"Error loading sound at loading time: {soundsToUnload[i]}");
 
             //Load Sounds
             for (int i = 0; i < soundsToLoad.Count; i++)
                 if (!Load(soundsToLoad[i]))
-                {
-                    /*todo: log advice or throw exception*/
-                    throw new ContentLoadException($"Error loading resource at loading time: {soundsToLoad[i]}");
-                }
+                    throw new ContentLoadException($"Error loading sound at loading time: {soundsToLoad[i]}");
+
+            Logger.Advice("Sounds reloaded!");
         }
 
         private static bool Load(SoundType soundType)
         {
             try
             {
-                if (_loaded.ContainsKey(soundType)) return false; //todo: log advice
+                if (_loaded.ContainsKey(soundType))
+                {
+                    Logger.Warning($"Sound '{soundType}' not need load because it is already loaded.");
+                    return false;
+                }
 
                 string path = GetSoundPath(soundType);
-                if (path == null) return false;  //todo: log advice
+                if (path == null)
+                {
+                    Logger.Warning($"Sound '{soundType}' hasn't a loadeable path.");
+                    return false;
+                }
 
                 SoundEffect se = Core.Content.Load<SoundEffect>(path);
                 _loaded.Add(soundType, se);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //todo: log ex
+                Logger.Error(ex);
                 return false;
             }
         }
@@ -108,16 +115,20 @@ namespace HorrorShorts_Game.Resources
         {
             try
             {
-                if (!_loaded.ContainsKey(soundType)) return false; //todo: log advice
+                if (!_loaded.ContainsKey(soundType))
+                {
+                    Logger.Warning($"Sound '{soundType}' not need unload because it is already unloaded.");
+                    return false;
+                }
 
                 if (!_loaded[soundType].IsDisposed)
                     _loaded[soundType].Dispose();
                 _loaded.Remove(soundType);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //todo: log ex
+                Logger.Warning(ex);
                 return false;
             }
         }

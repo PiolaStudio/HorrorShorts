@@ -23,16 +23,15 @@ namespace HorrorShorts_Game.Resources
         {
             if (!_loaded.TryGetValue(sheet, out SpriteSheet toReturn))
             {
-                //todo: log advice
+                Logger.Warning($"SpriteSheet '{sheet}' is not loaded in 'RELOAD' time. Loading in game time...");
                 bool loaded = Load(sheet);
-                if (!loaded) throw new ContentLoadException($"Error loading resource at runtime: {sheet}");
+                if (!loaded) throw new ContentLoadException($"Error loading spritesheet at game time: {sheet}");
                 toReturn = _loaded[sheet];
             }
             return toReturn;
         }
         public static SpriteSheet Get(TextureType texture)
         {
-            //todo: log advice
             TextureAttribute valueAttributes = Textures.GetTextureAttribute(texture);
             if (valueAttributes.Sheet == null) return null;
             SpriteSheetType sheet = valueAttributes.Sheet.Value;
@@ -45,12 +44,15 @@ namespace HorrorShorts_Game.Resources
 
         public static void Init()
         {
+            Logger.Advice("Initing spritesheets...");
             for (int i = 0; i < AlwaysLoaded.Length; i++)
                 if (!Load(AlwaysLoaded[i]))
-                    throw new ContentLoadException($"Error loading a Init resource: {AlwaysLoaded[i]}");
+                    throw new ContentLoadException($"Error loading a Init spritesheet: {AlwaysLoaded[i]}");
+            Logger.Advice("Init spritesheets loaded!");
         }
         public static void ReLoad(SpriteSheetType[] sheets)
         {
+            Logger.Advice("Spritesheets reloading...");
             List<SpriteSheetType> sheetsToLoad = new();
             List<SpriteSheetType> sheetsToUnload = new();
 
@@ -79,23 +81,33 @@ namespace HorrorShorts_Game.Resources
             //Unload sheets
             for (int i = 0; i < sheetsToUnload.Count; i++)
                 if (!UnLoad(sheetsToLoad[i]))
-                { /*todo: log advice or throw exception*/}
+                    throw new ContentLoadException($"Error unloading spritesheet at loading time: {sheetsToUnload[i]}");
 
 
             //Load sheets
             for (int i = 0; i < sheetsToLoad.Count; i++)
                 if (!Load(sheetsToLoad[i]))
-                { /*todo: log advice or throw exception*/}
+                    throw new ContentLoadException($"Error loading spritesheet at loading time: {sheetsToLoad[i]}");
+
+            Logger.Advice("Spritesheets reloaded!");
         }
 
         private static bool Load(SpriteSheetType sheetType)
         {
             try
             {
-                if (_loaded.ContainsKey(sheetType)) return false;  //todo: log advice
+                if (_loaded.ContainsKey(sheetType))
+                {
+                    Logger.Warning($"SpriteSheet '{sheetType}' not need load because it is already loaded.");
+                    return false; 
+                }
 
                 string path = GetSheetPath(sheetType);
-                if (path == null) return false;  //todo: log advice
+                if (path == null)
+                {
+                    Logger.Warning($"SpriteSheet '{sheetType}' hasn't a loadeable path.");
+                    return false; 
+                }
 
                 SpriteSheet_Serial ss_serial = Core.Content.Load<SpriteSheet_Serial>(path);
                 SpriteSheet ss = new(ss_serial);
@@ -104,7 +116,7 @@ namespace HorrorShorts_Game.Resources
             }
             catch (Exception ex) 
             { 
-                //todo: log ex
+                Logger.Error(ex);
                 return false; 
             }
         }
@@ -112,16 +124,20 @@ namespace HorrorShorts_Game.Resources
         {
             try
             {
-                if (!_loaded.ContainsKey(sheetType)) return false; //todo: log advice
+                if (!_loaded.ContainsKey(sheetType))
+                {
+                    Logger.Warning($"SpriteSheet '{sheetType}' not need unload because it is already unloaded.");
+                    return false;
+                }
 
                 string path = GetSheetPath(sheetType);
                 Core.Content.UnloadAsset(path); //todo: check
                 _loaded.Remove(sheetType);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //todo: log ex
+                Logger.Warning(ex);
                 return false; 
             }
         }
@@ -129,7 +145,7 @@ namespace HorrorShorts_Game.Resources
         {
             SpriteSheetAttribute valueAttributes = GetSheetAttribute(sheetType);
             if (valueAttributes.ResourcePath == null) return null;
-            string path = Path.Combine("Data/SpriteSheets", valueAttributes.ResourcePath);
+            string path = Path.Combine("Data", "SpriteSheets", valueAttributes.ResourcePath);
             return path;
         }
         private static SpriteSheetAttribute GetSheetAttribute(SpriteSheetType sheetType)
