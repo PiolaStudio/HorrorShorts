@@ -23,7 +23,7 @@ namespace HorrorShorts_Game.Resources
             Arial = Core.Content.Load<SpriteFont>("Fonts/PixelArial");
             Logger.Advice("Init fonts loaded!");
         }
-        public static SpriteFont GetFont(FontType type)
+        public static SpriteFont Get(FontType type)
         {
             return type switch
             {

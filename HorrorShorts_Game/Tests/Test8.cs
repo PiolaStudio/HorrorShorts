@@ -34,10 +34,6 @@ namespace HorrorShorts_Game.Tests
                 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
 #endif
         }
-        public override void Draw2()
-        {
-            
-        }
     }
 }
 #endif

@@ -19,7 +19,7 @@ namespace HorrorShorts_Game
         private readonly GraphicsDeviceManager _graphics;
 
 #if DEBUG
-        private readonly TestBase test = new Test1();
+        private readonly TestBase test = new Test9();
 #endif
 
 #if DEBUG

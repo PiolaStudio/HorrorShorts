@@ -332,7 +332,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         //currentText = string.Empty;
                         break;
                     case Commands.Font:
-                        font = Fonts.GetFont((FontType)commands[i].Data1);
+                        font = Fonts.Get((FontType)commands[i].Data1);
                         break;
                     case Commands.FontSize:
                         fontScale = (int)commands[i].Data1;
@@ -359,7 +359,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         lenght += font.MeasureString(commands[i].GetData1<string>()).X * fontScale;
                         break;
                     case Commands.Font:
-                        font = Fonts.GetFont((FontType)commands[i].Data1);
+                        font = Fonts.Get((FontType)commands[i].Data1);
                         break;
                     case Commands.FontSize:
                         fontScale = commands[i].GetData1<int>();
@@ -778,7 +778,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                             _textColor = (Color)_currentCommands[i].Data1;
                             break;
                         case Commands.Font: //Change the Text Font
-                            _textFont = Fonts.GetFont((FontType)_currentCommands[i].Data1);
+                            _textFont = Fonts.Get((FontType)_currentCommands[i].Data1);
                             break;
                         case Commands.FontSize: //Cahnge the text Font Size
                             _textScale = (int)_currentCommands[i].Data1;
@@ -840,7 +840,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             _characterType = character;
             _characterName = defaultsValues.DefaultName;
             _faceType = face;
-            _textFont = Fonts.GetFont(font);
+            _textFont = Fonts.Get(font);
             _textScale = dialog.FontSize;
             _baseTextScale = dialog.FontSize;
             _textColor = dialog.Color;

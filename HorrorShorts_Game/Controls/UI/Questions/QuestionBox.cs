@@ -108,7 +108,7 @@ namespace HorrorShorts_Game.Controls.UI.Questions
         }
         public void LoadContent()
         {
-            _textFont = Fonts.GetFont(FontType.Arial);
+            _textFont = Fonts.Get(FontType.Arial);
             _backgroundsTextures = Textures.Get(TextureType.DialogMenu);
 
             GetZone();
@@ -538,7 +538,7 @@ namespace HorrorShorts_Game.Controls.UI.Questions
         {
             _options = (string[])question.Options.Clone();
             _textAlign = question.TextAlign;
-            _textFont = Fonts.GetFont(question.Font);
+            _textFont = Fonts.Get(question.Font);
             _location = question.Location;
             _overOptionIndex = question.DefaultOption;
 
