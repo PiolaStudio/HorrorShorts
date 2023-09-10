@@ -14,15 +14,40 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Data/Animations/Backgrounds/Menu/MainTitle1.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/Animations/Backgrounds/Menu/MainTitle1.xml
+
 #begin Data/Animations/Characters/Megaman.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:Data/Animations/Characters/Megaman.xml
 
+#begin Data/Atmosphere/Field1.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/Atmosphere/Field1.xml
+
+#begin Data/Localizations/English/Global.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/Localizations/English/Global.xml
+
+#begin Data/Localizations/Spanish/Global.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/Localizations/Spanish/Global.xml
+
 #begin Data/Localizations/Test.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:Data/Localizations/Test.xml
+
+#begin Data/SpriteSheets/Backgrounds/Menu/MainTitle1.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/SpriteSheets/Backgrounds/Menu/MainTitle1.xml
 
 #begin Data/SpriteSheets/Characters/Girl1.xml
 /importer:XmlImporter
@@ -57,6 +82,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Music/Test2.wav
+
+#begin SoundEffects/Atmosphere/Field1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Medium
+/build:SoundEffects/Atmosphere/Field1.wav
 
 #begin SoundEffects/Speak/Speak1.wav
 /importer:WavImporter
@@ -111,6 +142,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Backgrounds/FurnacesSheet.png
+
+#begin Textures/Backgrounds/Menu/MainTitle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Backgrounds/Menu/MainTitle.png
+
+#begin Textures/Backgrounds/Menu/MainTitle1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Backgrounds/Menu/MainTitle1.png
 
 #begin Textures/Backgrounds/RoomBackground.png
 /importer:TextureImporter

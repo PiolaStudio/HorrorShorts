@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,22 @@ namespace HorrorShorts_Game
         //    return (T)(object) ((int)(object)value & ~(int)(object)flag);
         //}
 
+        public static Point PointDistance(this Point point1, Point point2)
+        {
+            return new(Math.Abs(point1.X - point2.X), Math.Abs(point1.Y - point2.Y));
+        }
+
         public static bool NextBool(this Random random)
         {
             return random.Next(2) == 0;
+        }
+        public static float NextFloat(this Random random)
+        {
+            return (float)random.NextDouble();
+        }
+        public static float NextFloat(this Random random, float min, float max)
+        {
+            return (float)random.NextDouble() * (max - min) + min;
         }
 
         public static Color HexToColor(this string hex)

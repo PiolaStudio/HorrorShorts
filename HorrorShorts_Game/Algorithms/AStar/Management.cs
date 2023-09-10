@@ -165,8 +165,7 @@ namespace HorrorShorts_Game.Algorithms.AStar
                         sb.AppendLine("Error searching a path.");
                         sb.Append($"Parent Node: X: {fatherNode.Node.X} Y: {fatherNode.Node.Y}");
                         sb.AppendLine("Exception: " + ex.Message);
-                        Debug.WriteLine(sb);
-                        //todo: add log
+                        Logger.Error(sb.ToString());
                     }
                 }
 
@@ -194,8 +193,7 @@ namespace HorrorShorts_Game.Algorithms.AStar
                 StringBuilder sb = new();
                 sb.AppendLine("FATAL error searching a path.");
                 sb.AppendLine("Exception: " + ex.Message);
-                Debug.WriteLine(sb);
-                //todo: add log
+                Logger.Error(sb.ToString());
             }
 
             //The path was not found

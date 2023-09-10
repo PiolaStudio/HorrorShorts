@@ -11,6 +11,8 @@ namespace HorrorShorts_Game.Resources
 {
     public class Localizations
     {
+        public static GlobalLocalization Global { get; private set; }
+
         [ResourceAttribute("Data\\Localizations\\Story1")]
         public static LocalizationGroup Story1 { get; private set; }
 #if DEBUG
@@ -18,6 +20,11 @@ namespace HorrorShorts_Game.Resources
         public static LocalizationGroup Test { get; private set; }
 #endif
 
+        public static void Init()
+        {
+            string path = GetPath("Global");
+            Global = new(Core.Content.Load<GlobalLocalization_Serial>(path));
+        }
         public static void ReLoad(string[] dialogs)
         {
             List<string> localizationsToLoad = new();
@@ -75,6 +82,37 @@ namespace HorrorShorts_Game.Resources
                 LocalizationGroup data = new(dialogsData, questionsData);
 
                 propInfo.SetValue(null, data);
+            }
+        }
+
+        private static string GetPath(string name)
+        {
+            return $"Data\\Localizations\\{Core.Settings.Language}\\{name}";
+        }
+    }
+
+    public class GlobalLocalization
+    {
+        public readonly string NewGame;
+        public readonly string Continue;
+        public readonly string Options;
+        public readonly string Exit;
+
+        public GlobalLocalization(GlobalLocalization_Serial serial)
+        {
+            FieldInfo[] localFields = GetType().GetFields();
+            FieldInfo[] serialFields = serial.GetType().GetFields();
+
+            for (int i = 0; i < serialFields.Length; i++)
+            {
+                FieldInfo field = Array.Find(localFields, x => x.Name == serialFields[i].Name);
+                if (field == null)
+                {
+                    Logger.Warning($"Field '{serialFields[i].Name}' not found for Global localization");
+                    continue;
+                }
+
+                field.SetValue(this, serialFields[i].GetValue(serial));
             }
         }
     }

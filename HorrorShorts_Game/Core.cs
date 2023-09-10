@@ -1,8 +1,15 @@
-﻿using HorrorShorts_Game.Controls.Audio;
+﻿using HorrorShorts_Game.Audio.Atmosphere;
+using HorrorShorts_Game.Audio.Song;
+using HorrorShorts_Game.Audio.Sound;
+using HorrorShorts_Game.Controls.Camera;
 using HorrorShorts_Game.Controls.UI.Dialogs;
 using HorrorShorts_Game.Controls.UI.Questions;
+using HorrorShorts_Game.Effects;
 using HorrorShorts_Game.Inputs;
+using HorrorShorts_Game.Levels.Empty;
 using HorrorShorts_Game.Resources;
+using HorrorShorts_Game.Screens;
+using HorrorShorts_Game.Screens.MainTitles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,36 +28,35 @@ namespace HorrorShorts_Game
     {
         public static Game1 Game;
 
-        public static SpriteBatch SpriteBatch;
-        private static GraphicsDeviceManager GraphicsDeviceManager;
-        public static GraphicsDevice GraphicsDevice;
-        public static GameWindow Window;
-        public static ContentManager Content;
-        public static GameTime GameTime;
-        public static RenderTarget2D Render;
-        public static Settings Settings;
+        public static SpriteBatch SpriteBatch { get; private set; }
+        public static GraphicsDeviceManager GraphicsDeviceManager { get; private set; }
+        public static GraphicsDevice GraphicsDevice { get; private set; }
+        public static GameWindow Window { get; private set; }
+        public static ContentManager Content { get; private set; }
+        public static GameTime GameTime { get; private set; }
+        public static RenderTarget2D Render { get; private set; }
+        public static Settings Settings { get; private set; }
+        public static ResolutionManagment Resolution { get; private set; }
 
-        public static float DeltaTime; //todo
+        public static LevelBase Level { get; private set; }
+
+        public static float DeltaTime { get; private set; } //todo
         private static readonly TimeSpan _idealFrameRate = TimeSpan.FromMilliseconds(1000 / 60.0);
 
         //Audio
-        public static SongManager SongManager;
-        public static SoundManager SoundManager;
+        public static SongManager SongManager { get; private set; }
+        public static SoundManager SoundManager { get; private set; }
+        public static AtmosphereManager AtmosphereManager { get; private set; }
 
-        public static DialogManagement DialogManagement;
-        public static QuestionBox QuestionBox;
+        public static Camera Camera { get; private set; }
+        public static DialogManagement DialogManagement { get; private set; }
+        public static QuestionBox QuestionBox { get; private set; }
+        public static FadeInOut FadeEffect { get; private set; }
 
         public static readonly Color BackColor = new(40, 40, 40);
 
 
-        public static Matrix ResolutionCamera;
-        public static Rectangle ResolutionBounds;
-        public static Rectangle ClickZone;
-
-        public static InputControl Controls;
-
-        public static KeyboardState KeyState;
-        public static JoystickState JoystickState;
+        public static InputControl Controls { get; private set; }
 
         public static void Init(Game1 game, GraphicsDeviceManager deviceManager)
         {
@@ -63,11 +69,27 @@ namespace HorrorShorts_Game
             Content = game.Content;
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
+
+
+            //Try Load Settings
+            //todo: load settings from file
+#if DEBUG
+            Settings = new Settings(); //todo: borrar
+#endif
+
+
+
+            Level = new EmptyLevel();
+
             SoundManager = new();
             SongManager = new();
+            AtmosphereManager = new();
             Controls = new();
             DialogManagement = new();
             QuestionBox = new();
+            FadeEffect = new();
+            Camera = new();
+            Resolution = new();
 
             Render = new(GraphicsDevice, Settings.NativeResolution.Width, Settings.NativeResolution.Height);
 
@@ -76,16 +98,7 @@ namespace HorrorShorts_Game
             Fonts.Init();
             Sounds.Init();
             Songs.Init();
-
-
-            //Try Load Settings
-            //todo: load settings from file
-#if DEBUG
-            Settings = new Settings(); //todo: borrar
-            Settings.ResolutionWidth = 640;//todo: borrar
-            Settings.ResolutionHeight = 640;//todo: borrar
-            Settings.FullScreen = false;//todo: borrar
-#endif
+            Localizations.Init();
 
 #if DESKTOP
             if (Settings.FullScreen)
@@ -99,6 +112,7 @@ namespace HorrorShorts_Game
 
 #if DESKTOP
             game.IsMouseVisible = true;
+            game.Window.IsBorderless = false;
             game.Window.AllowUserResizing = true;
             game.Window.ClientSizeChanged += (s, e) =>
             {
@@ -108,6 +122,11 @@ namespace HorrorShorts_Game
 #endif
 
             Render = new RenderTarget2D(GraphicsDevice, Settings.NativeResolution.Width, Settings.NativeResolution.Height);
+
+
+            Level = new MainTitle1(); //todo: seleccionar MainTitle correcta
+            FadeEffect.FadeIn(1500);
+
             Logger.Advice("Core initialized!");
         }
         public static void LoadContent()
@@ -122,13 +141,15 @@ namespace HorrorShorts_Game
             GameTime = gameTime;
             DeltaTime = (float)(gameTime.ElapsedGameTime.TotalMilliseconds / _idealFrameRate.TotalMilliseconds);
 
-            KeyState = Keyboard.GetState();
-            JoystickState = Joystick.GetState(0);
-
             Controls.Update();
             DialogManagement.Update();
             QuestionBox.Update();
+
             SongManager.Update();
+            AtmosphereManager.Update();
+
+            FadeEffect.Update();
+            Camera.Update();
         }
         public static void Dispose()
         {
@@ -139,45 +160,17 @@ namespace HorrorShorts_Game
         public static void SetResolution(int width, int height, bool fullScreen)
         {
             Logger.Advice($"Setting resolution. {width} x {height} (FullScreen: {fullScreen})");
-            Settings.ResolutionWidth = width;
-            Settings.ResolutionHeight = height;
-            Settings.FullScreen = fullScreen;
 
-            GraphicsDeviceManager.PreferredBackBufferWidth = Settings.ResolutionWidth;
-            GraphicsDeviceManager.PreferredBackBufferHeight = Settings.ResolutionHeight;
-            GraphicsDeviceManager.IsFullScreen = Settings.FullScreen;
+            Resolution.SetResolution(width, height, fullScreen);
 
-            //Calculate Resoultion Camera
-            Rectangle nativeResolution = Settings.NativeResolution;
-
-            float ratioAspect = width / (float)height;
-            float nativeRatioAspect = nativeResolution.Width / (float)nativeResolution.Height;
-
-            int baseHeight = (int)Math.Ceiling(nativeResolution.Width / ratioAspect);
-
-            float scale = width / (float)nativeResolution.Width;
-
-            float posY;
-
-            posY = -(nativeResolution.Height - baseHeight) * scale;
-            if (ratioAspect < nativeRatioAspect)
-            {
-                posY /= 2;
-                ClickZone = new(0, (int)posY, width, Convert.ToInt32(height - posY * 2));
-            }
-            else ClickZone = new(0, 0, width, height);
-
-            ResolutionBounds = new(0,
-                                   Math.Max(nativeResolution.Height - baseHeight, 0),
-                                   nativeResolution.Width,
-                                   Math.Min(nativeResolution.Height, baseHeight));
-
-
-            ResolutionCamera = Matrix.CreateScale(scale) * Matrix.CreateTranslation(0, posY, 0);
+            DialogManagement?.ResetResolution();
+            QuestionBox?.ResetResolution();
+            if (Level.Loaded) Level.ResetResolution();
 
             //Reset UI Resolution
             DialogManagement?.ResetResolution();
             QuestionBox?.ResetResolution();
+            if (Level.Loaded) Level.ResetResolution();
             Logger.Advice($"Resolution Setted!");
         }
     }

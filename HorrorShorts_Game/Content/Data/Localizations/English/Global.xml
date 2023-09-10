@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Localizations="Resources.Localizations">
+  <Asset Type="Localizations:GlobalLocalization_Serial">
+    <NewGame>New Game</NewGame>
+    <Continue>Continue</Continue>
+    <Options>Options</Options>
+    <Exit>Exit</Exit>
+  </Asset>
+</XnaContent>

@@ -53,16 +53,16 @@ namespace HorrorShorts_Game.Inputs
             }
 
             //Out of Click Zone
-            if (_realPosition.Y < Core.ClickZone.Top ||
-                _realPosition.Y > Core.ClickZone.Bottom) return;
+            if (_realPosition.Y < Core.Resolution.ClickZone.Top ||
+                _realPosition.Y > Core.Resolution.ClickZone.Bottom) return;
 
             //todo: remplazar por el verdadero Render Bounds (rectangulo que representa la camara)
-            Rectangle renderBounds = new(0, Core.ResolutionBounds.Y, Core.ResolutionBounds.Width, Core.ResolutionBounds.Height);
+            Rectangle renderBounds = new(0, Core.Resolution.Bounds.Y, Core.Resolution.Bounds.Width, Core.Resolution.Bounds.Height);
 
-            Vector2 inClickZonePerc = (_realPosition - Core.ClickZone.Location).ToVector2() / Core.ClickZone.Size.ToVector2();
+            Vector2 inClickZonePerc = (_realPosition - Core.Resolution.ClickZone.Location).ToVector2() / Core.Resolution.ClickZone.Size.ToVector2();
             _virtualPositionScene = renderBounds.Location + (inClickZonePerc * renderBounds.Size.ToVector2()).ToPoint();
             
-            _virtualPositionUI = Core.ResolutionBounds.Location + (inClickZonePerc * Core.ResolutionBounds.Size.ToVector2()).ToPoint();
+            _virtualPositionUI = Core.Resolution.Bounds.Location + (inClickZonePerc * Core.Resolution.Bounds.Size.ToVector2()).ToPoint();
         }
         private void UpdateClick()
         {

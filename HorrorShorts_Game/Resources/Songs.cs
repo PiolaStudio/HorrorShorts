@@ -43,8 +43,8 @@ namespace HorrorShorts_Game.Resources
         public static void ReLoad(SongType[] songs) 
         {
             Logger.Advice("Songs reloading...");
-            List<SongType> songsToLoad = new List<SongType>();
-            List<SongType> songsToUnload = new List<SongType>();
+            List<SongType> songsToLoad = new();
+            List<SongType> songsToUnload = new();
             SongType[] allSongs = (SongType[])Enum.GetValues(typeof(SongType));
 
             //Check songs
@@ -59,7 +59,7 @@ namespace HorrorShorts_Game.Resources
                 }
                 else
                 {
-                    if (!_loaded.ContainsKey(allSongs[i]))
+                    if (_loaded.ContainsKey(allSongs[i]))
                         songsToUnload.Add(allSongs[i]);
                 }
             }

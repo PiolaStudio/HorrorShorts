@@ -1,4 +1,5 @@
-﻿using HorrorShorts_Game.Controls.Sprites;
+﻿using HorrorShorts_Game.Algorithms.Tweener;
+using HorrorShorts_Game.Controls.Sprites;
 using HorrorShorts_Game.Resources;
 #if DEBUG
 using HorrorShorts_Game.Tests;
@@ -19,7 +20,10 @@ namespace HorrorShorts_Game
         private readonly GraphicsDeviceManager _graphics;
 
 #if DEBUG
-        private readonly TestBase test = new Test9();
+        private readonly TestBase test = null;
+        private static readonly Color ClearColor = new Color(84, 50, 98);
+#else
+        private static readonly Color clearColor = Color.Black;
 #endif
 
 #if DEBUG
@@ -64,7 +68,7 @@ namespace HorrorShorts_Game
 #if DEBUG
             Localizations.ReLoad(new string[] { nameof(Localizations.Test) });
 #endif
-            Sounds.ReLoad(new SoundType[] { SoundType.Speak1, SoundType.Speak2, SoundType.Test1 });
+            //Sounds.ReLoad(new SoundType[] { SoundType.Speak1, SoundType.Speak2, SoundType.Test1 }, out _);
 
 #if DEBUG
             test?.LoadContent1();
@@ -82,6 +86,9 @@ namespace HorrorShorts_Game
             test?.Update1();
 #endif
 
+            if (!Core.Level.Loaded) Core.Level.LoadContent();
+            Core.Level.Update();
+
             base.Update(gameTime);
         }
 
@@ -89,6 +96,7 @@ namespace HorrorShorts_Game
         {
             Core.DialogManagement.PreDraw();
             Core.QuestionBox.PreDraw();
+            Core.Level.PreDraw();
 #if DEBUG
             test?.PreDraw1();
 #endif
@@ -110,26 +118,46 @@ namespace HorrorShorts_Game
         {
             Core.GraphicsDevice.SetRenderTarget(Core.Render);
 
-#if DEBUG
-            GraphicsDevice.Clear(new Color(84, 50, 98));
-#else
-            GraphicsDevice.Clear(Color.Black);
-#endif
+            GraphicsDevice.Clear(ClearColor);
 
+            if (Core.Level.Loaded)
+            {
+                //Layers
+                LayerType[] layers = Enum.GetValues<LayerType>();
+                for (int i = 0; i < layers.Length; i++)
+                {
+                    if (layers[i] == LayerType.UI) continue;
+                    if (!Core.Level.LayerIsUsed(layers[i])) continue;
+
+                    Core.SpriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, samplerState: SamplerState.PointClamp, blendState: BlendState.NonPremultiplied, transformMatrix: Core.Camera.Matrix);
+                    Core.Level.Draw(layers[i]);
+                    Core.SpriteBatch.End();
+                }
+
+                //UI
+                Core.SpriteBatch.Begin(sortMode: SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp, blendState: BlendState.NonPremultiplied);
+                Core.Level.DrawUI();
+                Core.DialogManagement.Draw();
+                Core.QuestionBox.Draw();
+                Core.SpriteBatch.End();
+            }
+
+#if DEBUG
             Core.SpriteBatch.Begin(sortMode: SpriteSortMode.FrontToBack, samplerState: SamplerState.PointClamp, blendState: BlendState.NonPremultiplied);
-#if DEBUG
             test?.Draw1();
-#endif
-            Core.DialogManagement.Draw();
-            Core.QuestionBox.Draw();
-
             Core.SpriteBatch.End();
+#endif
+
+            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp, blendState: BlendState.NonPremultiplied);
+            Core.FadeEffect.Draw();
+            Core.SpriteBatch.End();
+
             Core.GraphicsDevice.SetRenderTarget(null);
         }
         private void RenderFinal()
         {
             GraphicsDevice.Clear(Core.BackColor);
-            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Core.ResolutionCamera);
+            Core.SpriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Core.Resolution.Matrix);
             Core.SpriteBatch.Draw(Core.Render, Vector2.Zero, Color.White);
             Core.SpriteBatch.End();
         }

@@ -1,23 +1,27 @@
-﻿using HorrorShorts_Game.Resources;
+﻿using Assimp;
+using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Resources;
 using System;
+using System.Diagnostics;
 
 namespace HorrorShorts_Game.Controls.UI
 {
+    [DebuggerDisplay("{Text}")]
     public class Label
     {
         private string _text = "Text";
         private FontType _font = FontType.Arial;
         private SpriteFont _spriteFont;
         private Vector2 _position = Vector2.Zero;
-        private Color _textColor = Color.Black;
+        private Color _color = Color.Black;
         private Vector2 _origin = Vector2.Zero;
         private float _scale = 1f;
         private TextAlignament _alignament = TextAlignament.MiddleCenter;
 
         private Vector2 _measure;
+        private Rectangle _zone;
         private bool _needCompute = true;
 
         public FontType Font
@@ -41,11 +45,37 @@ namespace HorrorShorts_Game.Controls.UI
                 _needCompute = true;
             }
         }
-        public Vector2 Position { get => _position; set => _position = value; }
-        public float X { get => _position.X; set => _position.X = value; }
-        public float Y { get => _position.Y; set => _position.Y = value; }
+        public Vector2 Position
+        {
+            get => _position;
+            set 
+            { 
+                _position = value;
+                UpdateZone();
+            }
+        }
+        public float X 
+        { 
+            get => _position.X;
+            set
+            {
+                _position.X = value;
+                UpdateZone();
+            }
+        }
+        public float Y 
+        { 
+            get => _position.Y;
+            set
+            {
+                _position.Y = value;
+                UpdateZone();
+            }
+        }
 
-        public Color TextColor { get => _textColor; set => _textColor = value; }
+        public Color Color { get => _color; set => _color = value; }
+        public byte Alpha { get => _color.A; set => Color = new(_color, value); }
+
         public int Scale
         {
             get => Convert.ToInt32(_scale);
@@ -68,6 +98,7 @@ namespace HorrorShorts_Game.Controls.UI
         }
 
         public Vector2 Measure { get => _measure; }
+        public Rectangle Zone {  get => _zone; }
 
         public Label()
         {
@@ -91,7 +122,7 @@ namespace HorrorShorts_Game.Controls.UI
         }
         public void Draw()
         {
-            Core.SpriteBatch.DrawString(_spriteFont, _text, _position, _textColor, 0f, _origin, _scale, SpriteEffects.None, 1f);
+            Core.SpriteBatch.DrawString(_spriteFont, _text, _position, _color, 0f, _origin, _scale, SpriteEffects.None, 1f);
         }
 
         private void Compute()
@@ -111,6 +142,15 @@ namespace HorrorShorts_Game.Controls.UI
                 TextAlignament.BottomRight  => new Vector2((float)Math.Floor(_measure.X), (float)Math.Floor(_measure.Y)),
                 _ => throw new NotImplementedException("Not supported text alginament")
             };
+
+            UpdateZone();
+        }
+        private void UpdateZone()
+        {
+            _zone = new(Convert.ToInt32(_position.X - _origin.X * _scale),
+                        Convert.ToInt32(_position.Y - _origin.Y * _scale),
+                        Convert.ToInt32(_measure.X),
+                        Convert.ToInt32(_measure.Y));
         }
         private void SetFont(FontType font)
         {

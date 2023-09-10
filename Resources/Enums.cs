@@ -85,6 +85,34 @@ namespace Resources
     }
 
 
+    public enum LanguageType : byte
+    {
+        English,
+        Spanish
+    }
+
+    public enum LayerType : byte
+    {
+        Background9,
+        Background8,
+        Background7,
+        Background6,
+        Background5,
+        Background4,
+        Background3,
+        Background2,
+        Background1,
+        Entities,
+        Frontground1,
+        Frontground2,
+        Frontground3,
+        Frontground4,
+        Frontground5,
+        Frontground6,
+        UI
+    }
+
+
     //RESOURCES
     public enum TextureType : uint
     {
@@ -92,6 +120,8 @@ namespace Resources
         Pixel,
         [TextureAttribute("UI\\DialogMenu")]
         DialogMenu,
+
+        //Charcters
         [TextureAttribute("Characters\\Girl1", SpriteSheetType.Girl1)]
         Girl1,
 #if DEBUG
@@ -100,24 +130,40 @@ namespace Resources
         [TextureAttribute("Characters\\Megaman", SpriteSheetType.Megaman)]
         Megaman,
 #endif
+
+        //Backgrounds
+        [TextureAttribute("Backgrounds\\Menu\\MainTitle")]
+        MainTitle,
+        [TextureAttribute("Backgrounds\\Menu\\MainTitle1", SpriteSheetType.MainTitle1)]
+        MainTitle1,
     }
     public enum SpriteSheetType : uint
     {
+        //Characters
         [SpriteSheetAttribute("Characters\\Girl1")]
         Girl1,
 #if DEBUG
         [SpriteSheetAttribute("Characters\\Mario")]
         Mario,
         [SpriteSheetAttribute("Characters\\Megaman")]
-        Megaman
+        Megaman,
 #endif
+
+        //Backgrounds
+        [SpriteSheetAttribute("Backgrounds\\Menu\\MainTitle1")]
+        MainTitle1,
     }
     public enum AnimationType : uint
     {
+        //Characters
 #if DEBUG
         [AnimationAttribute("Characters\\Megaman")]
-        Megaman
+        Megaman,
 #endif
+
+        //Backgrounds
+        [AnimationAttribute("Backgrounds\\Menu\\MainTitle1")]
+        MainTitle1,
     }
 
     public enum SongType : short
@@ -139,9 +185,19 @@ namespace Resources
         Speak1,
         [SoundAttribute("Speak\\Speak2")]
         Speak2,
+
+        [SoundAttribute("Atmosphere\\Field1")]
+        Field1_Atmosphere,
+
 #if DEBUG
         [SoundAttribute("Test1")]
         Test1
 #endif
+    }
+
+    public enum AtmosphereType
+    {
+        [AtmosphereAttribute("Field1")]
+        Field1,
     }
 }

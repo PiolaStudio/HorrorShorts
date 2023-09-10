@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +15,22 @@ namespace HorrorShorts_Game
         public int WindowX;
         public int WindowY;
 #endif
-        public int ResolutionWidth;
-        public int ResolutionHeight;
-        public bool FullScreen;
+
+        public int ResolutionWidth = 640;
+        public int ResolutionHeight = 640;
+        public bool FullScreen = false;
 
         //Audio
         public float GeneralVolume = 1f;
         public float MusicVolume = 1f;
         public float EffectsVolume = 1f;
+        public float AtmosphereVolume = 1f;
 
         public float MusicRealVolume = 1f;
         public float EffectsRealVolume = 1f;
+        public float AtmosphereRealVolume = 1f;
+
+        //Language
+        public LanguageType Language = LanguageType.English;
     }
 }

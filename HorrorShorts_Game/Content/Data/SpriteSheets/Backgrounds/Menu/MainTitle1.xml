@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Sprites="Resources.Sprites">
+	<Asset Type="Sprites:SpriteSheet_Serial">
+		<Texture>MainTitle1</Texture>
+		<Sheets>
+			<!--BACKGROUND-->
+			<Sheet>
+				<Name>Wall</Name>
+				<Source>0 0 320 240</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Ground1</Name>
+				<Source>0 240 320 160</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Tree</Name>
+				<Source>320 0 128 368</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Sky</Name>
+				<Source>448 0 320 512</Source>
+			</Sheet>
+			<!--FIREFLY 1-->
+			<Sheet>
+				<Name>FireFly1_1</Name>
+				<Source>768 0 48 48</Source>
+			</Sheet>
+			<Sheet>
+				<Name>FireFly1_2</Name>
+				<Source>768 48 48 48</Source>
+			</Sheet>
+			<Sheet>
+				<Name>FireFly1_3</Name>
+				<Source>768 96 48 48</Source>
+			</Sheet>
+			<!--FIREFLY 2-->
+			<Sheet>
+				<Name>FireFly2_1</Name>
+				<Source>816 0 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>FireFly2_2</Name>
+				<Source>816 32 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>FireFly2_3</Name>
+				<Source>816 64 32 32</Source>
+			</Sheet>
+			<!--FIREFLY 3-->
+			<Sheet>
+				<Name>FireFly3_1</Name>
+				<Source>816 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>FireFly3_2</Name>
+				<Source>816 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>FireFly3_3</Name>
+				<Source>816 128 16 16</Source>
+			</Sheet>
+			<!--MOON-->
+			<Sheet>
+				<Name>Moon_1</Name>
+				<Source>848 0 96 64</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Moon_2</Name>
+				<Source>944 0 96 64</Source>
+			</Sheet>
+		</Sheets>
+	</Asset>
+</XnaContent>

@@ -1,5 +1,4 @@
-﻿using HorrorShorts_Game.Controls.Audio;
-using HorrorShorts_Game.Controls.Sprites;
+﻿using HorrorShorts_Game.Controls.Sprites;
 using HorrorShorts_Game.Controls.UI.Questions;
 using HorrorShorts_Game.Inputs;
 using HorrorShorts_Game.Resources;
@@ -491,7 +490,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
             _zones = _location switch
             {
                 DialogBoxLocation.TopLeft => new Zones(
-                        new(0, Core.ResolutionBounds.Top, 320, 72),    //Zone
+                        new(0, Core.Resolution.Bounds.Top, 320, 72),    //Zone
                         new(0, 0, 320, 64),     //Background Zone 
                         new(8, 8, 40, 40),      //Face Zone 
                         new(0, 56, 104, 16),    //Name Zone
@@ -499,7 +498,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         _faceType != FaceType.None ? new(56, 10, 256, 40) : new(8, 10, 304, 40),   //Text Zone
                         SpriteEffects.FlipVertically),
                 DialogBoxLocation.TopRight => new Zones(
-                        new(0, Core.ResolutionBounds.Top, 320, 72),    //Zone
+                        new(0, Core.Resolution.Bounds.Top, 320, 72),    //Zone
                         new(0, 0, 320, 64),    //Background Zone 
                         new(272, 8, 40, 40),   //Face Zone 
                         new(216, 56, 104, 16), //Name Zone
@@ -508,7 +507,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally),
                 
                 DialogBoxLocation.MiddleLeft => new Zones(
-                        new(0, Core.ResolutionBounds.Center.Y - 36, 320, 72),  //Zone   //todo: ajustar a la resolución
+                        new(0, Core.Resolution.Bounds.Center.Y - 36, 320, 72),  //Zone   //todo: ajustar a la resolución
                         new(0, 8, 320, 64),   //Background Zone 
                         new(8, 24, 40, 40),    //Face Zone 
                         new(0, 0, 104, 16),     //Name Zone
@@ -516,7 +515,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         _faceType != FaceType.None ? new(56, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.None),
                 DialogBoxLocation.MiddleRight => new Zones(
-                        new(0, Core.ResolutionBounds.Center.Y - 36, 320, 72),  //Zone   //todo: ajustar a la resolución
+                        new(0, Core.Resolution.Bounds.Center.Y - 36, 320, 72),  //Zone   //todo: ajustar a la resolución
                         new(0, 8, 320, 64),   //Background Zone 
                         new(272, 24, 40, 40),   //Face Zone 
                         new(216, 0, 104, 16),   //Name Zone
@@ -525,7 +524,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         SpriteEffects.FlipHorizontally),
 
                 DialogBoxLocation.BottomLeft => new Zones(
-                        new(0, Core.ResolutionBounds.Bottom - 72, 320, 72),  //Zone   //todo: ajustar a la resolución
+                        new(0, Core.Resolution.Bounds.Bottom - 72, 320, 72),  //Zone   //todo: ajustar a la resolución
                         new(0, 8, 320, 64),   //Background Zone 
                         new(8, 24, 40, 40),    //Face Zone 
                         new(0, 0, 104, 16),     //Name Zone
@@ -533,7 +532,7 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
                         _faceType != FaceType.None ? new(72, 24, 256, 40) : new(8, 24, 304, 40),               //Text Zone
                         SpriteEffects.None),
                 DialogBoxLocation.BottomRight => new Zones(
-                        new(0, Core.ResolutionBounds.Bottom - 72, 320, 72),  //Zone   //todo: ajustar a la resolución
+                        new(0, Core.Resolution.Bounds.Bottom - 72, 320, 72),  //Zone   //todo: ajustar a la resolución
                         new(0, 8, 320, 64),   //Background Zone 
                         new(272, 24, 40, 40),   //Face Zone 
                         new(216, 0, 104, 16),   //Name Zone

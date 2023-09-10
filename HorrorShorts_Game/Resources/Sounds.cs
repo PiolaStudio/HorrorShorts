@@ -46,22 +46,29 @@ namespace HorrorShorts_Game.Resources
                     throw new ContentLoadException($"Error loading a Init sound: {AlwaysLoaded[i]}");
             Logger.Advice("Init sounds loaded!");
         }
-        public static void ReLoad(SoundType[] sounds)
+        public static void ReLoad(SoundType[] sounds, out List<AtmosphereType> atmospheresToLoad)
         {
             Logger.Advice("Sounds reloading...");
             List<SoundType> soundsToLoad = new();
             List<SoundType> soundsToUnload = new();
+            atmospheresToLoad = new();
+
             SoundType[] allSounds = (SoundType[])Enum.GetValues(typeof(SoundType));
 
             //Check sounds
             for (int i = 0; i < allSounds.Length; i++)
             {
                 if (Array.FindIndex(AlwaysLoaded, x => x == allSounds[i]) != -1) continue;
+                SoundAttribute attribute = GetSoundAttribute(allSounds[i]);
+                bool isAtmospheric = attribute.AtmosphereParent != null;
 
                 if (sounds.Contains(allSounds[i]))
                 {
                     if (!_loaded.ContainsKey(allSounds[i]))
+                    {
                         soundsToLoad.Add(allSounds[i]);
+                        if (isAtmospheric) atmospheresToLoad.Add(attribute.AtmosphereParent.Value);
+                    }
                 }
                 else
                 {

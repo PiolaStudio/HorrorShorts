@@ -80,7 +80,7 @@ namespace HorrorShorts_Game.Resources
             //todo: add in parallel task
             //Unload sheets
             for (int i = 0; i < sheetsToUnload.Count; i++)
-                if (!UnLoad(sheetsToLoad[i]))
+                if (!UnLoad(sheetsToUnload[i]))
                     throw new ContentLoadException($"Error unloading spritesheet at loading time: {sheetsToUnload[i]}");
 
 
