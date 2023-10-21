@@ -2,17 +2,18 @@
 using HorrorShorts_Game.Controls.UI.Dialogs;
 using HorrorShorts_Game.Controls.UI.Questions;
 using Microsoft.Xna.Framework;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static HorrorShorts_Game.Settings;
 
 namespace HorrorShorts_Game.Controls.Camera
 {
     public class ResolutionManagment
     {
-        private float _ajustOriginY = 1f;
         public float AjustOriginY
         {
             get => _ajustOriginY;
@@ -23,28 +24,68 @@ namespace HorrorShorts_Game.Controls.Camera
                 CalculateResolution();
             }
         }
+        private float _ajustOriginY = 1f;
 
         private Matrix _matrix;
         private Rectangle _bounds;
         private Rectangle _clickZone;
 
+        private const float MIN_ASPECT_RAIO = 320f / 160f;
+
         public Matrix Matrix { get => _matrix; }
         public Rectangle Bounds { get => _bounds; }
         public Rectangle ClickZone { get => _clickZone; }
 
-        internal void SetResolution(int width, int height, bool fullScreen)
+        internal void SetResolution(int width, int height, ResizeModes resizeMode, bool resizable)
         {
+            CheckResolution(ref width, ref height);
+
             Settings settings = Core.Settings;
 
             settings.ResolutionWidth = width;
             settings.ResolutionHeight = height;
-            settings.FullScreen = fullScreen;
+#if DESKTOP
+            settings.ResizeMode = resizeMode;
+#endif
 
             Core.GraphicsDeviceManager.PreferredBackBufferWidth = settings.ResolutionWidth;
             Core.GraphicsDeviceManager.PreferredBackBufferHeight = settings.ResolutionHeight;
-            Core.GraphicsDeviceManager.IsFullScreen = settings.FullScreen;
+
+            bool fullscreen = resizeMode == ResizeModes.FullScreen;
+
+#if CONSOLE || PHONE
+            Core.GraphicsDeviceManager.IsFullScreen = fullscreen;
+#endif
+#if DESKTOP
+            if (fullscreen != Core.GraphicsDeviceManager.IsFullScreen)
+            {
+                //Core.GraphicsDeviceManager.IsFullScreen = fullscreen;
+                Core.GraphicsDeviceManager.ToggleFullScreen();
+            }
+#endif
+
+#if DESKTOP
+            Core.Window.IsBorderless = resizeMode == ResizeModes.Bordeless;
+            Core.Window.AllowUserResizing = resizeMode == ResizeModes.Window && resizable;
+
+            if (resizeMode == ResizeModes.Bordeless)
+            {
+                Core.Window.IsBorderless = true;
+                Core.Window.Position = Point.Zero;
+            }
+            else Core.Window.IsBorderless = false;
+#endif
+
 
             CalculateResolution();
+        }
+        private void CheckResolution(ref int width, ref int height)
+        {
+            if (width < Settings.NativeResolution.Width)
+                width = Settings.NativeResolution.Width;
+
+            if (width / (float)height > MIN_ASPECT_RAIO)
+                height = Convert.ToInt32(width / MIN_ASPECT_RAIO);
         }
         private void CalculateResolution()
         {

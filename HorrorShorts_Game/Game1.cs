@@ -1,6 +1,4 @@
-﻿using HorrorShorts_Game.Algorithms.Tweener;
-using HorrorShorts_Game.Controls.Sprites;
-using HorrorShorts_Game.Resources;
+﻿using HorrorShorts_Game.Resources;
 #if DEBUG
 using HorrorShorts_Game.Tests;
 #endif
@@ -9,9 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Resources;
 using System;
-using System.Collections;
-using System.Security.Principal;
-using System.Text;
 
 namespace HorrorShorts_Game
 {

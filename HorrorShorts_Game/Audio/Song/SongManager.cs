@@ -24,11 +24,12 @@ namespace HorrorShorts_Game.Audio.Song
                 _realBaseVolume = (float)Math.Pow(value, 2);
 
                 if (_currentSong != null)
-                    _currentSong.Sound.Volume = _realBaseVolume * Core.Settings.MusicRealVolume;
+                    _currentSong.Sound.Volume = _realBaseVolume * _songsVolume;
             }
         }
         private float _baseVolume = 1f;
         private float _realBaseVolume = 1f;
+        private float _songsVolume = 1f;
 
         public bool IsPlaying
         {
@@ -97,7 +98,7 @@ namespace HorrorShorts_Game.Audio.Song
                 s.TotalDelay = inDelay;
                 s.Sound.Volume = 0f;
             }
-            else s.Sound.Volume = _realBaseVolume * Core.Settings.MusicRealVolume;
+            else s.Sound.Volume = _realBaseVolume * Core.Settings.MusicVolume;
 
             s.Sound.Play();
             _currentSong = s;
@@ -129,6 +130,10 @@ namespace HorrorShorts_Game.Audio.Song
             }
         }
 
+        public SongManager()
+        {
+            _songsVolume = Core.Settings.MusicVolume * Core.Settings.GeneralVolume;
+        }
         internal void Update()
         {
             if (_currentSong != null)
@@ -138,9 +143,7 @@ namespace HorrorShorts_Game.Audio.Song
                     if (_currentSong.CurrentDelay > _currentSong.TotalDelay)
                         _currentSong.CurrentDelay = _currentSong.TotalDelay;
 
-                    _currentSong.Sound.Volume = (float)Math.Pow(_currentSong.CurrentDelay / _currentSong.TotalDelay, 2)
-                        * _realBaseVolume
-                        * Core.Settings.MusicRealVolume;
+                    SetVolume(_currentSong, true);
                 }
 
             for (int i = 0; i < _prevSong.Count; i++)
@@ -163,13 +166,31 @@ namespace HorrorShorts_Game.Audio.Song
                         _prevSong.Remove(sb);
                         continue;
                     }
-                    else sb.Sound.Volume = (float)Math.Pow(1f - sb.CurrentDelay / sb.TotalDelay, 2)
-                            * _realBaseVolume
-                            * Core.Settings.MusicRealVolume;
+                    else SetVolume(sb, false);
                 }
             }
-        }
 
+
+            //Refresh Volume
+            float volume = Core.Settings.MusicVolume * Core.Settings.GeneralVolume;
+            if (_songsVolume != volume)
+            {
+                _songsVolume = volume;
+
+                if (_currentSong != null)
+                    SetVolume(_currentSong, true);
+
+                for (int i = 0; i < _prevSong.Count; i++)
+                    SetVolume(_prevSong[i], false);
+            }
+        }
+        private void SetVolume(SongBuffer song, bool direction)
+        {
+            float baseVolume;
+            if (direction) baseVolume = MathF.Pow(song.CurrentDelay / song.TotalDelay, 2);
+            else baseVolume = MathF.Pow(1f - song.CurrentDelay / song.TotalDelay, 2);
+            song.Sound.Volume = baseVolume * _realBaseVolume * _songsVolume;
+        }
 
         private class SongBuffer
         {

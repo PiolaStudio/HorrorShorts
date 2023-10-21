@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Sprites="Resources.Sprites">
+	<Asset Type="Sprites:SpriteSheet_Serial">
+		<Texture>UIControls</Texture>
+		<Sheets>
+			<!--CHECK BOX-->
+			<Sheet>
+				<Name>CheckBox_Enable_Empty</Name>
+				<Source>0 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>CheckBox_Enable_Tick</Name>
+				<Source>16 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>CheckBox_Enable_Cross</Name>
+				<Source>32 0 16 16</Source>
+			</Sheet>
+
+			<Sheet>
+				<Name>CheckBox_Disable_Empty</Name>
+				<Source>48 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>CheckBox_Disable_Tick</Name>
+				<Source>64 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>CheckBox_Disable_Cross</Name>
+				<Source>80 0 16 16</Source>
+			</Sheet>
+
+			<!--BUTTON-->
+			<Sheet>
+				<Name>Button_Enable_Left</Name>
+				<Source>0 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Button_Enable_Middle</Name>
+				<Source>16 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Button_Enable_Right</Name>
+				<Source>32 16 16 16</Source>
+			</Sheet>
+
+			<Sheet>
+				<Name>Button_Disable_Left</Name>
+				<Source>0 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Button_Disable_Middle</Name>
+				<Source>16 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Button_Disable_Right</Name>
+				<Source>32 32 16 16</Source>
+			</Sheet>
+
+			<!--COMBO BOX-->
+			<Sheet>
+				<Name>ComboBox_List_Left</Name>
+				<Source>0 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ComboBox_List_Middle</Name>
+				<Source>16 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ComboBox_List_Right</Name>
+				<Source>32 48 16 16</Source>
+			</Sheet>
+
+			<Sheet>
+				<Name>ComboBox_List_Bottom_Left</Name>
+				<Source>0 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ComboBox_List_Bottom_Middle</Name>
+				<Source>16 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ComboBox_List_Bottom_Right</Name>
+				<Source>32 64 16 16</Source>
+			</Sheet>
+
+			<Sheet>
+				<Name>ComboBox_List_Pressed_Left</Name>
+				<Source>0 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ComboBox_List_Pressed_Middle</Name>
+				<Source>16 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ComboBox_List_Pressed_Right</Name>
+				<Source>32 80 16 16</Source>
+			</Sheet>
+
+			<Sheet>
+				<Name>ComboBox_List_Pressed_Bottom_Left</Name>
+				<Source>0 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ComboBox_List_Pressed_Bottom_Middle</Name>
+				<Source>16 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ComboBox_List_Pressed_Bottom_Right</Name>
+				<Source>32 96 16 16</Source>
+			</Sheet>
+			
+			<!--SCROLL BAR-->
+			<Sheet>
+				<Name>ScrollBarZone</Name>
+				<Source>48 48 8 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ScrollBarZone_Bottom</Name>
+				<Source>48 64 8 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ScrollBar_Enable</Name>
+				<Source>56 48 8 8</Source>
+			</Sheet>
+			<Sheet>
+				<Name>ScrollBar_Pressed</Name>
+				<Source>56 56 8 8</Source>
+			</Sheet>
+			
+			<!--SLIDER-->
+			<Sheet>
+				<Name>Slider_Bar_Enable</Name>
+				<Source>48 16 80 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Slider_Bar_Disable</Name>
+				<Source>48 32 80 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Slider_Arrow</Name>
+				<Source>112 0 8 8</Source>
+			</Sheet>
+		</Sheets>
+	</Asset>
+</XnaContent>

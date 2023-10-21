@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Resources;
+using Resources.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,23 @@ namespace HorrorShorts_Game
         {
             return new(Math.Abs(point1.X - point2.X), Math.Abs(point1.Y - point2.Y));
         }
+        public static bool CheckClicked(this Rectangle rectangle)
+        {
+#if DESKTOP || PHONE
+            return Core.Controls.Click && rectangle.Contains(Core.Controls.ClickPosition);
+#else
+            return false;
+#endif
+        }
+        public static bool CheckClickedUI(this Rectangle rectangle)
+        {
+#if DESKTOP || PHONE
+            return Core.Controls.Click && rectangle.Contains(Core.Controls.ClickPositionUI);
+#else
+            return false;
+#endif
+        }
+
 
         public static bool NextBool(this Random random)
         {
@@ -54,6 +73,17 @@ namespace HorrorShorts_Game
         {
             short shor = BitConverter.ToInt16(UTF8Encoding.UTF8.GetBytes(value));
             return "0x" + shor.ToString("X");
+        }
+
+
+        public static string GetNativeName(this LanguageType language)
+        {
+            Type languageType = typeof(LanguageType);
+            var memberInfos = languageType.GetMember(language.ToString());
+            var enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == languageType);
+            var valueAttributes = enumValueMemberInfo.GetCustomAttributes(typeof(LanguageAttribute), false);
+            LanguageAttribute la = ((LanguageAttribute)valueAttributes[0]);
+            return la.NativeName;
         }
     }
 }

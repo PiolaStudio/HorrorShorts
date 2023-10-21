@@ -44,7 +44,7 @@ namespace HorrorShorts_Game.Inputs
             _realPosition = _state.Position;
             _positionChanged = _realPosition != _prevRealPosition;
 
-            if (!Core.Settings.FullScreen)
+            if (Core.Settings.ResizeMode != Settings.ResizeModes.FullScreen)
             {
                 if (_realPosition.X < 0 || _realPosition.X > Core.Window.ClientBounds.Width)
                     return;

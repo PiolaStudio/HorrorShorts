@@ -27,6 +27,9 @@ namespace HorrorShorts_Game.Controls.Sprites
         public void Add(string name, int x, int y, int w, int h) => Sources.Add(name, new Rectangle(x, y, w, h));
         public Rectangle Get(string name) => Sources[name];
         public Rectangle Get(object name) => Sources[name.ToString()];
+        public bool TryGet(string name, out Rectangle sheet) => Sources.TryGetValue(name, out sheet);
+        public bool TryGet(object name, out Rectangle sheet) => Sources.TryGetValue(name.ToString(), out sheet);
+
         public Dictionary<string, Rectangle> GetAll() => Sources;
     }
 }

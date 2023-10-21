@@ -38,7 +38,10 @@ namespace HorrorShorts_Game.Resources
             return Get(sheet);
         }
 
-        private static readonly SpriteSheetType[] AlwaysLoaded = new SpriteSheetType[] { };
+        private static readonly SpriteSheetType[] AlwaysLoaded = new SpriteSheetType[] 
+        {
+            SpriteSheetType.UIControls,
+        };
 
         private static readonly Type _enumType = typeof(SpriteSheetType);
 

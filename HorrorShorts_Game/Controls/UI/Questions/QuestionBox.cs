@@ -1,4 +1,5 @@
-﻿using HorrorShorts_Game.Resources;
+﻿using HorrorShorts_Game.Controls.UI.Interfaces;
+using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Resources;
@@ -6,7 +7,7 @@ using System;
 
 namespace HorrorShorts_Game.Controls.UI.Questions
 {
-    public class QuestionBox
+    public class QuestionBox : IResolutionDependent, ILocalizable
     {
         #region VARIABLES & PROPERTIES
         //Textures
@@ -564,9 +565,13 @@ namespace HorrorShorts_Game.Controls.UI.Questions
         {
             //todo
         }
-        internal void ResetResolution()
+        public void ResetResolution()
         {
             GetZone();
+        }
+        public void SetLocalization()
+        {
+            //todo
         }
         #endregion
 

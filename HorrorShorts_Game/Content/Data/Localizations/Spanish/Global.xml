@@ -1,9 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent xmlns:Localizations="Resources.Localizations">
-  <Asset Type="Localizations:GlobalLocalization_Serial">
-    <NewGame>Nuevo Juego</NewGame>
-    <Continue>Continuar</Continue>
-    <Options>Opciones</Options>
-    <Exit>Salir</Exit>
-  </Asset>
+	<Asset Type="Localizations:GlobalLocalization_Serial">
+		<!--MAIN TITLE-->
+		<MainTitle_NewGame>Nuevo Juego</MainTitle_NewGame>
+		<MainTitle_Continue>Continuar</MainTitle_Continue>
+		<MainTitle_Options>Opciones</MainTitle_Options>
+		<MainTitle_Exit>Salir</MainTitle_Exit>
+
+		<!--OPTIONS-->
+		<Options_Screen>Pantalla</Options_Screen>
+		<Options_Sound>Sonidos</Options_Sound>
+		<Options_Control>Control</Options_Control>
+		<Options_General>General</Options_General>
+		<Options_Save>Guardar</Options_Save>
+		<Options_Close>Cerrar</Options_Close>
+
+		<!--OPTIONS - SCREEN-->
+		<Options_Screen_Screen>Pantalla</Options_Screen_Screen>
+		<Options_Screen_Resolution>Resolución</Options_Screen_Resolution>
+		<Options_Screen_Resizable>Reescalable</Options_Screen_Resizable>
+		<Options_Screen_Vsync>Vsync</Options_Screen_Vsync>
+		<Options_Screen_HardwareMode>Modo Hardware</Options_Screen_HardwareMode>
+
+		<Options_Screen_FullScreen>Pantalla Completa</Options_Screen_FullScreen>
+		<Options_Screen_Window>Ventana</Options_Screen_Window>
+		<Options_Screen_Borderless>Sin Bordes</Options_Screen_Borderless>
+
+		<!--OPTIONS - SOUND-->
+		<Options_Sound_General>General</Options_Sound_General>
+		<Options_Sound_Music>Música</Options_Sound_Music>
+		<Options_Sound_Effects>Efectos</Options_Sound_Effects>
+		<Options_Sound_Atmosphere>Atmósfera</Options_Sound_Atmosphere>
+
+		<!--OPTIONS - CONTROL-->
+		<Options_Control_Control>Control</Options_Control_Control>
+		<Options_Control_Reset>Reiniciar</Options_Control_Reset>
+		<Options_Control_Primary>Primario</Options_Control_Primary>
+		<Options_Control_Secundary>Secundario</Options_Control_Secundary>
+		<Options_Control_Up>Arriba</Options_Control_Up>
+		<Options_Control_Down>Abajo</Options_Control_Down>
+		<Options_Control_Left>Izquierda</Options_Control_Left>
+		<Options_Control_Right>Derecha</Options_Control_Right>
+		<Options_Control_Action>Acción</Options_Control_Action>
+		<Options_Control_Back>Atras</Options_Control_Back>
+
+		<!--OPTIONS - GENERAL-->
+		<Options_General_Language>Lenguaje</Options_General_Language>
+	</Asset>
 </XnaContent>

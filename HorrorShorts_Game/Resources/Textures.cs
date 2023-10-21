@@ -20,7 +20,8 @@ namespace HorrorShorts_Game.Resources
         private static readonly TextureType[] AlwaysLoaded = new TextureType[]
         {
             TextureType.Pixel,
-            TextureType.DialogMenu
+            TextureType.DialogMenu,
+            TextureType.UIControls
         };
         public static Texture2D Get(TextureType texture)
         {

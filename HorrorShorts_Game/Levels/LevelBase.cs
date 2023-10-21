@@ -150,5 +150,6 @@ namespace HorrorShorts_Game.Screens
 
 
         public virtual void ResetResolution() { }
+        public virtual void ResetLocalization() { }
     }
 }

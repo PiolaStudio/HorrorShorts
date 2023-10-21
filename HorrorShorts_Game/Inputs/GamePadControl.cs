@@ -37,8 +37,19 @@ namespace HorrorShorts_Game.Inputs
         public bool ActionTrigger { get => _actionTrigger; }
         public bool PauseTrigger { get => _pauseTrigger; }
 
+        private Buttons _leftButton = Buttons.DPadLeft;
+        private Buttons _rightButton = Buttons.DPadRight;
+        private Buttons _upButton = Buttons.DPadUp;
+        private Buttons _downButton = Buttons.DPadDown;
         private Buttons _actionButton = Buttons.X;
+        private Buttons _pauseButton = Buttons.Start;
+
+        private Buttons? _leftButton2 = Buttons.LeftThumbstickLeft;
+        private Buttons? _rightButton2 = Buttons.LeftThumbstickRight;
+        private Buttons? _upButton2 = Buttons.LeftThumbstickUp;
+        private Buttons? _downButton2 = Buttons.LeftThumbstickDown;
         private Buttons? _actionButton2 = Buttons.A;
+        private Buttons? _pauseButton2 = null;
 
         public void Update()
         {
@@ -48,22 +59,22 @@ namespace HorrorShorts_Game.Inputs
                 return;
 
             //Left
-            UpdateButtonState(Buttons.DPadLeft, Buttons.LeftThumbstickLeft, ref _leftTrigger, ref _leftPressed);
+            UpdateButtonState(_leftButton, _leftButton2, ref _leftTrigger, ref _leftPressed);
 
             //Right
-            UpdateButtonState(Buttons.DPadRight, Buttons.RightThumbstickLeft, ref _rightTrigger, ref _rightPressed);
+            UpdateButtonState(_rightButton, _rightButton2, ref _rightTrigger, ref _rightPressed);
 
             //Up
-            UpdateButtonState(Buttons.DPadUp, Buttons.LeftThumbstickUp, ref _upTrigger, ref _upPressed);
+            UpdateButtonState(_upButton, _upButton2, ref _upTrigger, ref _upPressed);
 
             //Down
-            UpdateButtonState(Buttons.DPadDown, Buttons.LeftThumbstickDown, ref _downTrigger, ref _downPressed);
+            UpdateButtonState(_downButton, _downButton2, ref _downTrigger, ref _downPressed);
 
             //Action
             UpdateButtonState(_actionButton, _actionButton2, ref _actionTrigger, ref _actionPressed);
 
             //Pause
-            UpdateButtonState(Buttons.Start, null, ref _pauseTrigger, ref _pausePressed);
+            UpdateButtonState(_pauseButton, _pauseButton2, ref _pauseTrigger, ref _pausePressed);
         }
 
         private void UpdateButtonState(Buttons button, Buttons? button2, ref bool trigger, ref bool pressed)
@@ -83,10 +94,39 @@ namespace HorrorShorts_Game.Inputs
         private bool DetectButtonPressed(Buttons button, Buttons? button2) =>
             _state.IsButtonDown(button) || (button2.HasValue && _state.IsButtonDown(button2.Value));
 
-        public void SetButtons(Buttons actionButton, Buttons? actionButton2)
+        public void SetPrimaryButtons(Buttons upButton, Buttons downButton, Buttons leftButton, Buttons rightButton, Buttons actionButton, Buttons pauseButton)
         {
+            _upButton = upButton;
+            _downButton = downButton;
+            _leftButton = leftButton;
+            _rightButton = rightButton;
             _actionButton = actionButton;
+            _pauseButton = pauseButton;
+
+            Logger.Advice($"Setted Gamepad Primary Buttons: " +
+                $"UP: {upButton} -\t" +
+                $"DOWN: {downButton} -\t" +
+                $"LEFT: {leftButton} -\t" +
+                $"RIGHT: {rightButton} -\t" +
+                $"ACTION: {actionButton} -\t" +
+                $"PAUSE: {pauseButton}");
+        }
+        public void SetSecondaryButtons(Buttons? upButton2, Buttons? downButton2, Buttons? leftButton2, Buttons? rightButton2, Buttons? actionButton2, Buttons? pauseButton2)
+        {
+            _upButton2 = upButton2;
+            _downButton2 = downButton2;
+            _leftButton2 = leftButton2;
+            _rightButton2 = rightButton2;
             _actionButton2 = actionButton2;
+            _pauseButton2 = pauseButton2;
+
+            Logger.Advice($"Setted Gamepad Secundary Buttons: " +
+                $"UP: {(upButton2 != null ? upButton2.ToString() : "NULL")} -\t" +
+                $"DOWN: {(downButton2 != null ? downButton2.ToString() : "NULL")} -\t" +
+                $"LEFT: {(leftButton2 != null ? leftButton2.ToString() : "NULL")} -\t" +
+                $"RIGHT: {(rightButton2 != null ? rightButton2.ToString() : "NULL")} -\t" +
+                $"ACTION: {(actionButton2 != null ? actionButton2.ToString() : "NULL")} -\t" +
+                $"PAUSE: {(pauseButton2 != null ? pauseButton2.ToString() : "NULL")}");
         }
     }
 }

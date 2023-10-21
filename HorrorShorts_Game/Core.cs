@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Resources;
 using SharpFont;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static HorrorShorts_Game.Settings;
 
 namespace HorrorShorts_Game
 {
@@ -70,13 +72,16 @@ namespace HorrorShorts_Game
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-
             //Try Load Settings
-            //todo: load settings from file
-#if DEBUG
-            Settings = new Settings(); //todo: borrar
-#endif
+            Settings = Settings.Load();
 
+            GraphicsDeviceManager.SynchronizeWithVerticalRetrace = Settings.VSync;
+            GraphicsDeviceManager.HardwareModeSwitch = Settings.HardwareMode;
+#if DEBUG   
+            game.IsMouseVisible = true;
+#else 
+            game.IsMouseVisible = false;
+#endif
 
 
             Level = new EmptyLevel();
@@ -84,12 +89,15 @@ namespace HorrorShorts_Game
             SoundManager = new();
             SongManager = new();
             AtmosphereManager = new();
-            Controls = new();
             DialogManagement = new();
             QuestionBox = new();
             FadeEffect = new();
             Camera = new();
             Resolution = new();
+
+            //Inputs
+            Controls = new();
+            
 
             Render = new(GraphicsDevice, Settings.NativeResolution.Width, Settings.NativeResolution.Height);
 
@@ -101,22 +109,16 @@ namespace HorrorShorts_Game
             Localizations.Init();
 
 #if DESKTOP
-            if (Settings.FullScreen)
-                SetResolution(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, Settings.FullScreen);
-            else SetResolution(Settings.ResolutionWidth, Settings.ResolutionHeight, Settings.FullScreen);
+            SetResolution(Settings.ResolutionWidth, Settings.ResolutionHeight, Settings.ResizeMode, true);
 #elif PHONE
-            //SetResolution(2560, 1440, true);
-            SetResolution(GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight, true);
+            SetResolution(GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight, ResizeModes.FullScreen);
+            //SetResolution(2560, 1440, ResizeModes.FullScreen);
 #endif
 
-
 #if DESKTOP
-            game.IsMouseVisible = true;
-            game.Window.IsBorderless = false;
-            game.Window.AllowUserResizing = true;
             game.Window.ClientSizeChanged += (s, e) =>
             {
-                SetResolution(Window.ClientBounds.Width, Window.ClientBounds.Height, false);
+                SetResolution(Window.ClientBounds.Width, Window.ClientBounds.Height, ResizeModes.Window, true);
                 GraphicsDeviceManager.ApplyChanges();
             };
 #endif
@@ -146,6 +148,7 @@ namespace HorrorShorts_Game
             QuestionBox.Update();
 
             SongManager.Update();
+            SoundManager.Update();
             AtmosphereManager.Update();
 
             FadeEffect.Update();
@@ -157,11 +160,31 @@ namespace HorrorShorts_Game
             QuestionBox.Dispose();
         }
 
-        public static void SetResolution(int width, int height, bool fullScreen)
+        private static bool _settingResolutionFlag = false;
+        public static void SetResolution(int width, int height, ResizeModes resizeMode, bool resizable = false)
         {
-            Logger.Advice($"Setting resolution. {width} x {height} (FullScreen: {fullScreen})");
+            if (_settingResolutionFlag) return;
+            _settingResolutionFlag = true;
+            Logger.Advice($"Setting resolution. {width} x {height} (ResizeMode: {resizeMode} - Resizable: {resizable})");
 
-            Resolution.SetResolution(width, height, fullScreen);
+#if DESKTOP
+            if (resizeMode == ResizeModes.FullScreen || resizeMode == ResizeModes.Bordeless)
+#else
+            if (resizeMode == ResizeModes.FullScreen)
+#endif
+            {
+                //width = 2560;
+                //height = 1440;
+#if DESKTOP || CONSOLE
+                width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+#elif PHONE
+                width = GraphicsDeviceManager.PreferredBackBufferWidth;
+                height = GraphicsDeviceManager.PreferredBackBufferHeight;
+#endif
+            }
+
+            Resolution.SetResolution(width, height, resizeMode, resizable);
 
             DialogManagement?.ResetResolution();
             QuestionBox?.ResetResolution();
@@ -172,6 +195,18 @@ namespace HorrorShorts_Game
             QuestionBox?.ResetResolution();
             if (Level.Loaded) Level.ResetResolution();
             Logger.Advice($"Resolution Setted!");
+            _settingResolutionFlag = false;
+        }
+        public static void ResetLanguage()
+        {
+            Logger.Advice($"Setting language. {Core.Settings.Language}");
+            Localizations.ReLoad();
+
+            //Reset controls Localizations
+            DialogManagement?.SetLocalization();
+            QuestionBox?.SetLocalization();
+            if (Level.Loaded) Level.ResetLocalization();
+            Logger.Advice($"Localization Changed!");
         }
     }
 }

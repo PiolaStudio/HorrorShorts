@@ -1,8 +1,9 @@
-﻿using System;
+﻿using HorrorShorts_Game.Controls.UI.Interfaces;
+using System;
 
 namespace HorrorShorts_Game.Controls.UI.Dialogs
 {
-    public class DialogManagement
+    public class DialogManagement : IResolutionDependent, ILocalizable
     {
         private readonly DialogBox _dialogBox;
 
@@ -62,6 +63,11 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         public void ResetResolution()
         {
             _dialogBox.ResetResolution();
+        }
+        public void SetLocalization()
+        {
+            //todo
+            _dialogBox.SetLocalization();
         }
     }
 }

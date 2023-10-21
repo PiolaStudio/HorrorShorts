@@ -1,6 +1,7 @@
 ﻿using Resources.Attributes;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace Resources
 {
@@ -87,8 +88,51 @@ namespace Resources
 
     public enum LanguageType : byte
     {
+        [LanguageAttribute("English")]
         English,
-        Spanish
+        [LanguageAttribute("Español")]
+        Spanish,
+        [LanguageAttribute("Português")]
+        Portuguese
+    }
+
+    public enum Resolutions
+    {
+        R640x360,
+        R640x480,
+        R800x480,
+        R800x600,
+        R850x480,
+        R960x540,
+        R1024x768,
+        R1152x864,
+        R1280x720,
+        R1280x800,
+        R1280x1024,
+        R1334x750,
+        R1360x768,
+        R1366x768,
+        R1400x1050,
+        R1440x900,
+        R1600x900,
+        R1600x1200,
+        R1680x1050,
+        R1920x1080,
+        R1920x1200,
+        R1920x1400,
+        R2048x1152,
+        R2048x1536,
+        R2560x1080,
+        R2560x1440,
+        R2560x1600,
+        R2880x1800,
+        R3440x1440,
+        R3840x2160,
+        R3840x2400,
+        R5120x2160,
+        R6400x4800,
+        R7680x4320,
+        R7680x4800,
     }
 
     public enum LayerType : byte
@@ -118,8 +162,20 @@ namespace Resources
     {
         [TextureAttribute(null)]
         Pixel,
+
+        //UI
         [TextureAttribute("UI\\DialogMenu")]
         DialogMenu,
+        [TextureAttribute("UI\\OptionMenu")]
+        OptionMenu,
+        [TextureAttribute("UI\\UIControls")]
+        UIControls,
+        [TextureAttribute("UI\\InputButtons")]
+        InputButtons,
+        [TextureAttribute("UI\\LanguageMenu", SpriteSheetType.LanguageMenu)]
+        LanguageMenu,
+        [TextureAttribute("UI\\World", SpriteSheetType.WorldUI)]
+        WorldUI,
 
         //Charcters
         [TextureAttribute("Characters\\Girl1", SpriteSheetType.Girl1)]
@@ -132,13 +188,24 @@ namespace Resources
 #endif
 
         //Backgrounds
-        [TextureAttribute("Backgrounds\\Menu\\MainTitle")]
+        [TextureAttribute("Backgrounds\\Menu\\MainTitle", SpriteSheetType.UIControls)]
         MainTitle,
         [TextureAttribute("Backgrounds\\Menu\\MainTitle1", SpriteSheetType.MainTitle1)]
         MainTitle1,
     }
     public enum SpriteSheetType : uint
     {
+        //UI
+        [SpriteSheetAttribute("UI\\UIControls")]
+        UIControls,
+        [SpriteSheetAttribute("UI\\InputButtons")]
+        InputButtons,
+        [SpriteSheetAttribute("UI\\LanguageMenu")]
+        LanguageMenu,
+
+        [SpriteSheetAttribute("UI\\World")]
+        WorldUI,
+
         //Characters
         [SpriteSheetAttribute("Characters\\Girl1")]
         Girl1,
@@ -155,6 +222,10 @@ namespace Resources
     }
     public enum AnimationType : uint
     {
+        //UI
+        [AnimationAttribute("UI\\World")]
+        WorldUI,
+
         //Characters
 #if DEBUG
         [AnimationAttribute("Characters\\Megaman")]

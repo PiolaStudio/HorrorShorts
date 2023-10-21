@@ -42,11 +42,13 @@ namespace HorrorShorts_Game.Tests
                 _label.Text = $"{_tween.LinearValue * 100f:0.0000}\n{_tween.FunctionValue * 100f:0.0000}\nX: {_sprite.X} Y: {_sprite.Y}";
             }
 
+#if DESKTOP
             if (Core.Controls.Keyboard.ActionTrigger)
                 if (_tween.State == TweenState.Doing) _tween.Pause();
                 else _tween.Resume();
             else if (Core.Controls.Keyboard.UpTrigger)
                 _tween.Start();
+#endif
             _label.Update();
         }
         public override void Draw1()

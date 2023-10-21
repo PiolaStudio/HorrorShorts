@@ -1,0 +1,603 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Sprites="Resources.Sprites">
+	<Asset Type="Sprites:SpriteSheet_Serial">
+		<Texture>InputButtons</Texture>
+		<Sheets>
+			<Sheet>
+				<Name>Keyboard_Icon</Name>
+				<Source>416 0 32 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Icon_Selected</Name>
+				<Source>416 16 32 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Icon</Name>
+				<Source>448 0 32 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Icon_Selected</Name>
+				<Source>448 16 32 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Selected</Name>
+				<Source>480 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Empty</Name>
+				<Source>496 0 16 16</Source>
+			</Sheet>
+			
+			<!--KEYBOARD-->
+			<!--row 1-->				
+			<Sheet>
+				<Name>Keyboard_A</Name>
+				<Source>0 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_B</Name>
+				<Source>16 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_C</Name>
+				<Source>32 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D</Name>
+				<Source>48 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_E</Name>
+				<Source>64 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F</Name>
+				<Source>80 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_G</Name>
+				<Source>96 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_H</Name>
+				<Source>112 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_I</Name>
+				<Source>128 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_J</Name>
+				<Source>144 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_K</Name>
+				<Source>160 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_L</Name>
+				<Source>176 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_M</Name>
+				<Source>192 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_N</Name>
+				<Source>208 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_O</Name>
+				<Source>224 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_P</Name>
+				<Source>240 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Q</Name>
+				<Source>256 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_R</Name>
+				<Source>272 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_S</Name>
+				<Source>288 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_T</Name>
+				<Source>304 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_U</Name>
+				<Source>320 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_V</Name>
+				<Source>336 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_W</Name>
+				<Source>352 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_X</Name>
+				<Source>368 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Y</Name>
+				<Source>384 0 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Z</Name>
+				<Source>400 0 16 16</Source>
+			</Sheet>
+			<!--row 2-->
+			<Sheet>
+				<Name>Keyboard_D0</Name>
+				<Source>0 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D1</Name>
+				<Source>16 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D2</Name>
+				<Source>32 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D3</Name>
+				<Source>48 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D4</Name>
+				<Source>64 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D5</Name>
+				<Source>80 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D6</Name>
+				<Source>96 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D7</Name>
+				<Source>112 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D8</Name>
+				<Source>128 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_D9</Name>
+				<Source>144 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad0</Name>
+				<Source>160 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad1</Name>
+				<Source>176 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad2</Name>
+				<Source>192 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad3</Name>
+				<Source>208 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad4</Name>
+				<Source>224 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad5</Name>
+				<Source>240 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad6</Name>
+				<Source>256 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad7</Name>
+				<Source>272 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad8</Name>
+				<Source>288 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_NumPad9</Name>
+				<Source>304 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Multiply</Name>
+				<Source>320 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Divide</Name>
+				<Source>336 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Subtract</Name>
+				<Source>352 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Add</Name>
+				<Source>368 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Decimal</Name>
+				<Source>384 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_OemPeriod</Name>
+				<Source>384 16 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_OemComma</Name>
+				<Source>400 16 16 16</Source>
+			</Sheet>
+			<!--row 3-->
+			<Sheet>
+				<Name>Keyboard_Space</Name>
+				<Source>0 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Left</Name>
+				<Source>16 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Right</Name>
+				<Source>32 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Up</Name>
+				<Source>48 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Down</Name>
+				<Source>64 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_LeftControl</Name>
+				<Source>80 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_RightControl</Name>
+				<Source>80 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_LeftAlt</Name>
+				<Source>96 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_RightAlt</Name>
+				<Source>96 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Escape</Name>
+				<Source>112 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_LeftShip</Name>
+				<Source>128 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_RightShift</Name>
+				<Source>128 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Tab</Name>
+				<Source>144 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Enter</Name>
+				<Source>160 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_TODO</Name>
+				<Source>176 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Home</Name>
+				<Source>192 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_End</Name>
+				<Source>208 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Insert</Name>
+				<Source>224 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Delete</Name>
+				<Source>240 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_OemQuestion</Name>
+				<Source>256 32 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Back</Name>
+				<Source>272 32 16 16</Source>
+			</Sheet>
+			<!--row 4-->
+			<Sheet>
+				<Name>Keyboard_Unknown</Name>
+				<Source>0 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_Empty</Name>
+				<Source>16 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F1</Name>
+				<Source>32 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F2</Name>
+				<Source>48 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F3</Name>
+				<Source>64 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F4</Name>
+				<Source>80 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F5</Name>
+				<Source>96 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F6</Name>
+				<Source>112 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F7</Name>
+				<Source>128 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F8</Name>
+				<Source>144 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F9</Name>
+				<Source>160 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F10</Name>
+				<Source>176 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F11</Name>
+				<Source>192 48 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Keyboard_F12</Name>
+				<Source>208 48 16 16</Source>
+			</Sheet>
+			<!--GAMEPAD-->
+			<!--row 1-->
+			<Sheet>
+				<Name>Gamepad_ButtonEmpty</Name>
+				<Source>0 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Cross</Name>
+				<Source>16 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Circle</Name>
+				<Source>32 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Triangle</Name>
+				<Source>48 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Square</Name>
+				<Source>64 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_A_Type1</Name>
+				<Source>80 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Y_Type1</Name>
+				<Source>96 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_X_Type1</Name>
+				<Source>112 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_B_Type1</Name>
+				<Source>128 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_A_Type2</Name>
+				<Source>144 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Y_Type2</Name>
+				<Source>160 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_X_Type2</Name>
+				<Source>176 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_B_Type2</Name>
+				<Source>192 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_1</Name>
+				<Source>208 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_2</Name>
+				<Source>224 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_3</Name>
+				<Source>240 64 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_4</Name>
+				<Source>256 64 16 16</Source>
+			</Sheet>
+			<!--row 2-->
+			<Sheet>
+				<Name>Gamepad_DPadEmpty</Name>
+				<Source>0 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_DPadUp</Name>
+				<Source>16 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_DPadDown</Name>
+				<Source>32 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_DPadRight</Name>
+				<Source>48 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_DPadLeft</Name>
+				<Source>64 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_LeftStick_Up</Name>
+				<Source>80 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_LeftStick_Down</Name>
+				<Source>96 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_LeftStick_Right</Name>
+				<Source>112 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_LeftStick_Left</Name>
+				<Source>128 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_LeftStick_Button</Name>
+				<Source>144 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_RightStick_Up</Name>
+				<Source>160 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_RightStick_Down</Name>
+				<Source>176 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_RightStick_Right</Name>
+				<Source>192 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_RightStick_Left</Name>
+				<Source>208 80 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_RightStick_Button</Name>
+				<Source>224 80 16 16</Source>
+			</Sheet>
+			<!--row 3-->
+			<Sheet>
+				<Name>Gamepad_TriggerEmpty</Name>
+				<Source>0 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_L1</Name>
+				<Source>16 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_R1</Name>
+				<Source>32 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_L2</Name>
+				<Source>48 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_R2</Name>
+				<Source>64 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_LB</Name>
+				<Source>80 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_RB</Name>
+				<Source>96 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_LT</Name>
+				<Source>112 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_RT</Name>
+				<Source>128 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_L</Name>
+				<Source>144 96 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_R</Name>
+				<Source>160 96 16 16</Source>
+			</Sheet>
+			<!--row 4-->
+			<Sheet>
+				<Name>Gamepad_Start_Type1</Name>
+				<Source>0 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Select</Name>
+				<Source>16 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Start_Type2</Name>
+				<Source>32 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Back</Name>
+				<Source>48 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_More</Name>
+				<Source>64 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Minus</Name>
+				<Source>80 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_XBOX_BigButton</Name>
+				<Source>96 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Playstation_BigButton</Name>
+				<Source>112 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>Gamepad_Home</Name>
+				<Source>128 112 16 16</Source>
+			</Sheet>
+		</Sheets>
+	</Asset>
+</XnaContent>

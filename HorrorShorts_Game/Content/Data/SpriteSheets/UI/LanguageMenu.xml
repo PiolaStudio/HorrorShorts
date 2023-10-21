@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Sprites="Resources.Sprites">
+	<Asset Type="Sprites:SpriteSheet_Serial">
+		<Texture>LanguageMenu</Texture>
+		<Sheets>
+			<Sheet>
+				<Name>Borders</Name>
+				<Source>0 0 128 64</Source>
+			</Sheet>
+			<Sheet>
+				<Name>OptionUnselected</Name>
+				<Source>0 64 112 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>OptionOver</Name>
+				<Source>0 80 112 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>OptionSelected</Name>
+				<Source>0 96 112 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>CrossUnselected</Name>
+				<Source>0 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>CrossOver</Name>
+				<Source>16 112 16 16</Source>
+			</Sheet>
+			<Sheet>
+				<Name>CrossSelected</Name>
+				<Source>32 112 16 16</Source>
+			</Sheet>
+		</Sheets>
+	</Asset>
+</XnaContent>

@@ -174,13 +174,13 @@ namespace HorrorShorts_Game.Audio.Atmosphere
         {
             float realBaseVolume = (float)Math.Pow(_baseVolume, 2);
 
-            if (_isGlobalSound) return realBaseVolume * Core.Settings.AtmosphereRealVolume;
+            if (_isGlobalSound) return realBaseVolume * Core.Settings.AtmosphereVolume * Core.Settings.GeneralVolume;
             else
             {
                 float distance = MathHelper.Distance(_origin.X, _listener.X) + MathHelper.Distance(_origin.Y, _listener.Y);
                 float bruteDistanceVolume = MathHelper.Clamp(distance / _playRange, 0, 1);
                 float distanceVolume = (float)Math.Pow(bruteDistanceVolume, 2);
-                return realBaseVolume * distanceVolume * Core.Settings.AtmosphereRealVolume;
+                return realBaseVolume * distanceVolume * Core.Settings.AtmosphereVolume * Core.Settings.GeneralVolume;
             }
         }
         private float GetPitch()
@@ -197,6 +197,12 @@ namespace HorrorShorts_Game.Audio.Atmosphere
                 float bruteRange = distanceX / _playRange;
                 return Math.Clamp(bruteRange, -1f, 1f);
             }
+        }
+
+        public void RefreshVolume()
+        {
+            if (_sound != null && !_sound.IsDisposed && _sound.State == SoundState.Playing)
+                _sound.Volume = GetVolume();
         }
     }
 }

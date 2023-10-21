@@ -68,6 +68,7 @@ namespace HorrorShorts_Game.Tests
         }
         public override void Update1()
         {
+#if DESKTOP
             KeyboardState ks = Core.Controls.Keyboard.State;
 
             if (ks.IsKeyDown(Keys.F1) && _prevKey != Keys.F1)
@@ -102,6 +103,7 @@ namespace HorrorShorts_Game.Tests
                 animationSystem.Play();
                 _sprite.Source = animationSystem.Source;
             }
+#endif
 
             animationSystem.Update();
 

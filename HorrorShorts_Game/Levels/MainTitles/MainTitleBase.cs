@@ -1,7 +1,10 @@
 ﻿using HorrorShorts_Game.Algorithms.Tweener;
+using HorrorShorts_Game.Controls.Animations;
 using HorrorShorts_Game.Controls.Sprites;
 using HorrorShorts_Game.Controls.UI;
 using HorrorShorts_Game.Controls.UI.Dialogs;
+using HorrorShorts_Game.Controls.UI.Language;
+using HorrorShorts_Game.Controls.UI.Options;
 using HorrorShorts_Game.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,6 +26,10 @@ namespace HorrorShorts_Game.Screens.MainTitles
         private Label _options;
         private Label _exit;
 
+        private Sprite _world;
+        private AnimationSystem _worldAnim;
+        private LanguageMenu _languageMenu;
+
         private static readonly Color UnSelectedOptionColor = Color.White;
         private static readonly Color OverOptionColor = Color.Yellow;
         private static readonly Color DisabledOptionColor = Color.Gray;
@@ -38,6 +45,8 @@ namespace HorrorShorts_Game.Screens.MainTitles
             AppearingOptions,
             WaitingOptionSelect,
             SelectingOptionAnim,
+            OptionMenuOpened,
+            LanguageMenuOpened
         }
 
         private float _currentDelay = 0f;
@@ -51,14 +60,26 @@ namespace HorrorShorts_Game.Screens.MainTitles
             Continue = 0,
             NewGame,
             Options,
-            Exit
+            Exit,
+
+            World
         }
+
+        private OptionMenu _optionMenu = new();
 
         public MainTitleBase() : base()
         {
             _texturesRequired = new TextureType[]
             {
                 TextureType.MainTitle,
+                TextureType.OptionMenu,
+                TextureType.InputButtons,
+                TextureType.WorldUI
+            };
+
+            _animationRequired = new AnimationType[]
+            {
+                AnimationType.WorldUI
             };
         }
 
@@ -70,13 +91,23 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _rollDownTween = new(0f, 1f, 8000, function: TweenFunctions.QuadraticInOut);
 
             _title = new(Textures.Get(TextureType.MainTitle), 59, 10);
-            _continue = new(Localizations.Global.Continue, 1, TextAlignament.MiddleRight); 
-            _newGame = new(Localizations.Global.NewGame, 1, TextAlignament.MiddleRight); 
-            _options = new(Localizations.Global.Options, 1, TextAlignament.MiddleRight); 
-            _exit = new(Localizations.Global.Exit, 1, TextAlignament.MiddleRight);
+            _continue = new(Localizations.Global.MainTitle_Continue, 1, TextAlignament.MiddleRight); 
+            _newGame = new(Localizations.Global.MainTitle_NewGame, 1, TextAlignament.MiddleRight); 
+            _options = new(Localizations.Global.MainTitle_Options, 1, TextAlignament.MiddleRight); 
+            _exit = new(Localizations.Global.MainTitle_Exit, 1, TextAlignament.MiddleRight);
+
+            _worldAnim = new();
+            _worldAnim.SetAnimation(Animations.Get(AnimationType.WorldUI)["World_Unselected"]);
+            _worldAnim.Bucle = true;
+            _worldAnim.Play();
+
+            _world = new(Textures.Get(TextureType.WorldUI), 0, 0, _worldAnim.Source);
+
+            _languageMenu = new();
+            _languageMenu.LoadContent();
 
             RefreshOptionsColor();
-            _title.Alpha = _continue.Alpha = _newGame.Alpha = _options.Alpha = _exit.Alpha = 0;
+            _title.Alpha = _continue.Alpha = _newGame.Alpha = _options.Alpha = _exit.Alpha = _world.Alpha = 0;
             _appearingOptionsTweens[0] = new Tween<byte>(0, 255, 2000f, 0000f, TweenFunctions.ExpIn);
             _appearingOptionsTweens[1] = new Tween<byte>(0, 255, 2000f, 1000f, TweenFunctions.ExpIn);
             _appearingOptionsTweens[2] = new Tween<byte>(0, 255, 2000f, 1500f, TweenFunctions.ExpIn);
@@ -86,6 +117,10 @@ namespace HorrorShorts_Game.Screens.MainTitles
             Core.Camera.LimitBounds = new Rectangle(0, 0, 320, 512);
 
             ComputeZones();
+
+            //Menus Load
+            _optionMenu.LoadContent();
+
             Loaded = true;
         }
         public override void Update()
@@ -108,6 +143,12 @@ namespace HorrorShorts_Game.Screens.MainTitles
                 case ScreenStates.SelectingOptionAnim:
                     SelectingOptionUpdate();
                     break;
+                case ScreenStates.OptionMenuOpened:
+                    OptionMenuSelected();
+                    break;
+                case ScreenStates.LanguageMenuOpened:
+                    LanguageMenuSelected();
+                    break;
             }
 
             if (_screenState == ScreenStates.AppearingWaiting || 
@@ -126,6 +167,10 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _newGame.Update();
             _options.Update();
             _exit.Update();
+
+            if (_worldAnim.FrameChanged)
+                _world.Source = _worldAnim.Source;
+            _worldAnim.Update();
         }
 
         protected virtual void AppearingWaitingUpdate()
@@ -153,15 +198,16 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _options.Alpha = _appearingOptionsTweens[3].Value; 
             _exit.Alpha = _appearingOptionsTweens[4].Value;
 
+            _world.Alpha = _appearingOptionsTweens[4].Value;
+
             Tween<byte> tween = Array.Find(_appearingOptionsTweens, x => x.State == TweenState.Doing);
             if (tween == null) AppearingOptionsChange();
         }
         protected virtual void WaitingOptionUpdate()
         {
-#if DESKTOP
+            //Over options
             int newOverOption = _overOption;
-
-            //Mouse
+#if DESKTOP
             if (Core.Controls.Mouse.PositionChanged)
             {
                 newOverOption = -1;
@@ -175,126 +221,122 @@ namespace HorrorShorts_Game.Screens.MainTitles
                     newOverOption = (int)Options.Options;
                 else if (_exit.Zone.Contains(Core.Controls.Mouse.PositionUI))
                     newOverOption = (int)Options.Exit;
+                else if (_world.Rectangle.Contains(Core.Controls.Mouse.PositionUI))
+                    newOverOption = (int)Options.World;
             }
+#endif
+#if DESKTOP || CONSOLE
+            if (Core.Controls.UpTrigger)
+            {
+                newOverOption--;
+                if (newOverOption == (int)Options.Continue && !_continueIsEnable) newOverOption--;
+                if (newOverOption < (int)Options.Continue) newOverOption = (int)Options.World;
+                Core.SoundManager.Play(SoundType.OptionChange);
+            }
+            if (Core.Controls.DownTrigger)
+            {
+                newOverOption++;
+                if (newOverOption == (int)Options.Continue && !_continueIsEnable) newOverOption++;
+                if (newOverOption > (int)Options.World)
+                {
+                    if (_continueIsEnable) newOverOption = (int)Options.Continue;
+                    else newOverOption = (int)Options.NewGame;
+                }
+                Core.SoundManager.Play(SoundType.OptionChange);
+            }
+#endif
 
             if (newOverOption != _overOption)
             {
                 _overOption = newOverOption;
                 if (_overOption >= 0)
                     Core.SoundManager.Play(SoundType.OptionChange);
+                RefreshOptionsColor();
             }
 
-            if (Core.Controls.Mouse.Click)
-            {
-                _overOption = -1;
+            //Trigger option
+            Options? optionTriggered = null;
+#if DESKTOP || PHONE
 
-                if (_continue.Zone.Contains(Core.Controls.Mouse.PositionUI))
+            if (Core.Controls.Click)
+            {
+                if (_continue.Zone.Contains(Core.Controls.ClickPositionUI))
                 {
                     if (_continueIsEnable)
-                    {
-                        _overOption = 0;
-                        ContinueSelected();
-                    }
+                        optionTriggered = Options.Continue;
                 }
-                else if (_newGame.Zone.Contains(Core.Controls.Mouse.PositionUI))
-                    NewGameSelected();
-                else if (_options.Zone.Contains(Core.Controls.Mouse.PositionUI))
-                    OptionsSelected();
-                else if (_exit.Zone.Contains(Core.Controls.Mouse.PositionUI))
-                    ExitSelected();
+                else if (_newGame.Zone.Contains(Core.Controls.ClickPositionUI))
+                    optionTriggered = Options.NewGame;
+                else if (_options.Zone.Contains(Core.Controls.ClickPositionUI))
+                    optionTriggered = Options.Options;
+                else if (_exit.Zone.Contains(Core.Controls.ClickPositionUI))
+                    optionTriggered = Options.Exit;
+                else if (_world.Rectangle.Contains(Core.Controls.ClickPositionUI))
+                    optionTriggered = Options.World;
             }
-
-            //Keyboard
-            if (Core.Controls.Keyboard.UpTrigger)
-            {
-                _overOption--;
-                if (_overOption == (int)Options.Continue && !_continueIsEnable) _overOption--;
-                if (_overOption < (int)Options.Continue) _overOption = (int)Options.Exit;
-                Core.SoundManager.Play(SoundType.OptionChange);
-            }
-            if (Core.Controls.Keyboard.DownTrigger)
-            {
-                _overOption++;
-                if (_overOption == (int)Options.Continue && !_continueIsEnable) _overOption++;
-                if (_overOption > (int)Options.Exit)
-                {
-                    if (_continueIsEnable) _overOption = (int)Options.Continue;
-                    else _overOption = (int)Options.NewGame;
-                }
-                Core.SoundManager.Play(SoundType.OptionChange);
-            }
-            if (Core.Controls.Keyboard.ActionTrigger)
-            {
-                if (_overOption != -1)
-                {
-                    if (_overOption == (int)Options.Continue)
-                    {
-                        if (_continueIsEnable)
-                        {
-                            _overOption = 0;
-                            ContinueSelected();
-                        }
-                    }
-                    else if (_overOption == (int)Options.NewGame)
-                        NewGameSelected();
-                    else if (_overOption == (int)Options.Options)
-                        OptionsSelected();
-                    else if (_overOption == (int)Options.Exit)
-                        ExitSelected();
-                }
-            }
-
 #endif
 #if DESKTOP || CONSOLE
-            //Gamepad
-            if (Core.Controls.GamePad.UpTrigger)
-            {
-                _overOption--;
-                if (_overOption == (int)Options.Continue && !_continueIsEnable) _overOption--;
-                if (_overOption < (int)Options.Continue) _overOption = (int)Options.Exit;
-                Core.SoundManager.Play(SoundType.OptionChange);
-            }
-            if (Core.Controls.GamePad.DownTrigger)
-            {
-                _overOption++;
-                if (_overOption == (int)Options.Continue && !_continueIsEnable) _overOption++;
-                if (_overOption > (int)Options.Exit)
-                {
-                    if (_continueIsEnable) _overOption = (int)Options.Continue;
-                    else _overOption = (int)Options.NewGame;
-                }
-                Core.SoundManager.Play(SoundType.OptionChange);
-            }
-            if (Core.Controls.GamePad.ActionTrigger)
+            if (Core.Controls.ActionTrigger)
             {
                 if (_overOption != -1)
                 {
                     if (_overOption == (int)Options.Continue)
                     {
                         if (_continueIsEnable)
-                        {
-                            _overOption = 0;
-                            ContinueSelected();
-                        }
+                            optionTriggered = Options.Continue;
                     }
                     else if (_overOption == (int)Options.NewGame)
-                        NewGameSelected();
+                        optionTriggered = Options.NewGame;
                     else if (_overOption == (int)Options.Options)
-                        OptionsSelected();
+                        optionTriggered = Options.Options;
                     else if (_overOption == (int)Options.Exit)
-                        ExitSelected();
+                        optionTriggered = Options.Exit;
+                    else if (_overOption == (int)Options.World)
+                        optionTriggered = Options.World;
                 }
             }
 #endif
-#if TOUCH
-                //todo
-#endif
 
-            RefreshOptionsColor();
+            if (optionTriggered.HasValue)
+            {
+                _overOption = (int)optionTriggered.Value;
+                RefreshOptionsColor();
+
+                switch (optionTriggered)
+                {
+                    case Options.Continue:
+                        ContinueSelected();
+                        break;
+                    case Options.NewGame:
+                        NewGameSelected();
+                        break;
+                    case Options.Options:
+                        OptionsSelected();
+                        break;
+                    case Options.Exit:
+                        ExitSelected();
+                        break;
+                    case Options.World:
+                        WorldSelected();
+                        break;
+                }
+            }
         }
         protected virtual void SelectingOptionUpdate()
         {
 
+        }
+        protected virtual void OptionMenuSelected()
+        {
+            _optionMenu.Update();
+            if (!_optionMenu.IsShowing)
+                OptionMenuSelectedChange();
+        }
+        protected virtual void LanguageMenuSelected()
+        {
+            _languageMenu.Update();
+            if (!_languageMenu.IsVisible)
+                OptionMenuSelectedChange();
         }
 
         protected virtual void AppearingWaitingChange()
@@ -316,11 +358,14 @@ namespace HorrorShorts_Game.Screens.MainTitles
             for (int i = 0; i < _appearingOptionsTweens.Length; i++)
                 _appearingOptionsTweens[i].Stop();
 
-            _title.Alpha = _continue.Alpha = _newGame.Alpha = _options.Alpha = _exit.Alpha = 255;
+            _title.Alpha = _continue.Alpha = _newGame.Alpha = _options.Alpha = _exit.Alpha = _world.Alpha = 255;
             _screenState = ScreenStates.WaitingOptionSelect;
 
+#if DESKTOP || CONSOLE
             if (_continueIsEnable) _overOption = 0;
             else _overOption = 1;
+#endif
+            RefreshOptionsColor();
         }
         protected virtual void WaitingOptionChange()
         {
@@ -330,19 +375,23 @@ namespace HorrorShorts_Game.Screens.MainTitles
         {
 
         }
-
+        protected virtual void OptionMenuSelectedChange()
+        {
+#if PHONE
+            _overOption = -1;
+#endif
+            _screenState = ScreenStates.WaitingOptionSelect;
+            RefreshOptionsColor();
+        }
 
         private void AppearingCancelUpdate()
         {
             bool finishAnim = false;
-#if DESKTOP
-            finishAnim |= Core.Controls.Mouse.Click || Core.Controls.Keyboard.ActionPressed || Core.Controls.Keyboard.PausePressed;
+#if DESKTOP || PHONE
+            finishAnim |= Core.Controls.Click;
 #endif
 #if DESKTOP || CONSOLE
-            finishAnim |= Core.Controls.GamePad.ActionPressed || Core.Controls.GamePad.PausePressed;
-#endif
-#if TOUCH
-                //todo
+            finishAnim |= Core.Controls.ActionTrigger || Core.Controls.PauseTrigger;
 #endif
 
             if (finishAnim)
@@ -357,10 +406,34 @@ namespace HorrorShorts_Game.Screens.MainTitles
         }
         private void RefreshOptionsColor()
         {
-            _continue.Color = _continueIsEnable ? (_overOption == (int)Options.Continue ? OverOptionColor : UnSelectedOptionColor) : DisabledOptionColor;
-            _newGame.Color = _overOption == (int)Options.NewGame ? OverOptionColor : UnSelectedOptionColor;
-            _options.Color = _overOption == (int)Options.Options ? OverOptionColor : UnSelectedOptionColor;
-            _exit.Color = _overOption == (int)Options.Exit ? OverOptionColor : UnSelectedOptionColor;
+            if (_screenState == ScreenStates.WaitingOptionSelect)
+            {
+                _continue.Color = _continueIsEnable ? (_overOption == (int)Options.Continue ? OverOptionColor : UnSelectedOptionColor) : DisabledOptionColor;
+                _newGame.Color = _overOption == (int)Options.NewGame ? OverOptionColor : UnSelectedOptionColor;
+                _options.Color = _overOption == (int)Options.Options ? OverOptionColor : UnSelectedOptionColor;
+                _exit.Color = _overOption == (int)Options.Exit ? OverOptionColor : UnSelectedOptionColor;
+
+                if (_overOption == (int)Options.World)
+                {
+                    if (_worldAnim.Name != "World_Selected")
+                        _worldAnim.SwapAnimation(Animations.Get(AnimationType.WorldUI)["World_Selected"]);
+                }
+                else
+                {
+                    if (_worldAnim.Name != "World_Unselected")
+                        _worldAnim.SwapAnimation(Animations.Get(AnimationType.WorldUI)["World_Unselected"]);
+                }
+            }
+            else
+            {
+                _continue.Color = DisabledOptionColor;
+                _newGame.Color = DisabledOptionColor;
+                _options.Color = DisabledOptionColor;
+                _exit.Color = DisabledOptionColor;
+
+                //if (_worldAnim.Name != "World_Unselected")
+                //    _worldAnim.SwapAnimation(Animations.Get(AnimationType.WorldUI)["World_Unselected"]);
+            }
         }
 
 
@@ -369,6 +442,7 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _screenState = ScreenStates.SelectingOptionAnim;
             _overOption = (int)Options.Continue;
             Core.SoundManager.Play(SoundType.OptionSelect);
+            RefreshOptionsColor();
             //todo
         }
         private void NewGameSelected()
@@ -376,6 +450,7 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _screenState = ScreenStates.SelectingOptionAnim;
             _overOption = (int)Options.NewGame;
             Core.SoundManager.Play(SoundType.OptionSelect);
+            RefreshOptionsColor();
             //todo
         }
         private void OptionsSelected()
@@ -383,6 +458,10 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _screenState = ScreenStates.SelectingOptionAnim;
             _overOption = (int)Options.Options;
             Core.SoundManager.Play(SoundType.OptionSelect);
+
+            _screenState = ScreenStates.OptionMenuOpened;
+            _optionMenu.Show();
+            RefreshOptionsColor();
             //todo
         }
         private void ExitSelected()
@@ -391,6 +470,17 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _overOption = (int)Options.Exit;
             Core.SoundManager.Play(SoundType.OptionSelect);
             Core.Game.Exit(); //todo
+        }
+        private void WorldSelected()
+        {
+            _screenState = ScreenStates.SelectingOptionAnim;
+            _overOption = (int)Options.World;
+            Core.SoundManager.Play(SoundType.OptionSelect);
+
+            _screenState = ScreenStates.LanguageMenuOpened;
+            _languageMenu.Show();
+            RefreshOptionsColor();
+            //todo
         }
 
         private void ComputeZones()
@@ -410,13 +500,40 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _newGame.Position = new(optionsX, half - optionHeight * 0);
             _options.Position = new(optionsX, half + optionHeight * 1);
             _exit.Position = new(optionsX, half + optionHeight * 2);
+
+            _world.Position = new(Core.Resolution.Bounds.Left + 2, Core.Resolution.Bounds.Bottom - 32 - 2);
         }
         public override void ResetResolution()
         {
             base.ResetResolution();
             ComputeZones();
+            _optionMenu?.ResetResolution();
+            _languageMenu?.ResetResolution();
+        }
+        public override void ResetLocalization()
+        {
+            base.ResetLocalization();
+            _optionMenu.SetLocalization();
+            _continue.Text = Localizations.Global.MainTitle_Continue;
+            _newGame.Text = Localizations.Global.MainTitle_NewGame;
+            _options.Text = Localizations.Global.MainTitle_Options;
+            _exit.Text = Localizations.Global.MainTitle_Exit;
         }
 
+        public override void PreDraw()
+        {
+            base.PreDraw();
+
+            switch (_screenState)
+            {
+                case ScreenStates.OptionMenuOpened:
+                    _optionMenu.PreDraw();
+                    break;
+                case ScreenStates.LanguageMenuOpened:
+                    _languageMenu.PreDraw();
+                    break;
+            }
+        }
         public override void DrawUI()
         {
             _title.Draw();
@@ -425,7 +542,25 @@ namespace HorrorShorts_Game.Screens.MainTitles
             _options.Draw();
             _exit.Draw();
 
+            _world.Draw();
+
+            switch (_screenState)
+            {
+                case ScreenStates.OptionMenuOpened:
+                    _optionMenu.Draw();
+                    break;
+                case ScreenStates.LanguageMenuOpened:
+                    _languageMenu.Draw();
+                    break;
+            }
+
             base.DrawUI();
+        }
+        public override void Dispose()
+        {
+            _languageMenu.Dispose();
+            //todo
+            base.Dispose();
         }
     }
 }

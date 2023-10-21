@@ -7,11 +7,19 @@ namespace HorrorShorts_Game.Audio.Sound
         private SoundEffectInstance _soundEffect;
 
         public SoundState State { get => _soundEffect.State; }
+
+        public void RefreshVolume() => _soundEffect.Volume = _volume * Core.Settings.EffectsVolume * Core.Settings.GeneralVolume;
         public float Volume
         {
-            get => _soundEffect.Volume;
-            set => _soundEffect.Volume = Core.Settings.EffectsVolume * value;
+            get => _volume;
+            set
+            {
+                _volume = value;
+                RefreshVolume();
+            }
         }
+        private float _volume = 1f;
+
         public float Pitch
         {
             get => _soundEffect.Pitch;

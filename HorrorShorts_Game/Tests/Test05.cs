@@ -23,12 +23,12 @@ namespace HorrorShorts_Game.Tests
             Core.SongManager.PlayFromParallel(SongType.Test1, 1000);
 #endif
         }
-        public override void Update1()
+        public override void Update1()  
         {
             ts += Core.GameTime.ElapsedGameTime;
-            KeyboardState ks = Core.Controls.Keyboard.State;
 
 #if TEST_TYPE_1
+            KeyboardState ks = Core.Controls.Keyboard.State;
             if (ks.IsKeyDown(Keys.F1) && _prevKey != Keys.F1)
             {
                 _prevKey = Keys.F1;

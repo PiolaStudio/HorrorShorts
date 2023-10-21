@@ -84,6 +84,27 @@ namespace HorrorShorts_Game.Resources
                 propInfo.SetValue(null, data);
             }
         }
+        public static void ReLoad()
+        {
+            //Unload all
+            PropertyInfo[] props = typeof(Localizations).GetProperties(BindingFlags.Public | BindingFlags.Static);
+            List<string> resourcesToLoad = new();
+            for (int i = 0; i < props.Length; i++)
+            {
+                if (props[i].PropertyType != typeof(LocalizationGroup)) continue;
+
+                LocalizationGroup d = (LocalizationGroup)props[i].GetValue(null);
+                if (d != null)
+                {
+                    resourcesToLoad.Add(props[i].Name);
+                    props[i].SetValue(null, null);
+                }
+            }
+
+            //Reload
+            Init();
+            ReLoad(resourcesToLoad.ToArray());
+        }
 
         private static string GetPath(string name)
         {
@@ -93,26 +114,61 @@ namespace HorrorShorts_Game.Resources
 
     public class GlobalLocalization
     {
-        public readonly string NewGame;
-        public readonly string Continue;
-        public readonly string Options;
-        public readonly string Exit;
+        public readonly string MainTitle_NewGame;
+        public readonly string MainTitle_Continue;
+        public readonly string MainTitle_Options;
+        public readonly string MainTitle_Exit;
+
+        public readonly string Options_Screen;
+        public readonly string Options_Sound;
+        public readonly string Options_Control;
+        public readonly string Options_General;
+        public readonly string Options_Save;
+        public readonly string Options_Close;
+
+        public readonly string Options_Screen_Screen;
+        public readonly string Options_Screen_Resolution;
+        public readonly string Options_Screen_Resizable;
+        public readonly string Options_Screen_Vsync;
+        public readonly string Options_Screen_HardwareMode;
+
+        public readonly string Options_Screen_FullScreen;
+        public readonly string Options_Screen_Window;
+        public readonly string Options_Screen_Borderless;
+
+        public readonly string Options_Sound_General;
+        public readonly string Options_Sound_Music;
+        public readonly string Options_Sound_Effects;
+        public readonly string Options_Sound_Atmosphere;
+
+        public readonly string Options_Control_Control;
+        public readonly string Options_Control_Reset;
+        public readonly string Options_Control_Primary;
+        public readonly string Options_Control_Secundary;
+        public readonly string Options_Control_Up;
+        public readonly string Options_Control_Down;
+        public readonly string Options_Control_Left;
+        public readonly string Options_Control_Right;
+        public readonly string Options_Control_Action;
+        public readonly string Options_Control_Back;
+
+        public readonly string Options_General_Language;
+
 
         public GlobalLocalization(GlobalLocalization_Serial serial)
         {
             FieldInfo[] localFields = GetType().GetFields();
             FieldInfo[] serialFields = serial.GetType().GetFields();
 
-            for (int i = 0; i < serialFields.Length; i++)
+            for (int i = 0; i < localFields.Length; i++)
             {
-                FieldInfo field = Array.Find(localFields, x => x.Name == serialFields[i].Name);
+                FieldInfo field = Array.Find(serialFields, x => x.Name == localFields[i].Name);
                 if (field == null)
                 {
-                    Logger.Warning($"Field '{serialFields[i].Name}' not found for Global localization");
-                    continue;
+                    Logger.Warning($"Field '{localFields[i].Name}' not found for Global localization");
+                    localFields[i].SetValue(this, "NOT LOADED");
                 }
-
-                field.SetValue(this, serialFields[i].GetValue(serial));
+                else localFields[i].SetValue(this, field.GetValue(serial));
             }
         }
     }

@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace HorrorShorts_Game.Controls.UI
 {
     [DebuggerDisplay("{Text}")]
-    public class Label
+    public class Label : Control
     {
         private string _text = "Text";
         private FontType _font = FontType.Arial;
@@ -21,7 +21,6 @@ namespace HorrorShorts_Game.Controls.UI
         private TextAlignament _alignament = TextAlignament.MiddleCenter;
 
         private Vector2 _measure;
-        private Rectangle _zone;
         private bool _needCompute = true;
 
         public FontType Font
@@ -45,27 +44,27 @@ namespace HorrorShorts_Game.Controls.UI
                 _needCompute = true;
             }
         }
-        public Vector2 Position
+        public new Point Position
         {
-            get => _position;
+            get => _position.ToPoint();
             set 
             { 
-                _position = value;
+                _position = value.ToVector2();
                 UpdateZone();
             }
         }
-        public float X 
+        public new int X 
         { 
-            get => _position.X;
+            get => Convert.ToInt32(_position.X);
             set
             {
                 _position.X = value;
                 UpdateZone();
             }
         }
-        public float Y 
+        public new int Y 
         { 
-            get => _position.Y;
+            get => Convert.ToInt32(_position.Y);
             set
             {
                 _position.Y = value;
@@ -116,12 +115,13 @@ namespace HorrorShorts_Game.Controls.UI
             Compute();
         }
 
-        public void Update()
+        public override void Update()
         {
             if (_needCompute) Compute();
         }
-        public void Draw()
+        public override void Draw()
         {
+            if (!_isVisible) return;
             Core.SpriteBatch.DrawString(_spriteFont, _text, _position, _color, 0f, _origin, _scale, SpriteEffects.None, 1f);
         }
 

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Sprites="Resources.Sprites">
+	<Asset Type="Sprites:SpriteSheet_Serial">
+		<Texture>WorldUI</Texture>
+		<Sheets>
+			<!--UNSELECTED-->
+			<Sheet>
+				<Name>World_Unselected_1</Name>
+				<Source>0 0 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>World_Unselected_2</Name>
+				<Source>32 0 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>World_Unselected_3</Name>
+				<Source>64 0 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>World_Unselected_4</Name>
+				<Source>96 0 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>World_Unselected_5</Name>
+				<Source>128 0 32 32</Source>
+			</Sheet>
+
+			<!--SELECTED-->
+			<Sheet>
+				<Name>World_Selected_1</Name>
+				<Source>0 32 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>World_Selected_2</Name>
+				<Source>32 32 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>World_Selected_3</Name>
+				<Source>64 32 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>World_Selected_4</Name>
+				<Source>96 32 32 32</Source>
+			</Sheet>
+			<Sheet>
+				<Name>World_Selected_5</Name>
+				<Source>128 32 32 32</Source>
+			</Sheet>
+		</Sheets>
+	</Asset>
+</XnaContent>

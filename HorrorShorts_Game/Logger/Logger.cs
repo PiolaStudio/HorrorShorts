@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,7 @@ namespace HorrorShorts_Game
         private static string _logPath = string.Empty;
         private const int LOG_BUFFER_CAPACITY = 1024;
         public static EventHandler<Exception> InternException;
+        private const string LOG_FILE_DIRECTORY = "Data/Logs";
 
 #if DEBUG
         private static LogLevel _minLogLevel = LogLevel.Debug;
@@ -36,15 +38,15 @@ namespace HorrorShorts_Game
             _messages.Clear();
 
             //Check Directory
-            if (!Directory.Exists("Logs"))
-                Directory.CreateDirectory("Logs");
+            if (!Directory.Exists(Directories.LogsDirectory))
+                Directory.CreateDirectory(Directories.LogsDirectory);
 
             //Check File
             DateTime now = DateTime.Now;
             string fileName = "Log " + now.ToString("MM_dd_yy") + ".log";
-            _logPath = Path.Combine("Logs", fileName);
+            _logPath = Path.Combine(Directories.LogsDirectory, fileName);
             if (!File.Exists(_logPath))
-                File.Create(_logPath);
+                File.Create(_logPath).Close();
 
             //Start Log Task
             _finish = false;
@@ -67,46 +69,77 @@ namespace HorrorShorts_Game
 
         public static void Debug(string message) => Log(message, LogLevel.Debug);
         public static void Debug(string[] messages) => Log(messages, LogLevel.Debug);
+        public static void Debug(string message, string argument) => Log(message, argument, LogLevel.Debug);
 
         public static void Advice(string message) => Log(message, LogLevel.Advice);
         public static void Advice(string[] messages) => Log(messages, LogLevel.Advice);
+        public static void Advice(string message, string argument) => Log(message, argument, LogLevel.Advice);
 
         public static void Warning(string message) => Log(message, LogLevel.Warning);
         public static void Warning(string[] messages) => Log(messages, LogLevel.Warning);
+        public static void Warning(string message, string argument) => Log(message, argument, LogLevel.Warning);
         public static void Warning(Exception ex) => Log(ex, LogLevel.Warning);
 
         public static void Error(string message) => Log(message, LogLevel.Error);
         public static void Error(string[] messages) => Log(messages, LogLevel.Error);
+        public static void Error(string message, string argument) => Log(message, argument, LogLevel.Error);
         public static void Error(Exception ex) => Log(ex, LogLevel.Error);
 
         public static void Fatal(Exception ex) => Log(ex, LogLevel.Fatal);
 
 
-        public static void Log(Exception ex, LogLevel level = LogLevel.Error)
+        public static async void Log(Exception ex, LogLevel level = LogLevel.Error)
         {
             if (level < _minLogLevel) return;
 
-            ExceptionLogData log = new(level, ex);
-            _messages.Enqueue(log);
+            await Task.Factory.StartNew(() => 
+            { 
+                ExceptionLogData log = new(level, ex);
+                _messages.Enqueue(log);
+            });
         }
-        public static void Log(string message, LogLevel level = LogLevel.Advice)
+        public static async void Log(string message, LogLevel level = LogLevel.Advice)
         {
             if (level < _minLogLevel) return;
 
-            MessageLogData log = new(level, message);
-            _messages.Enqueue(log);
+            await Task.Factory.StartNew(() =>
+            {
+                MessageLogData log = new(level, message);
+                _messages.Enqueue(log);
+            });
         }
-        public static void Log(string[] messages, LogLevel level = LogLevel.Advice)
+        public static async void Log(string[] messages, LogLevel level = LogLevel.Advice)
         {
             if (level < _minLogLevel) return;
             if (messages.Length == 0) return;
 
-            string message = messages[0];
-            for (int i = 1; i < messages.Length; i++)
-                message += Environment.NewLine + messages[i];
+            await Task.Factory.StartNew(() =>
+            {
+                string message = messages[0];
+                for (int i = 1; i < messages.Length; i++)
+                    message += Environment.NewLine + messages[i];
 
-            MessageLogData log = new(level, message);
-            _messages.Enqueue(log);
+                MessageLogData log = new(level, message);
+                _messages.Enqueue(log);
+            });
+        }
+        public static async void Log(string message, string argument, LogLevel level = LogLevel.Advice)
+        {
+            if (level < _minLogLevel) return;
+
+            await Task.Factory.StartNew(() =>
+            {
+                StringBuilder sb = new();
+                sb.AppendLine(message);
+                string[] args = argument.Split(Environment.NewLine);
+
+                for (int i = 0; i < args.Length - 1; i++)
+                    sb.AppendLine("\t" + args[i]);
+                sb.Append("\t" + args.Last());
+
+                MessageLogData log = new(level, sb.ToString());
+                _messages.Enqueue(log);
+            });
         }
 
 

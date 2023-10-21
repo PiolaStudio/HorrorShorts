@@ -41,6 +41,7 @@ namespace HorrorShorts_Game.Tests
         }
         public override void Update1()
         {
+#if DESKTOP
             if (Core.Controls.Keyboard.State.IsKeyDown(Keys.Space))
             {
                 if (!space)
@@ -63,6 +64,7 @@ namespace HorrorShorts_Game.Tests
                 }
             }
             else R = false;
+#endif
 
             if (task != null && task.IsCompletedSuccessfully)
             {

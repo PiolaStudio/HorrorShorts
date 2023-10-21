@@ -24,6 +24,11 @@
 /processor:PassThroughProcessor
 /build:Data/Animations/Characters/Megaman.xml
 
+#begin Data/Animations/UI/World.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/Animations/UI/World.xml
+
 #begin Data/Atmosphere/Field1.xml
 /importer:XmlImporter
 /processor:PassThroughProcessor
@@ -33,6 +38,11 @@
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:Data/Localizations/English/Global.xml
+
+#begin Data/Localizations/Portuguese/Global.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/Localizations/Portuguese/Global.xml
 
 #begin Data/Localizations/Spanish/Global.xml
 /importer:XmlImporter
@@ -63,6 +73,26 @@
 /importer:XmlImporter
 /processor:PassThroughProcessor
 /build:Data/SpriteSheets/Characters/Megaman.xml
+
+#begin Data/SpriteSheets/UI/InputButtons.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/SpriteSheets/UI/InputButtons.xml
+
+#begin Data/SpriteSheets/UI/LanguageMenu.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/SpriteSheets/UI/LanguageMenu.xml
+
+#begin Data/SpriteSheets/UI/UIControls.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/SpriteSheets/UI/UIControls.xml
+
+#begin Data/SpriteSheets/UI/World.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:Data/SpriteSheets/UI/World.xml
 
 #begin Fonts/PixelArial.spritefont
 /importer:FontDescriptionImporter
@@ -238,4 +268,64 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/UI/DialogMenu.png
+
+#begin Textures/UI/InputButtons.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/InputButtons.png
+
+#begin Textures/UI/LanguageMenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/LanguageMenu.png
+
+#begin Textures/UI/OptionMenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/OptionMenu.png
+
+#begin Textures/UI/UIControls.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/UIControls.png
+
+#begin Textures/UI/World.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/UI/World.png
 

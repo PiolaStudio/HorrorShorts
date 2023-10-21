@@ -1,4 +1,5 @@
 ﻿using HorrorShorts_Game.Controls.Sprites;
+using HorrorShorts_Game.Controls.UI.Interfaces;
 using HorrorShorts_Game.Controls.UI.Questions;
 using HorrorShorts_Game.Inputs;
 using HorrorShorts_Game.Resources;
@@ -19,7 +20,7 @@ using System.Threading;
 
 namespace HorrorShorts_Game.Controls.UI.Dialogs
 {
-    public class DialogBox
+    public class DialogBox : IResolutionDependent, ILocalizable
     {
         #region VARIABLES & PROPERTIES
         //Textures
@@ -900,10 +901,14 @@ namespace HorrorShorts_Game.Controls.UI.Dialogs
         {
             //todo
         }
-        internal void ResetResolution()
+        public void ResetResolution()
         {
             GetZone();
             _questionBox.ResetResolution();
+        }
+        public void SetLocalization()
+        {
+            //todo
         }
         #endregion
 

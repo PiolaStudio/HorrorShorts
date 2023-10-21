@@ -6,6 +6,7 @@
 		<ApplicationId>com.companyname.HorrorShorts_Android</ApplicationId>
 		<ApplicationVersion>1</ApplicationVersion>
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<BaseOutputPath>..\HorrorShorts_Game\bin\Android\</BaseOutputPath>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

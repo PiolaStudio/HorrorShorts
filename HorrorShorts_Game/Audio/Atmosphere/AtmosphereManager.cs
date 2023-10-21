@@ -14,7 +14,12 @@ namespace HorrorShorts_Game.Audio.Atmosphere
         public AtmosphereInstance this[string id] { get => _sounds[id]; }
 
         private Point Listener = Point.Zero;
+        private float _atmosphereVolume;
 
+        public AtmosphereManager()
+        {
+            _atmosphereVolume = Core.Settings.GeneralVolume * Core.Settings.AtmosphereVolume;
+        }
         public void Load()
         {
             //todo
@@ -37,6 +42,15 @@ namespace HorrorShorts_Game.Audio.Atmosphere
             {
                 sound.Listener = Listener;
                 sound.Update();
+            }
+
+            //Volume changed
+            float volume = Core.Settings.GeneralVolume * Core.Settings.AtmosphereVolume;
+            if (volume != _atmosphereVolume)
+            {
+                _atmosphereVolume = volume;
+                foreach (AtmosphereInstance sound in _sounds.Values)
+                    sound.RefreshVolume();
             }
         }
     }

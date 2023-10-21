@@ -98,6 +98,14 @@ namespace HorrorShorts_Game.Inputs
             _rightKey = rightKey;
             _actionKey = actionKey;
             _pauseKey = pauseKey;
+
+            Logger.Advice($"Setted Keyboard Primary Keys: " +
+                $"UP: {upKey} -\t" +
+                $"DOWN: {downKey} -\t" +
+                $"LEFT: {leftKey} -\t" +
+                $"RIGHT: {rightKey} -\t" +
+                $"ACTION: {actionKey} -\t" +
+                $"PAUSE: {pauseKey}");
         }
         public void SetSecondaryKeys(Keys? upKey2, Keys? downKey2, Keys? leftKey2, Keys? rightKey2, Keys? actionKey2, Keys? pauseKey2)
         {
@@ -107,6 +115,14 @@ namespace HorrorShorts_Game.Inputs
             _rightKey2 = rightKey2;
             _actionKey2 = actionKey2;
             _pauseKey2 = pauseKey2;
+
+            Logger.Advice($"Setted Keyboard Secundary Keys: " +
+                $"UP: {(upKey2 != null ? upKey2.ToString() : "NULL")} -\t" +
+                $"DOWN: {(downKey2 != null ? downKey2.ToString() : "NULL")} -\t" +
+                $"LEFT: {(leftKey2 != null ? leftKey2.ToString() : "NULL")} -\t" +
+                $"RIGHT: {(rightKey2 != null ? rightKey2.ToString() : "NULL")} -\t" +
+                $"ACTION: {(actionKey2 != null ? actionKey2.ToString() : "NULL")} -\t" +
+                $"PAUSE: {(pauseKey2 != null ? pauseKey2.ToString() : "NULL")}");
         }
     }
 }
